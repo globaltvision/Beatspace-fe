@@ -21,7 +21,7 @@ const DashboardLayout = () => {
       ) : (
         <div className="flex h-screen bg-gray-100">
           {/* Sidebar */}
-          <div className="w-20 lg:w-64 flex-shrink-0">
+          <div className="w-20 md:w-64 flex-shrink-0">
             <Sidebar opened={opened} toggle={toggle} />
           </div>
 

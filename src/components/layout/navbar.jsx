@@ -3,12 +3,19 @@ import { FaSignOutAlt, FaUser, FaCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../../store/actions/authActions";
+import NotificationPanel from "./NotificationPanel";
+import { useNotifications } from "../../contexts/NotificationContext";
+
 
 const Navbar = ({ opened, toggle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const { unreadCount } = useNotifications();
   const dropdownRef = useRef(null);
+  const notifRef = useRef(null);
+
 
   // Get current date
   const getCurrentDate = () => {
@@ -28,9 +35,13 @@ const Navbar = ({ opened, toggle }) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setIsNotifOpen(false);
+      }
     };
 
-    if (isDropdownOpen) {
+    if (isDropdownOpen || isNotifOpen) {
+
       document.addEventListener("mousedown", handleClickOutside);
     }
 
@@ -41,7 +52,14 @@ const Navbar = ({ opened, toggle }) => {
 
   const handleOpenDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+    setIsNotifOpen(false);
   };
+
+  const handleOpenNotif = () => {
+    setIsNotifOpen(!isNotifOpen);
+    setIsDropdownOpen(false);
+  };
+
 
   const handleLogout = async () => {
     try {
@@ -77,41 +95,60 @@ const Navbar = ({ opened, toggle }) => {
 
         {/* Right side - User controls */}
         <div
-          className="flex items-center space-x-2 lg:space-x-4 relative"
+          className="flex items-center space-x-2 lg:space-x-4"
           ref={dropdownRef}
         >
-          <button className="transition-opacity hover:opacity-80">
-            <svg
-              className="!h-7 md:!h-9"
-              width="38"
-              height="39"
-              viewBox="0 0 38 39"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Notification Icon */}
+          <div className="relative flex items-center" ref={notifRef}>
+            <button
+              onClick={handleOpenNotif}
+              className="transition-opacity hover:opacity-80 relative flex items-center justify-center"
             >
-              <rect
-                x="0.75"
-                y="1.25"
-                width="36.5"
-                height="36.5"
-                fill="#191A22"
-                fill-opacity="0.12"
-              />
-              <rect
-                x="0.75"
-                y="1.25"
-                width="36.5"
-                height="36.5"
-                stroke="#191A22"
-                stroke-width="1.5"
-              />
-              <path
-                d="M22 27.5V29.5H21V30.5H17V29.5H16V27.5H22ZM29 24.5V25.5H28V26.5H10V25.5H9V24.5H10V23.5H11V21.5H12V15.5H13V13.5H14V12.5H15V11.5H17V10.5H18V8.5H20V10.5H21V11.5H23V12.5H24V13.5H25V15.5H26V21.5H27V23.5H28V24.5H29Z"
-                fill="#191A22"
-              />
-            </svg>
-          </button>
-          <button className="transition-opacity hover:opacity-80">
+              <svg
+                className="!h-7 md:!h-9"
+                width="38"
+                height="39"
+                viewBox="0 0 38 39"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.75"
+                  y="1.25"
+                  width="36.5"
+                  height="36.5"
+                  fill="#191A22"
+                  fill-opacity="0.12"
+                />
+                <rect
+                  x="0.75"
+                  y="1.25"
+                  width="36.5"
+                  height="36.5"
+                  stroke="#191A22"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M22 27.5V29.5H21V30.5H17V29.5H16V27.5H22ZM29 24.5V25.5H28V26.5H10V25.5H9V24.5H10V23.5H11V21.5H12V15.5H13V13.5H14V12.5H15V11.5H17V10.5H18V8.5H20V10.5H21V11.5H23V12.5H24V13.5H25V15.5H26V21.5H27V23.5H28V24.5H29Z"
+                  fill="#191A22"
+                />
+              </svg>
+              {/* Notification Badge */}
+              {unreadCount > 0 && (
+                <div className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-red-600 border-2 border-[#CBC895] rounded-full shadow-lg z-20">
+                  <span className="text-[10px] alexandria-font font-bold text-white leading-none">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                </div>
+              )}
+            </button>
+            <NotificationPanel
+              isOpen={isNotifOpen}
+              onClose={() => setIsNotifOpen(false)}
+            />
+          </div>
+
+          <button className="transition-opacity hover:opacity-80 flex items-center justify-center">
             <svg
               className="!h-7 md:!h-9"
               width="38"
@@ -146,7 +183,7 @@ const Navbar = ({ opened, toggle }) => {
           </button>
           <button
             onClick={handleOpenDropdown}
-            className="transition-opacity hover:opacity-80 relative z-10"
+            className="transition-opacity hover:opacity-80 relative z-10 flex items-center justify-center"
           >
             <svg
               className="!h-7 md:!h-9"

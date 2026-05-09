@@ -254,3 +254,18 @@ export const getDonations = () => async (dispatch) => {
     return error?.response?.data;
   }
 };
+
+export const updateOrderStatus = (id, status) => async (dispatch) => {
+  try {
+    const res = await custAxios.patch(`/admin/orders/${id}/status`, { status });
+    if (res?.data?.success) {
+      dispatch({
+        type: ADMIN_CONSTANTS.GET_ORDERS_SUCCESS,
+        // Refresh orders after update — we'll refetch from component side
+      });
+    }
+    return res?.data;
+  } catch (error) {
+    return error?.response?.data;
+  }
+};

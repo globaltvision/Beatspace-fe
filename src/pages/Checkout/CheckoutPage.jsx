@@ -122,9 +122,12 @@ const CheckoutPage = () => {
       }}
     >
       <Box
+        className="custom-scrollbar"
         style={{
           width: '100%',
           maxWidth: 480,
+          maxHeight: '90vh',
+          overflowY: 'scroll',
           background: 'rgba(9, 11, 22, 0.95)',
           border: '2px solid #2b2f55',
           borderRadius: 18,

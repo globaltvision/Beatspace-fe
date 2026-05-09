@@ -234,6 +234,11 @@ body {
   }
 }
 
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+
 /* Custom Retro Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 20px;
