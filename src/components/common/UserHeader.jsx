@@ -3,6 +3,7 @@ import { Box, Text, Image, Flex } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
 import { BackButtonIcon } from "../../customIcons";
 import { BACK_NAVIGATION_MAP } from "../../configs/navigationMapping";
+import { useSettings } from "../../contexts/SettingsContext";
 
 const COLORS = {
   primary: "#F6F4D3",
@@ -12,6 +13,7 @@ const COLORS = {
 const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { settings } = useSettings();
 
   const handleBack = () => {
     const pathname = location.pathname;
@@ -131,14 +133,14 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
         {suffix && suffix}
         <Box onClick={handleLogoClick} style={{ cursor: "pointer" }}>
           <Image
-            src="/assets/logo.png"
-            alt="GLOBAL VISION"
+            src={settings.site_logo || "/assets/logo.png"}
+            alt={settings.site_title || "GLOBAL VISION"}
             style={{
               width: "120px",
               height: "auto",
               filter: "brightness(1.2)",
             }}
-            className="max-sm:!w-10 md:!w-20 lg:!w-28 xl:!w-32"
+            className="max-sm:!w-10 md:!w-20 lg:!w-28 xl:!w-32 object-contain"
           />
         </Box>
       </Box>

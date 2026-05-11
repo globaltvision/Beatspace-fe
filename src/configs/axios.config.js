@@ -100,6 +100,14 @@ export const attachTokenWithFormAxios = () => {
   }
 };
 
-export { formAxios };
+const publicAxios = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
+export { formAxios, publicAxios };
 
 export default custAxios;

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Box, Text, Group, Image } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useSettings } from "../../contexts/SettingsContext";
 
 const Home = () => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const { settings } = useSettings();
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -49,8 +51,8 @@ const Home = () => {
         className="!w-full !top-[13%] min-md:!w-full min-md:!top-[15%] min-lg:!top-[18%] min-xl:!top-[22%]"
       >
         <Image
-          src="/assets/Hero.webp"
-          alt="GLOBAL VISION"
+          src={settings.site_logo || "/assets/Hero.webp"}
+          alt={settings.site_title || "GLOBAL VISION"}
           style={{
             width: "100%",
             height: "auto",
@@ -59,7 +61,7 @@ const Home = () => {
             position: "relative",
             zIndex: 10,
           }}
-          className="max-sm:!mb-0 !h-20 min-md:!h-20 min-lg:!h-40"
+          className="max-sm:!mb-0 !h-20 min-md:!h-24 min-lg:!h-32 min-xl:!h-40 object-contain"
         />
 
         <Image
@@ -136,7 +138,7 @@ const Home = () => {
             className="md:p-3"
           >
             <Text
-              className="vision-font hover:!scale-[0.7] !scale-[1] hover:min-md:!scale-[1.2] min-md:!scale-[1.8] min-md:!mt-20 font-bold"
+              className="vision-font hover:!scale-[0.7] !scale-[1] hover:min-md:!scale-[1.2] min-md:!scale-[1.8] min-md:!mt-32 font-bold"
               style={{
                 color: isHovered ? "#F6F4D3" : "#1f2937",
                 textShadow: isHovered
@@ -161,7 +163,7 @@ const Home = () => {
             ©
           </Text>
           <Text className="vision-font min-md:scale-[1.1]" style={{ color: "#1f2937" }}>
-            2025 GLOBAL VISION
+            {new Date().getFullYear()} {settings.site_title || "GLOBAL VISION"}
           </Text>
         </Group>
       </Box>

@@ -11,6 +11,7 @@ import "mantine-react-table/styles.css";
 import QueryProvider from "./configs/query.config.jsx";
 import store from "./store/store.js";
 import { NotificationProvider } from "./contexts/NotificationContext.jsx";
+import { SettingsProvider } from "./contexts/SettingsContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -26,9 +27,11 @@ createRoot(document.getElementById("root")).render(
       <div className="app-content">  
       <MantineProvider theme={theme}>
         <QueryProvider>
-          <NotificationProvider>
-            <App />
-          </NotificationProvider>
+          <SettingsProvider>
+            <NotificationProvider>
+              <App />
+            </NotificationProvider>
+          </SettingsProvider>
         </QueryProvider>
       </MantineProvider>
     </div>

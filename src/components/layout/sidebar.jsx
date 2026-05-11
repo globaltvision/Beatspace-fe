@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSettings } from "../../contexts/SettingsContext";
 import {
   DashboardIcon,
   BeatmakerIcon,
@@ -83,6 +84,7 @@ const adminMenu = [
 const Sidebar = ({ opened, toggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { settings } = useSettings();
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -94,8 +96,8 @@ const Sidebar = ({ opened, toggle }) => {
       <div className="p-6 border-b border-[#B8A882]">
         <div className="flex items-center justify-start">
           <img
-            src="/assets/logo1.png"
-            alt="Global Vision Logo"
+            src={settings?.site_logo && settings.site_logo !== "null" ? settings.site_logo : "/assets/logo1.png"}
+            alt="Site Logo"
             className="hidden md:inline h-20 w-auto object-contain"
           />
         </div>

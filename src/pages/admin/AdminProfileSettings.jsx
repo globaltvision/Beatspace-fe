@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import ConfirmModal from "../../components/ConfirmModal";
 import CategoryAPI from "../../services/category.service";
+import SettingsAPI from "../../services/settings.service";
+import { useSettings } from "../../contexts/SettingsContext";
 import { toast } from "sonner";
 const VolumeSlider = ({ value = 70, onChange }) => {
   const handleSliderChange = (event) => {
@@ -187,6 +189,7 @@ const QualitySelector = ({
 // FileUpload Component
 const FileUpload = ({
   onFileSelect,
+  currentImage,
   accept = "image/*",
   maxSize = 2 * 1024 * 1024,
   className = "",
@@ -260,47 +263,64 @@ const FileUpload = ({
         onKeyDown={handleKeyDown}
         aria-label="Upload logo - drag & drop or browse files"
       >
-        <div className="mb-4 sm:mb-6 lg:mb-8">
-          <svg
-            className="w-16 h-20 sm:w-20 sm:h-24 lg:w-20 lg:h-[115px]"
-            viewBox="0 0 80 115"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M61.045 0.063H0.245V98.863H80.045V19.063L61.045 0.063Z"
-              fill="#056BF1"
-            />
-            <path
-              d="M72.444 98.864V106.463H-7.355V7.664H0.245V98.864H72.444Z"
-              fill="#124BF2"
-            />
-            <path
-              d="M64.844 106.463V114.063H-14.955V15.264H-7.355V106.463H64.844Z"
-              fill="#023473"
-            />
-            <path
-              d="M61.045 0.063V19.063H80.045L61.045 0.063Z"
-              fill="#124BF2"
-            />
-            <path
-              d="M54.869 36.81L41.569 21.61C40.847 20.793 39.441 20.793 38.7 21.61L25.4 36.81C24.906 37.38 24.792 38.159 25.096 38.843C25.4 39.527 26.084 39.964 26.825 39.964H32.525V53.264C32.525 54.309 33.38 55.164 34.425 55.164H45.825C46.87 55.164 47.725 54.309 47.725 53.264V39.964H53.425C54.166 39.964 54.85 39.527 55.154 38.843C55.458 38.159 55.344 37.361 54.85 36.81H54.869Z"
-              fill="white"
-            />
-            <path
-              d="M45.843 58.963H34.443C33.394 58.963 32.543 59.814 32.543 60.863V68.463C32.543 69.512 33.394 70.363 34.443 70.363H45.843C46.892 70.363 47.743 69.512 47.743 68.463V60.863C47.743 59.814 46.892 58.963 45.843 58.963Z"
-              fill="white"
-            />
-            <path
-              d="M45.843 74.164H34.443C33.398 74.164 32.543 75.019 32.543 76.064C32.543 77.109 33.398 77.964 34.443 77.964H45.843C46.888 77.964 47.743 77.109 47.743 76.064C47.743 75.019 46.888 74.164 45.843 74.164Z"
-              fill="white"
-            />
-          </svg>
+        <div className="mb-4 sm:mb-6 lg:mb-8 flex flex-col items-center">
+          {currentImage ? (
+            <div className="relative group">
+              <img
+                src={currentImage}
+                alt="Logo Preview"
+                className="max-h-[180px] w-auto object-contain transition-opacity group-hover:opacity-50"
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p className="text-white alexandria-font text-xs bg-black/50 px-2 py-1">
+                  CHANGE LOGO
+                </p>
+              </div>
+            </div>
+          ) : ( 
+            <svg
+              className="w-16 h-20 sm:w-20 sm:h-24 lg:w-20 lg:h-[115px]"
+              viewBox="0 0 80 115"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M61.045 0.063H0.245V98.863H80.045V19.063L61.045 0.063Z"
+                fill="#056BF1"
+              />
+              <path
+                d="M72.444 98.864V106.463H-7.355V7.664H0.245V98.864H72.444Z"
+                fill="#124BF2"
+              />
+              <path
+                d="M64.844 106.463V114.063H-14.955V15.264H-7.355V106.463H64.844Z"
+                fill="#023473"
+              />
+              <path
+                d="M61.045 0.063V19.063H80.045L61.045 0.063Z"
+                fill="#124BF2"
+              />
+              <path
+                d="M54.869 36.81L41.569 21.61C40.847 20.793 39.441 20.793 38.7 21.61L25.4 36.81C24.906 37.38 24.792 38.159 25.096 38.843C25.4 39.527 26.084 39.964 26.825 39.964H32.525V53.264C32.525 54.309 33.38 55.164 34.425 55.164H45.825C46.87 55.164 47.725 54.309 47.725 53.264V39.964H53.425C54.166 39.964 54.85 39.527 55.154 38.843C55.458 38.159 55.344 37.361 54.85 36.81H54.869Z"
+                fill="white"
+              />
+              <path
+                d="M45.843 58.963H34.443C33.394 58.963 32.543 59.814 32.543 60.863V68.463C32.543 69.512 33.394 70.363 34.443 70.363H45.843C46.892 70.363 47.743 69.512 47.743 68.463V60.863C47.743 59.814 46.892 58.963 45.843 58.963Z"
+                fill="white"
+              />
+              <path
+                d="M45.843 74.164H34.443C33.398 74.164 32.543 75.019 32.543 76.064C32.543 77.109 33.398 77.964 34.443 77.964H45.843C46.888 77.964 47.743 77.109 47.743 76.064C47.743 75.019 46.888 74.164 45.843 74.164Z"
+                fill="white"
+              />
+            </svg>
+          )}
         </div>
         <div className="text-center alexandria-font">
           <p className="text-[#EBE23C] text-base sm:text-lg lg:text-xl font-bold mb-2 sm:mb-3 lg:mb-4 max-w-md">
-            Drag & drop your logo here, or browse files
+            {currentImage
+              ? "Click or drag to replace logo"
+              : "Drag & drop your logo here, or browse files"}
           </p>
           <p className="text-white text-sm sm:text-base lg:text-lg">
             PNG, JPG up to 2MB
@@ -522,12 +542,16 @@ const AudioVisualizerIcon = (
 
 // Main Settings Component
 const Settings = () => {
+  const { fetchSettings: refreshGlobalSettings } = useSettings();
   // General Settings State
   const [siteTitle, setSiteTitle] = useState("Beatspace");
   const [language, setLanguage] = useState("English");
 
   // Logo Upload State
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [existingLogo, setExistingLogo] = useState("");
+  const [settingsId, setSettingsId] = useState(null);
+  const [isSavingGeneral, setIsSavingGeneral] = useState(false);
 
   // Theme Settings State
   const [darkMode, setDarkMode] = useState(true);
@@ -568,9 +592,31 @@ const Settings = () => {
     }
   }, []);
 
+  const fetchSettings = useCallback(async () => {
+    try {
+      const res = await SettingsAPI.get();
+      const settings = res.data.data;
+      if (settings) {
+        setSiteTitle(settings.site_title || "Beatspace");
+        setExistingLogo(settings.site_logo || "");
+        setLanguage(settings.language || "English");
+        setDarkMode(settings.dark_mode ?? true);
+        setRetroNeonMode(settings.retro_mode ?? false);
+        setEnableRadio(settings.enable_radio ?? true);
+        setDefaultVolume(settings.default_volume ?? 70);
+        setPauseRadioOnBeat(settings.pause_radio_when_beat_plays ?? false);
+        setAudioQuality(settings.audio_quality || "high");
+        setSettingsId(settings._id);
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
+    fetchSettings();
+  }, [fetchCategories, fetchSettings]);
 
   // Security & Backup State
   const [isExporting, setIsExporting] = useState(false);
@@ -588,7 +634,39 @@ const Settings = () => {
   // Handlers
   const handleFileSelect = (file) => {
     setUploadedFile(file);
-    console.log("File selected:", file.name);
+    // Create a preview for the UI
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setExistingLogo(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveGeneralSettings = async () => {
+    setIsSavingGeneral(true);
+    try {
+      const formData = new FormData();
+      formData.append("site_title", siteTitle);
+      formData.append("language", language);
+      formData.append("dark_mode", darkMode);
+      formData.append("retro_mode", retroNeonMode);
+
+      if (uploadedFile) {
+        console.log("Appending logo to FormData:", uploadedFile.name);
+        formData.append("logo", uploadedFile);
+      }
+
+      await SettingsAPI.update(settingsId || "undefined", formData);
+      setUploadedFile(null); // Clear the uploaded file after success
+      toast.success("General settings saved successfully");
+      fetchSettings();
+      refreshGlobalSettings();
+    } catch (error) {
+      console.error("Save error:", error);
+      toast.error("Failed to save settings");
+    } finally {
+      setIsSavingGeneral(false);
+    }
   };
 
   const handleEditCategory = (category) => {
@@ -754,6 +832,7 @@ const Settings = () => {
             <div className="relative">
               <FileUpload
                 onFileSelect={handleFileSelect}
+                currentImage={existingLogo}
                 accept="image/png,image/jpeg"
                 maxSize={2 * 1024 * 1024}
                 className="w-full"
@@ -761,8 +840,9 @@ const Settings = () => {
 
               {uploadedFile && (
                 <div className="mt-4 p-4 bg-[#191A22] border border-[#CBC895] rounded">
-                  <p className="text-[#9C963A] text-sm">
-                    Selected: {uploadedFile.name} (
+                  <p className="text-[#9C963A] text-xs mb-2">FILE SELECTED:</p>
+                  <p className="text-[#9C963A] text-xs mt-2">
+                    Ready to upload: {uploadedFile.name} (
                     {(uploadedFile.size / 1024).toFixed(1)} KB)
                   </p>
                 </div>
@@ -855,7 +935,7 @@ const Settings = () => {
         </div>
         <div className="w-full">
           <label
-            htmlFor="site-title"
+            htmlFor="language"
             className="block text-white pixel-font  !text-sm  uppercase mb-4"
           >
             Language
@@ -889,6 +969,13 @@ const Settings = () => {
             </div>
           </div>
         </div>
+        <button
+          onClick={handleSaveGeneralSettings}
+          disabled={isSavingGeneral}
+          className="mt-6 bg-[#DFD74F] alexandria-font text-[#191A22] px-8 py-3 rounded text-sm font-bold hover:bg-[#FFF999] transition-colors disabled:opacity-50"
+        >
+          {isSavingGeneral ? "SAVING..." : "SAVE SETTINGS"}
+        </button>
       </div>
 
       {/* Category Management Section */}
