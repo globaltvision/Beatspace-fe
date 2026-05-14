@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Games() {
+  const { t } = useTranslation();
   return (
     <div className="app alexandria-font">
       <style>{`
@@ -17,7 +19,7 @@ export default function Games() {
       {/* Header with right-aligned action */}
       <section className="topbar">
         <div className="container" style={{display:"flex",justifyContent:"flex-end",alignItems:"center",padding:"0.75rem 0"}}>
-          <button className="btn">+ Add New Game</button>
+          <button className="btn">{t('games.add_new')}</button>
         </div>
       </section>
 

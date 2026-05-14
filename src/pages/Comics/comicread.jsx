@@ -4,8 +4,10 @@ import SupportArtistModal from "../../components/modalContents/SupportArtistModa
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMediaQuery } from "@mantine/hooks";
 import { BackButtonIcon, BookreadIcon, SliderIcon } from "../../customIcons";
+import { useTranslation } from "react-i18next";
 
 const Comicread = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSupportOpen, setIsSupportOpen] = useState(false);
@@ -69,7 +71,7 @@ const Comicread = () => {
   if (!comic || !chapter) {
     return (
       <Box style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000' }}>
-        <Text className="vision-font" style={{ color: "#F6F4D3" }}>COMIC OR CHAPTER NOT FOUND</Text>
+        <Text className="vision-font" style={{ color: "#F6F4D3" }}>{t('comics_user.not_found')}</Text>
       </Box>
     );
   }
@@ -190,7 +192,7 @@ const Comicread = () => {
                 letterSpacing: "3px",
               }}
             >
-              END OF CHAPTER
+              {t('comics_user.end_chapter')}
             </Text>
           </Box>
           <Button
@@ -201,7 +203,7 @@ const Comicread = () => {
               fontWeight: "bold",
             }}
           >
-            Support Artist
+            {t('comics_user.support_artist')}
           </Button>
         </Box>
 
@@ -444,7 +446,7 @@ const Comicread = () => {
                   fontWeight: "bold"
                 }}
               >
-                END OF CHAPTER
+                {t('comics_user.end_chapter')}
               </Text>
               <Button
                 onClick={() => setIsSupportOpen(true)}
@@ -459,7 +461,7 @@ const Comicread = () => {
                 }}
                 className="vision-font"
               >
-                SUPPORT THE ARTIST
+                {t('comics_user.support_artist')}
               </Button>
             </Box>
           </Box>

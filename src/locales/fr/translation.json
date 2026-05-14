@@ -1,0 +1,473 @@
+{
+  "navbar": {
+    "title": "TABLEAU DE BORD ADMIN",
+    "subtitle": "INTERFACE DE CONTRÔLE DU SYSTÈME",
+    "logout": "Se déconnecter"
+  },
+  "dashboard": {
+    "stats": {
+      "tracks": "PISTES",
+      "total_beats": "Total des Beats",
+      "products": "PRODUITS",
+      "merch_items": "Articles Merch",
+      "this_month": "CE MOIS-CI",
+      "donations": "Dons",
+      "total": "TOTAL",
+      "downloads": "Téléchargements",
+      "this_week": "+{{count}} cette semaine",
+      "new_items": "+{{count}} nouvel article",
+      "new_items_plural": "+{{count}} nouveaux articles"
+    },
+    "charts": {
+      "donations_title": "ÉVOLUTION DES DONS",
+      "most_played": "LES PLUS JOUÉS",
+      "genres_categories": "GENRES & CATÉGORIES"
+    },
+    "activity": {
+      "title": "JOURNAL D'ACTIVITÉ RÉCENTE"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "ACCÈS ADMINISTRATEUR",
+      "subtitle": "ZONE RESTREINTE",
+      "username_placeholder": "Nom d'utilisateur",
+      "password_placeholder": "Mot de passe",
+      "button": "SE CONNECTER",
+      "back_to_website": "RETOUR AU SITE",
+      "footer": "© 2025 GLOBAL VISION - PANNEAU D'ADMINISTRATION",
+      "error_not_authorized": "Vous n'êtes pas autorisé à accéder à cette page.",
+      "error_failed": "Échec de la connexion. Veuillez vérifier vos identifiants.",
+      "error_generic": "Une erreur est survenue lors de la connexion."
+    }
+  },
+  "common": {
+    "back": "Retour",
+    "loading": "Chargement...",
+    "no_artists_found": "AUCUN ARTISTE TROUVÉ",
+    "dropdown_arrow": "Flèche de menu",
+    "actions": "ACTIONS",
+    "save": "ENREGISTRER",
+    "update": "METTRE À JOUR",
+    "cancel": "ANNULER",
+    "delete": "SUPPRIMER",
+    "edit": "MODIFIER",
+    "view": "VOIR",
+    "confirm": "CONFIRMER"
+  },
+  "settings": {
+    "title": "PARAMÈTRES",
+    "general": {
+      "title": "PARAMÈTRES GÉNÉRAUX",
+      "site_title": "TITRE DU SITE",
+      "site_title_placeholder": "Entrez le titre du site",
+      "language": "Langue",
+      "logo": "Logo du site",
+      "logo_upload_title": "CHARGEMENT DU LOGO",
+      "logo_help": "PNG, JPG jusqu'à 2 Mo",
+      "logo_upload": "Glissez-déposez votre logo ici, ou parcourez les fichiers",
+      "logo_replace": "Cliquez ou glissez pour remplacer le logo",
+      "change_logo": "CHANGER LE LOGO",
+      "file_selected": "FICHIER SÉLECTIONNÉ :",
+      "ready_to_upload": "Prêt à télécharger : {{name}} ({{size}} Ko)",
+      "dark_mode": "MODE SOMBRE",
+      "dark_mode_desc": "Thème rétro par défaut",
+      "retro_mode": "MODE RÉTRO NÉON",
+      "retro_mode_desc": "Effets CRT améliorés",
+      "save": "ENREGISTRER LES PARAMÈTRES",
+      "saving": "ENREGISTREMENT..."
+    },
+    "categories": {
+      "title": "GESTION DES CATÉGORIES & GENRES",
+      "genres": "GENRES",
+      "categories": "CATÉGORIES",
+      "name": "Nom",
+      "genre_name": "Nom du genre",
+      "category_name": "Nom de la catégorie",
+      "type": "Type",
+      "add": "AJOUTER {{type}}",
+      "actions": "ACTIONS",
+      "loading": "Chargement des {{type}}s...",
+      "none_found": "Aucun {{type}} trouvé",
+      "delete_modal_title": "SUPPRIMER LA CATÉGORIE",
+      "delete_modal_message": "Êtes-vous sûr de vouloir supprimer cette catégorie ? Cela pourrait affecter les éléments l'utilisant."
+    },
+    "audio": {
+      "title": "PARAMÈTRES AUDIO & LECTEUR",
+      "volume": "Volume par défaut",
+      "radio": "Activer la radio",
+      "radio_desc": "Démarrer la radio automatiquement au chargement de la page",
+      "radio_settings": "Paramètres radio",
+      "pause_on_beat": "Pause radio lors de la lecture d'un beat",
+      "pause_on_beat_desc": "Pause automatique de la radio lorsqu'un aperçu de beat démarre",
+      "quality": "Qualité audio par défaut",
+      "quality_desc": "Une qualité supérieure utilise plus de bande passante mais offre une meilleure expérience audio",
+      "visualizer": "Aperçu du visualiseur audio",
+      "high": "Haute Qualité",
+      "medium": "Qualité Moyenne",
+      "low": "Basse Qualité"
+    },
+    "visual": {
+      "title": "PERSONNALISATION VISUELLE"
+    },
+    "security": {
+      "title": "SÉCURITÉ & SAUVEGARDE",
+      "export": "EXPORTER LA SAUVEGARDE DES DONNÉES",
+      "export_desc": "Télécharger tous les paramètres et configurations au format JSON",
+      "export_button": "Exporter la sauvegarde",
+      "exporting": "Exportation...",
+      "reset": "RÉINITIALISER AUX PARAMÈTRES PAR DÉFAUT",
+      "reset_desc": "Restaurer tous les paramètres aux valeurs d'usine",
+      "reset_button": "Réinitialiser les paramètres",
+      "resetting": "Réinitialisation...",
+      "reset_modal_title": "RÉINITIALISER LES PARAMÈTRES",
+      "reset_modal_message": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres aux valeurs par défaut ? Cette action est irréversible."
+    }
+  },
+  "beatmaker": {
+    "upload": {
+      "title": "TÉLÉCHARGER UN BEAT",
+      "drag_drop": "GLISSEZ LE FICHIER AUDIO ICI OU CLIQUEZ POUR PARCOURIR",
+      "selected": "SÉLECTIONNÉ : {{name}}",
+      "name_label": "Nom du Beat",
+      "name_placeholder": "Beat sans titre",
+      "genre_label": "Genre (Enum)",
+      "category_label": "Catégorie",
+      "tags_label": "Tags de genre (séparés par des virgules)",
+      "tags_placeholder": "trap, dark, melodic",
+      "button": "TÉLÉCHARGER LE BEAT",
+      "uploading": "TÉLÉCHARGEMENT..."
+    },
+    "repository": {
+      "title": "RÉPERTOIRE DES BEATS",
+      "stats": {
+        "total_beats": "Total des Beats",
+        "total_plays": "Total des Lectures",
+        "total_downloads": "Total des Téléchargements",
+        "total_donations": "Total des Dons"
+      },
+      "filters": {
+        "title": "RECHERCHE & FILTRE",
+        "search_placeholder": "Rechercher des beats...",
+        "all_genres": "Tous les Genres"
+      },
+      "table": {
+        "name": "NOM",
+        "genre_category": "GENRE / CATÉGORIE",
+        "plays": "LECTURES",
+        "downloads": "TÉLÉCHARGEMENTS",
+        "donations": "DONS",
+        "actions": "ACTIONS",
+        "category_prefix": "Catégorie : "
+      }
+    },
+    "modals": {
+      "edit_title": "MODIFIER LE BEAT",
+      "delete_title": "SUPPRIMER LE BEAT",
+      "delete_message": "Êtes-vous sûr de vouloir supprimer ce beat ?"
+    },
+    "messages": {
+      "upload_success": "Beat téléchargé avec succès !",
+      "upload_failed": "Échec du téléchargement",
+      "delete_success": "Beat supprimé avec succès",
+      "delete_failed": "Échec de la suppression",
+      "update_success": "Beat mis à jour avec succès !",
+      "update_failed": "Échec de la mise à jour du beat",
+      "file_size_error": "La taille du fichier dépasse 50 Mo",
+      "invalid_file": "Type de fichier invalide. Veuillez télécharger un MP3 ou WAV.",
+      "file_selected": "Fichier sélectionné : {{name}}",
+      "missing_fields": "Veuillez fournir au moins un nom et un fichier audio"
+    }
+  },
+  "merch": {
+    "upload": {
+      "title": "TÉLÉCHARGER UN ARTICLE MERCH",
+      "drag_drop": "GLISSEZ-DÉPOSEZ PNG/JPEG ICI OU CLIQUEZ POUR TÉLÉCHARGER",
+      "select_files": "Sélectionner des fichiers",
+      "files_selected": "{{count}} fichier(s) sélectionné(s)",
+      "name_label": "Nom",
+      "name_placeholder": "Nom du produit",
+      "price_label": "Prix (€)",
+      "description_label": "Description",
+      "description_placeholder": "Entrez la description du produit",
+      "sizes_label": "Tailles",
+      "button": "TÉLÉCHARGER L'ARTICLE MERCH",
+      "uploading": "TÉLÉCHARGEMENT..."
+    },
+    "inventory": {
+      "title": "INVENTAIRE MERCH",
+      "stats": {
+        "total_items": "Total d'articles : {{count}}",
+        "in_stock": "En stock : {{count}}"
+      },
+      "table": {
+        "preview": "APERÇU",
+        "name": "NOM DU PRODUIT",
+        "price": "PRIX",
+        "sizes": "TAILLES",
+        "stock": "STOCK",
+        "actions": "ACTIONS"
+      }
+    },
+    "modals": {
+      "view_title": "DÉTAILS MERCH",
+      "edit_title": "MODIFIER L'ARTICLE MERCH",
+      "delete_title": "SUPPRIMER L'ARTICLE MERCH",
+      "delete_message": "Êtes-vous sûr de vouloir supprimer définitivement cet article ?",
+      "save_changes": "ENREGISTRER LES MODIFICATIONS",
+      "updating": "MISE À JOUR..."
+    },
+    "messages": {
+      "upload_success": "Article merch téléchargé avec succès",
+      "upload_failed": "Échec du téléchargement de l'article merch",
+      "update_success": "Article merch mis à jour avec succès",
+      "update_failed": "Échec de la mise à jour de l'article merch",
+      "delete_success": "Article supprimé avec succès",
+      "delete_failed": "Échec de la suppression de l'article",
+      "missing_fields": "Veuillez remplir tous les champs obligatoires (Nom, Prix, Tailles)",
+      "missing_image": "Veuillez sélectionner au moins une image"
+    }
+  },
+  "not_found": {
+    "title": "404",
+    "subtitle": "Page Non Trouvée",
+    "message": "Hmm, il semble que nous n'ayons pas pu trouver la page que vous recherchez. La page a peut-être été déplacée, supprimée ou n'a jamais existé.",
+    "back_button": "Retour à l'accueil",
+    "help": "Besoin d'aide ?",
+    "contact": "Contactez le support"
+  },
+  "success": {
+    "verifying": "VÉRIFICATION DU PAIEMENT...",
+    "complete": "PAIEMENT EFFECTUÉ",
+    "message": "Merci ! Votre transaction a été traitée avec succès.",
+    "session": "Session : {{id}}",
+    "back_home": "RETOUR À L'ACCUEIL",
+    "continue_shopping": "CONTINUER VOS ACHATS",
+    "verified_toast": "Paiement vérifié avec succès !",
+    "error_toast": "Un problème est survenu lors de la vérification de votre paiement, mais il a probablement réussi. Veuillez contacter le support si vous ne recevez pas d'e-mail."
+  },
+  "home": {
+    "press_start": "APPUYER SUR START"
+  },
+  "merch_user": {
+    "title": "MERCH",
+    "account": "Compte",
+    "logout": "Déconnexion",
+    "loading": "CHARGEMENT...",
+    "buy": "ACHETER | € {{price}}",
+    "no_items": "AUCUN ARTICLE TROUVÉ",
+    "cart": {
+      "title": "VOTRE PANIER",
+      "empty": "VOTRE PANIER EST VIDE",
+      "size": "Taille : {{size}}",
+      "remove": "Supprimer l'article",
+      "total": "TOTAL",
+      "checkout": "COMMANDER"
+    },
+    "buy_shirt": {
+      "select_size": "CHOISIR LA TAILLE",
+      "description": "DESCRIPTION",
+      "add_to_cart": "AJOUTER AU PANIER",
+      "back": "← RETOUR À LA BOUTIQUE",
+      "added_toast": "Ajouté au panier !",
+      "already_in_cart": "Cet article ({{size}}) est déjà dans votre panier !"
+    }
+  },
+  "checkout": {
+    "title": "PAIEMENT",
+    "payment_method": "MODE DE PAIEMENT",
+    "stripe_desc": "Paiement sécurisé via Stripe",
+    "summary": "RÉSUMÉ DE LA COMMANDE",
+    "total": "TOTAL",
+    "pay_now": "PAYER MAINTENANT",
+    "processing": "TRAITEMENT...",
+    "redirecting": "REDIRECTION VERS STRIPE...",
+    "proceed_payment": "PROCÉDER AU PAIEMENT →",
+    "go_back": "← RETOUR",
+    "amount_to_pay": "Montant à payer : €{{amount}}",
+    "back_to_cart": "Retour au panier",
+    "order_details": "DÉTAILS DE LA COMMANDE",
+    "support_artist": "SOUTENIR L'ARTISTE",
+    "full_name": "NOM COMPLET",
+    "your_name": "VOTRE NOM",
+    "email_address": "ADRESSE E-MAIL",
+    "shipping_address": "ADRESSE DE LIVRAISON",
+    "street_address": "ADRESSE",
+    "city": "VILLE",
+    "country": "PAYS",
+    "errors": {
+      "invalid_email": "Veuillez entrer une adresse e-mail valide.",
+      "name_required": "Veuillez entrer votre nom.",
+      "shipping_required": "Veuillez remplir tous les détails de livraison.",
+      "session_failed": "Impossible de créer la session de paiement. Veuillez réessayer.",
+      "generic_error": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+  "orders": {
+    "title": "VENTES & DONS",
+    "subtitle": "Gérez vos commandes merch et consultez les contributions de soutien aux artistes.",
+    "tabs": {
+      "merch": "COMMANDES MERCH",
+      "donations": "DONS"
+    },
+    "table": {
+      "date": "DATE",
+      "customer": "CLIENT",
+      "items": "ARTICLES",
+      "total": "TOTAL",
+      "payment": "PAIEMENT",
+      "fulfillment": "LIVRAISON",
+      "view": "VOIR",
+      "no_orders": "Aucune commande merch trouvée.",
+      "artist_supporter": "SOUTIEN ARTISTE",
+      "amount": "MONTANT",
+      "status": "STATUT",
+      "no_donations": "Aucun don trouvé."
+    },
+    "details": {
+      "title": "Détails de la Commande",
+      "customer_info": "Infos Client",
+      "shipping_address": "Adresse de Livraison",
+      "order_items": "Articles Commandés",
+      "total": "Total",
+      "payment_status": "Statut de Paiement",
+      "fulfillment_status": "Statut de Livraison",
+      "placed": "Passée le : {{date}}",
+      "close": "Fermer"
+    },
+    "messages": {
+      "update_success": "Statut de la commande mis à jour !",
+      "update_failed": "Échec de la mise à jour du statut"
+    }
+  },
+  "games": {
+    "add_new": "+ Ajouter un Nouveau Jeu"
+  },
+  "assets": {
+    "title": "Télécharger des Actifs",
+    "add_merch": "Ajouter un Nouvel Article Merch",
+    "drop_here": "Déposez les fichiers ici pour les télécharger",
+    "supports": "Prend en charge les fichiers PNG, JPEG, MP3, WAV jusqu'à 50 Mo chacun",
+    "select_files": "Sélectionner des Fichiers",
+    "search_placeholder": "Rechercher des actifs...",
+    "types": {
+      "all": "Tous les Types",
+      "audio": "Audio",
+      "image": "Images",
+      "other": "Autre"
+    },
+    "categories": {
+      "all": "Toutes les Catégories",
+      "games": "Jeux",
+      "merch": "Merch",
+      "beats": "Beats",
+      "uncategorized": "Non catégorisé"
+    },
+    "table": {
+      "preview": "APERÇU",
+      "file_name": "Nom du Fichier",
+      "category": "Catégorie",
+      "size": "Taille",
+      "uploaded_by": "Téléchargé Par",
+      "date_added": "Date d'Ajout",
+      "actions": "ACTIONS"
+    },
+    "actions": {
+      "download": "Télécharger",
+      "edit": "Modifier",
+      "remove": "Supprimer"
+    },
+    "no_assets": "Aucun actif trouvé",
+    "upload_started": "Téléchargez des fichiers pour commencer",
+    "current_user": "Utilisateur Actuel"
+  },
+  "comics": {
+    "title_page": "GESTION DES BANDES DESSINÉES",
+    "add_comic": "AJOUTER BD",
+    "edit_comic": "MODIFIER BD",
+    "create_comic": "CRÉER NOUVELLE BD",
+    "cover": "COUVERTURE",
+    "drag_reorder": "Faire glisser pour réorganiser",
+    "current_thumbnail": "Miniature Actuelle",
+    "set_thumbnail": "Définir comme Miniature",
+    "delete_page": "Supprimer la Page",
+    "page_info": "PAGE {{current}} / {{total}}",
+    "navigation_hint": "Flèches pour naviguer • ESC pour fermer",
+    "chapters": "Chapitres",
+    "status": "Statut",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "tabs": {
+      "details": "DÉTAILS",
+      "media": "MÉDIAS & PAGES"
+    },
+    "form": {
+      "title": "Titre de la BD",
+      "title_placeholder": "Entrez le Titre",
+      "artist": "Nom de l'Artiste",
+      "artist_placeholder": "Entrez l'Auteur",
+      "chapter_title": "Titre du Chapitre 1",
+      "chapter_placeholder": "ex: Le Commencement",
+      "description": "Description de la BD",
+      "description_placeholder": "Entrez la Description",
+      "status": "Statut",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "cover_label": "Miniature / Image de Couverture (Optionnel si défini via les pages)",
+      "change_cover": "Changer la Couverture",
+      "upload_cover": "Télécharger la Couverture",
+      "upload_pages": "Télécharger des Pages",
+      "drop_images": "Déposez les images ici"
+    },
+    "actions": {
+      "save": "ENREGISTRER",
+      "create": "CRÉER LA BD",
+      "cancel": "ANNULER"
+    },
+    "messages": {
+      "no_comics": "Aucune BD trouvée dans la base de données.",
+      "upload_required": "Veuillez télécharger au moins une page",
+      "save_failed": "Échec de l'enregistrement de la BD",
+      "delete_confirm": "Êtes-vous sûr de vouloir supprimer \"{{title}}\" ?",
+      "delete_warning": "Cette action est irréversible."
+    }
+  },
+  "comics_user": {
+    "title": "BANDES DESSINÉES",
+    "loading": "CHARGEMENT...",
+    "no_artists": "AUCUN ARTISTE TROUVÉ",
+    "no_chapters": "AUCUN CHAPITRE TROUVÉ",
+    "back": "RETOUR",
+    "read": "LIRE",
+    "not_found": "BD OU CHAPITRE NON TROUVÉ",
+    "end_chapter": "FIN DU CHAPITRE",
+    "support_artist": "SOUTENIR L'ARTISTE",
+    "chapter": "Chapitre",
+    "no_comics_artist": "AUCUNE BD TROUVÉE POUR CET ARTISTE",
+    "click_view_chapters": "Cliquez sur une BD pour voir les chapitres",
+    "pages": "Pages",
+    "no_comic_selected": "AUCUNE BD SÉLECTIONNÉE",
+    "click_start_reading": "Cliquez sur un chapitre pour commencer la lecture"
+  },
+  "user_settings": {
+    "loading": "Chargement du profil...",
+    "profile_title": "Profil Utilisateur",
+    "save_changes": "Enregistrer les modifications",
+    "choose_file": "Choisir un fichier",
+    "remove": "Supprimer",
+    "error": "Erreur",
+    "full_name": "Nom complet",
+    "password_security": "Mot de passe et sécurité",
+    "password_hint": "Votre mot de passe doit comporter au moins 6 caractères et inclure une combinaison de chiffres, de lettres et de caractères spéciaux (!$@%).",
+    "current_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "confirm_new_password": "Confirmer le nouveau mot de passe",
+    "notifications": "Notifications",
+    "transaction_alerts": "Alertes de transaction",
+    "transaction_hint": "Soyez notifié lorsque des objectifs de réussite sont atteints",
+    "subscription_updates": "Mises à jour de l'abonnement",
+    "subscription_hint": "Restez informé des renouvellements et annulations à venir.",
+    "spending_insights": "Aperçu des dépenses",
+    "spending_hint": "Recevez des alertes basées sur les objectifs de délai"
+  }
+}

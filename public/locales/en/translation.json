@@ -1,0 +1,473 @@
+{
+  "navbar": {
+    "title": "ADMIN DASHBOARD",
+    "subtitle": "SYSTEM CONTROL INTERFACE",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "stats": {
+      "tracks": "TRACKS",
+      "total_beats": "Total Beats",
+      "products": "PRODUCTS",
+      "merch_items": "Merch Items",
+      "this_month": "THIS MONTH",
+      "donations": "Donations",
+      "total": "TOTAL",
+      "downloads": "Downloads",
+      "this_week": "+{{count}} this week",
+      "new_items": "+{{count}} new item",
+      "new_items_plural": "+{{count}} new items"
+    },
+    "charts": {
+      "donations_title": "DONATIONS OVER TIME",
+      "most_played": "MOST PLAYED",
+      "genres_categories": "GENRES & CATEGORIES"
+    },
+    "activity": {
+      "title": "RECENT ACTIVITY LOG"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "ADMIN ACCESS",
+      "subtitle": "RESTRICTED AREA",
+      "username_placeholder": "Admin Username",
+      "password_placeholder": "Admin Password",
+      "button": "LOGIN",
+      "back_to_website": "BACK TO WEBSITE",
+      "footer": "© 2025 GLOBAL VISION - ADMIN PANEL",
+      "error_not_authorized": "You are not authorized to access this page.",
+      "error_failed": "Login failed. Please check your credentials.",
+      "error_generic": "An error occurred during login."
+    }
+  },
+  "common": {
+    "back": "Back",
+    "loading": "Loading...",
+    "no_artists_found": "NO ARTISTS FOUND",
+    "dropdown_arrow": "Dropdown arrow",
+    "actions": "ACTIONS",
+    "save": "SAVE",
+    "update": "UPDATE",
+    "cancel": "CANCEL",
+    "delete": "DELETE",
+    "edit": "EDIT",
+    "view": "VIEW",
+    "confirm": "CONFIRM"
+  },
+  "settings": {
+    "title": "SETTINGS",
+    "general": {
+      "title": "GENERAL SETTINGS",
+      "site_title": "SITE TITLE",
+      "site_title_placeholder": "Enter site title",
+      "language": "Language",
+      "logo": "Site Logo",
+      "logo_upload_title": "LOGO UPLOAD",
+      "logo_help": "PNG, JPG up to 2MB",
+      "logo_upload": "Drag & drop your logo here, or browse files",
+      "logo_replace": "Click or drag to replace logo",
+      "change_logo": "CHANGE LOGO",
+      "file_selected": "FILE SELECTED:",
+      "ready_to_upload": "Ready to upload: {{name}} ({{size}} KB)",
+      "dark_mode": "DARK MODE",
+      "dark_mode_desc": "Default retro theme",
+      "retro_mode": "RETRO NEON MODE",
+      "retro_mode_desc": "Enhanced CRT effects",
+      "save": "SAVE SETTINGS",
+      "saving": "SAVING..."
+    },
+    "categories": {
+      "title": "CATEGORY & GENRE MANAGEMENT",
+      "genres": "GENRES",
+      "categories": "CATEGORIES",
+      "name": "Name",
+      "genre_name": "Genre Name",
+      "category_name": "Category Name",
+      "type": "Type",
+      "add": "ADD {{type}}",
+      "actions": "ACTIONS",
+      "loading": "Loading {{type}}s...",
+      "none_found": "No {{type}}s found",
+      "delete_modal_title": "DELETE CATEGORY",
+      "delete_modal_message": "Are you sure you want to delete this category? This might affect items using it."
+    },
+    "audio": {
+      "title": "AUDIO & PLAYER SETTINGS",
+      "volume": "Default Volume",
+      "radio": "Enable radio",
+      "radio_desc": "Start radio automatically on page load",
+      "radio_settings": "Radio Settings",
+      "pause_on_beat": "Pause radio when beat plays",
+      "pause_on_beat_desc": "Automatically pause radio when a beat preview starts",
+      "quality": "Default audio quality",
+      "quality_desc": "Higher quality uses more bandwidth but provides better audio experience",
+      "visualizer": "Audio visualizer preview",
+      "high": "High Quality",
+      "medium": "Medium Quality",
+      "low": "Low Quality"
+    },
+    "visual": {
+      "title": "VISUAL CUSTOMIZATION"
+    },
+    "security": {
+      "title": "SECURITY & BACKUP",
+      "export": "EXPORT DATA BACKUP",
+      "export_desc": "Download all settings and configurations as JSON",
+      "export_button": "Export Backup",
+      "exporting": "Exporting...",
+      "reset": "RESET TO DEFAULT SETTINGS",
+      "reset_desc": "Restore all settings to factory defaults",
+      "reset_button": "Reset Setting",
+      "resetting": "Resetting...",
+      "reset_modal_title": "RESET SETTINGS",
+      "reset_modal_message": "Are you sure you want to reset all settings to default? This action cannot be undone."
+    }
+  },
+  "beatmaker": {
+    "upload": {
+      "title": "UPLOAD BEAT",
+      "drag_drop": "DRAG AUDIO FILE HERE OR CLICK TO BROWSE",
+      "selected": "SELECTED: {{name}}",
+      "name_label": "Beat Name",
+      "name_placeholder": "Untitled Beat",
+      "genre_label": "Genre (Enum)",
+      "category_label": "Category",
+      "tags_label": "Genre Tags (comma separated)",
+      "tags_placeholder": "trap, dark, melodic",
+      "button": "UPLOAD BEAT",
+      "uploading": "UPLOADING..."
+    },
+    "repository": {
+      "title": "BEAT REPOSITORY",
+      "stats": {
+        "total_beats": "Total Beats",
+        "total_plays": "Total Plays",
+        "total_downloads": "Total Downloads",
+        "total_donations": "Total Donations"
+      },
+      "filters": {
+        "title": "SEARCH & FILTER",
+        "search_placeholder": "Search beats...",
+        "all_genres": "All Genres"
+      },
+      "table": {
+        "name": "NAME",
+        "genre_category": "GENRE / CATEGORY",
+        "plays": "PLAYS",
+        "downloads": "DOWNLOADS",
+        "donations": "DONATIONS",
+        "actions": "ACTIONS",
+        "category_prefix": "Category: "
+      }
+    },
+    "modals": {
+      "edit_title": "EDIT BEAT",
+      "delete_title": "DELETE BEAT",
+      "delete_message": "Are you sure you want to delete this beat?"
+    },
+    "messages": {
+      "upload_success": "Beat uploaded successfully!",
+      "upload_failed": "Upload failed",
+      "delete_success": "Beat deleted successfully",
+      "delete_failed": "Delete failed",
+      "update_success": "Beat updated successfully!",
+      "update_failed": "Failed to update beat",
+      "file_size_error": "File size exceeds 50MB",
+      "invalid_file": "Invalid file type. Please upload MP3 or WAV.",
+      "file_selected": "File selected: {{name}}",
+      "missing_fields": "Please provide at least a name and an audio file"
+    }
+  },
+  "merch": {
+    "upload": {
+      "title": "UPLOAD MERCH ITEM",
+      "drag_drop": "DRAG & DROP PNG/JPEG HERE OR CLICK TO UPLOAD",
+      "select_files": "Select Files",
+      "files_selected": "{{count}} file(s) selected",
+      "name_label": "Name",
+      "name_placeholder": "Product name",
+      "price_label": "Price (€)",
+      "description_label": "Description",
+      "description_placeholder": "Enter product description",
+      "sizes_label": "Sizes",
+      "button": "UPLOAD MERCH ITEM",
+      "uploading": "UPLOADING..."
+    },
+    "inventory": {
+      "title": "MERCH INVENTORY",
+      "stats": {
+        "total_items": "Total Items: {{count}}",
+        "in_stock": "In Stock: {{count}}"
+      },
+      "table": {
+        "preview": "PREVIEW",
+        "name": "PRODUCT NAME",
+        "price": "PRICE",
+        "sizes": "SIZES",
+        "stock": "STOCK",
+        "actions": "ACTIONS"
+      }
+    },
+    "modals": {
+      "view_title": "MERCH DETAILS",
+      "edit_title": "EDIT MERCH ITEM",
+      "delete_title": "DELETE MERCH ITEM",
+      "delete_message": "Are you sure you want to permanently delete this item?",
+      "save_changes": "SAVE CHANGES",
+      "updating": "UPDATING..."
+    },
+    "messages": {
+      "upload_success": "Merch item uploaded successfully",
+      "upload_failed": "Failed to upload merch item",
+      "update_success": "Merch item updated successfully",
+      "update_failed": "Failed to update merch item",
+      "delete_success": "Item deleted successfully",
+      "delete_failed": "Failed to delete item",
+      "missing_fields": "Please fill in all required fields (Name, Price, Sizes)",
+      "missing_image": "Please select at least one image"
+    }
+  },
+  "not_found": {
+    "title": "404",
+    "subtitle": "Page Not Found",
+    "message": "Hmm, looks like we couldn't find the page you're looking for. The page might have been moved, deleted, or never existed.",
+    "back_button": "Back to Home",
+    "help": "Need help?",
+    "contact": "Contact support"
+  },
+  "success": {
+    "verifying": "VERIFYING PAYMENT...",
+    "complete": "PAYMENT COMPLETE",
+    "message": "Thank you! Your transaction has been processed successfully.",
+    "session": "Session: {{id}}",
+    "back_home": "BACK TO HOME",
+    "continue_shopping": "CONTINUE SHOPPING",
+    "verified_toast": "Payment verified successfully!",
+    "error_toast": "There was an issue verifying your payment, but it was likely successful. Please contact support if you don't receive an email."
+  },
+  "home": {
+    "press_start": "PRESS START"
+  },
+  "merch_user": {
+    "title": "MERCH",
+    "account": "Account",
+    "logout": "Logout",
+    "loading": "LOADING...",
+    "buy": "BUY | € {{price}}",
+    "no_items": "NO ITEMS FOUND",
+    "cart": {
+      "title": "YOUR CART",
+      "empty": "YOUR CART IS EMPTY",
+      "size": "Size: {{size}}",
+      "remove": "Remove Item",
+      "total": "TOTAL",
+      "checkout": "CHECKOUT"
+    },
+    "buy_shirt": {
+      "select_size": "SELECT SIZE",
+      "description": "DESCRIPTION",
+      "add_to_cart": "ADD TO CART",
+      "back": "← BACK TO SHOP",
+      "added_toast": "Added to cart!",
+      "already_in_cart": "This item ({{size}}) is already in your cart!"
+    }
+  },
+  "checkout": {
+    "title": "CHECKOUT",
+    "payment_method": "PAYMENT METHOD",
+    "stripe_desc": "Secure payment via Stripe",
+    "summary": "ORDER SUMMARY",
+    "total": "TOTAL",
+    "pay_now": "PAY NOW",
+    "processing": "PROCESSING...",
+    "redirecting": "REDIRECTING TO STRIPE...",
+    "proceed_payment": "PROCEED TO PAYMENT →",
+    "go_back": "← GO BACK",
+    "amount_to_pay": "Amount to pay: €{{amount}}",
+    "back_to_cart": "Back to cart",
+    "order_details": "ORDER DETAILS",
+    "support_artist": "SUPPORT ARTIST",
+    "full_name": "FULL NAME",
+    "your_name": "YOUR NAME",
+    "email_address": "EMAIL ADDRESS",
+    "shipping_address": "SHIPPING ADDRESS",
+    "street_address": "STREET ADDRESS",
+    "city": "CITY",
+    "country": "COUNTRY",
+    "errors": {
+      "invalid_email": "Please enter a valid email address.",
+      "name_required": "Please enter your name.",
+      "shipping_required": "Please fill in all shipping details.",
+      "session_failed": "Could not create checkout session. Please try again.",
+      "generic_error": "Something went wrong. Please try again."
+    }
+  },
+  "orders": {
+    "title": "SALES & DONATIONS",
+    "subtitle": "Manage your merch orders and view support artist contributions.",
+    "tabs": {
+      "merch": "MERCH ORDERS",
+      "donations": "DONATIONS"
+    },
+    "table": {
+      "date": "DATE",
+      "customer": "CUSTOMER",
+      "items": "ITEMS",
+      "total": "TOTAL",
+      "payment": "PAYMENT",
+      "fulfillment": "FULFILLMENT",
+      "view": "VIEW",
+      "no_orders": "No merch orders found.",
+      "artist_supporter": "ARTIST SUPPORTER",
+      "amount": "AMOUNT",
+      "status": "STATUS",
+      "no_donations": "No donations found."
+    },
+    "details": {
+      "title": "Order Details",
+      "customer_info": "Customer Info",
+      "shipping_address": "Shipping Address",
+      "order_items": "Order Items",
+      "total": "Total",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "placed": "Placed: {{date}}",
+      "close": "Close"
+    },
+    "messages": {
+      "update_success": "Order status updated!",
+      "update_failed": "Failed to update status"
+    }
+  },
+  "games": {
+    "add_new": "+ Add New Game"
+  },
+  "assets": {
+    "title": "Upload Assets",
+    "add_merch": "Add New Merch Item",
+    "drop_here": "Drop files here to upload",
+    "supports": "Supports PNG, JPEG, MP3, WAV files up to 50MB each",
+    "select_files": "Select Files",
+    "search_placeholder": "Search assets...",
+    "types": {
+      "all": "All Types",
+      "audio": "Audio",
+      "image": "Images",
+      "other": "Other"
+    },
+    "categories": {
+      "all": "All Categories",
+      "games": "Games",
+      "merch": "Merch",
+      "beats": "Beats",
+      "uncategorized": "Uncategorized"
+    },
+    "table": {
+      "preview": "PREVIEW",
+      "file_name": "File Name",
+      "category": "Category",
+      "size": "Size",
+      "uploaded_by": "Uploaded By",
+      "date_added": "Date Added",
+      "actions": "ACTIONS"
+    },
+    "actions": {
+      "download": "Download",
+      "edit": "Edit",
+      "remove": "Remove"
+    },
+    "no_assets": "No assets found",
+    "upload_started": "Upload some files to get started",
+    "current_user": "Current User"
+  },
+  "comics": {
+    "title_page": "COMICS MANAGEMENT",
+    "add_comic": "ADD COMIC",
+    "edit_comic": "EDIT COMIC",
+    "create_comic": "CREATE NEW COMIC",
+    "cover": "COVER",
+    "drag_reorder": "Drag to reorder",
+    "current_thumbnail": "Current Thumbnail",
+    "set_thumbnail": "Set as Thumbnail",
+    "delete_page": "Delete Page",
+    "page_info": "PAGE {{current}} / {{total}}",
+    "navigation_hint": "Use Arrow Keys to navigate • ESC to close",
+    "chapters": "Chapters",
+    "status": "Status",
+    "edit": "Edit",
+    "delete": "Delete",
+    "tabs": {
+      "details": "DETAILS",
+      "media": "MEDIA & PAGES"
+    },
+    "form": {
+      "title": "Comic Title",
+      "title_placeholder": "Enter Title",
+      "artist": "Artist Name",
+      "artist_placeholder": "Enter Author",
+      "chapter_title": "Chapter 1 Title",
+      "chapter_placeholder": "e.g. The Beginning",
+      "description": "Comic Description",
+      "description_placeholder": "Enter Description",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "cover_label": "Thumbnail / Cover Image (Optional if setting from pages)",
+      "change_cover": "Change Cover",
+      "upload_cover": "Upload Cover",
+      "upload_pages": "Upload Pages",
+      "drop_images": "Drop images here"
+    },
+    "actions": {
+      "save": "SAVE CHANGES",
+      "create": "CREATE COMIC",
+      "cancel": "CANCEL"
+    },
+    "messages": {
+      "no_comics": "No comics found in the database.",
+      "upload_required": "Please upload at least one page",
+      "save_failed": "Failed to save comic",
+      "delete_confirm": "Are you sure you want to delete \"{{title}}\"?",
+      "delete_warning": "This action cannot be undone."
+    }
+  },
+  "comics_user": {
+    "title": "COMICS",
+    "loading": "LOADING...",
+    "no_artists": "NO ARTISTS FOUND",
+    "no_chapters": "NO CHAPTERS FOUND",
+    "back": "BACK",
+    "read": "READ",
+    "not_found": "COMIC OR CHAPTER NOT FOUND",
+    "end_chapter": "END OF CHAPTER",
+    "support_artist": "SUPPORT THE ARTIST",
+    "chapter": "Chapter",
+    "no_comics_artist": "NO COMICS FOUND FOR THIS ARTIST",
+    "click_view_chapters": "Click on a comic to view chapters",
+    "pages": "Pages",
+    "no_comic_selected": "NO COMIC SELECTED",
+    "click_start_reading": "Click on a chapter to start reading"
+  },
+  "user_settings": {
+    "loading": "Loading profile...",
+    "profile_title": "User Profile",
+    "save_changes": "Save Changes",
+    "choose_file": "Choose File",
+    "remove": "Remove",
+    "error": "Error",
+    "full_name": "Full Name",
+    "password_security": "Password & Security",
+    "password_hint": "Your password must be at least 6 characters and should include a combination of numbers, letters and special characters (!$@%).",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_new_password": "Confirm New Password",
+    "notifications": "Notifications",
+    "transaction_alerts": "Transaction Alerts",
+    "transaction_hint": "Get notified when an achievement goals",
+    "subscription_updates": "Subscription Updates",
+    "subscription_hint": "Stay informed about upcoming renewals and cancellations.",
+    "spending_insights": "Spending Insights",
+    "spending_hint": "Receive alerts based on deadline goals"
+  }
+}

@@ -7,6 +7,7 @@ import {
   deleteComic,
 } from "../../store/actions/adminActions";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import {
   Tabs,
   Box,
@@ -66,6 +67,7 @@ const COLORS = {
 
 // --- Sortable Item Component ---
 const SortablePage = ({ page, index, onSetThumbnail, onRemove, onPreview }) => {
+  const { t } = useTranslation();
   const {
     attributes,
     listeners,
@@ -120,14 +122,14 @@ const SortablePage = ({ page, index, onSetThumbnail, onRemove, onPreview }) => {
             variant="filled"
             leftSection={<IconStarFilled size={12} />}
           >
-            COVER
+            {t('comics.cover')}
           </Badge>
         )}
       </Box>
 
       {/* Controls Overlay */}
       <Box className="alexandria-font absolute bottom-0 left-0 right-0 bg-black/70 p-1 flex justify-around opacity-0 group-hover:opacity-100 transition-opacity">
-        <Tooltip label="Drag to reorder" className="alexandria-font">
+        <Tooltip label={t('comics.drag_reorder')} className="alexandria-font">
           <ActionIcon
             size="sm"
             variant="transparent"
@@ -140,7 +142,7 @@ const SortablePage = ({ page, index, onSetThumbnail, onRemove, onPreview }) => {
         </Tooltip>
 
         <Tooltip
-          label={page.isThumbnail ? "Current Thumbnail" : "Set as Thumbnail"}
+          label={page.isThumbnail ? t('comics.current_thumbnail') : t('comics.set_thumbnail')}
           className="alexandria-font"
         >
           <ActionIcon
@@ -157,7 +159,7 @@ const SortablePage = ({ page, index, onSetThumbnail, onRemove, onPreview }) => {
           </ActionIcon>
         </Tooltip>
 
-        <Tooltip label="Delete Page" className="alexandria-font">
+        <Tooltip label={t('comics.delete_page')} className="alexandria-font">
           <ActionIcon
             size="sm"
             variant="transparent"
@@ -179,6 +181,7 @@ const PagePreviewModal = ({
   currentIndex,
   onNavigate,
 }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isOpen) return;
@@ -258,10 +261,10 @@ const PagePreviewModal = ({
       {/* Info Bar */}
       <Box className="alexandria-font absolute bottom-6 left-0 right-0 text-center z-[10000]">
         <Text color="white" size="lg" className="font-bold">
-          PAGE {currentIndex + 1} / {pages.length}
+          {t('comics.page_info', { current: currentIndex + 1, total: pages.length })}
         </Text>
         <Text color="dimmed" size="xs">
-          Use Arrow Keys to navigate • ESC to close
+          {t('comics.navigation_hint')}
         </Text>
       </Box>
     </Box>
@@ -270,6 +273,7 @@ const PagePreviewModal = ({
 
 // --- Comic Card Component ---
 const ComicCard = ({ comic, onEdit, onDelete }) => {
+  const { t } = useTranslation();
   return (
     <article className="w-full flex flex-col bg-[#C0BC75] border border-[#C0BC75] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 alexandria-font">
       {/* Cover Image Container */}
@@ -303,7 +307,7 @@ const ComicCard = ({ comic, onEdit, onDelete }) => {
         <div className="space-y-2 mb-6">
           <div className="flex justify-between items-center">
             <span className="text-[#E0BC5A] text-xs font-normal opacity-80 uppercase tracking-wider">
-              Chapters
+              {t('comics.chapters')}
             </span>
             <span className="text-[#F6F4D3] text-sm font-bold">
               {comic.chapter_info?.length || 0}
@@ -337,28 +341,35 @@ const ComicCard = ({ comic, onEdit, onDelete }) => {
 };
 
 // --- Action Buttons ---
-const EditButton = ({ onClick }) => (
+const EditButton = ({ onClick }) => {
+  const { t } = useTranslation();
+  return (
   <button
     onClick={onClick}
     className="alexandria-font flex items-center justify-center gap-2 px-3 py-2 min-w-[100px] h-10 rounded-md bg-[#CBC895] shadow-[0_4px_1px_0_#000] hover:bg-[#B8B482] transition-all"
   >
     <IconSettings size={20} color="#191A22" />
-    <span className="text-[#191A22] text-sm font-bold uppercase">Edit</span>
+    <span className="text-[#191A22] text-sm font-bold uppercase">{t('comics.edit')}</span>
   </button>
-);
+  );
+};
 
-const DeleteButton = ({ onClick }) => (
+const DeleteButton = ({ onClick }) => {
+  const { t } = useTranslation();
+  return (
   <button
     onClick={onClick}
     className="alexandria-font flex justify-center items-center gap-2 px-3 py-2 min-w-[100px] h-10 shadow-[0_4px_1px_0_#000] bg-[#EB181B] rounded-md hover:bg-[#D41519] transition-all"
   >
     <IconTrash size={20} color="white" />
-    <span className="text-white text-sm font-bold uppercase">Delete</span>
+    <span className="text-white text-sm font-bold uppercase">{t('comics.delete')}</span>
   </button>
-);
+  );
+};
 
 // --- Main Modal Component (FIXED - Pages now load correctly when editing) ---
 const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("details");
   const [formData, setFormData] = useState({
     author_name: "",
@@ -538,7 +549,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (pages.length === 0) {
-      toast.error("Please upload at least one page");
+      toast.error(t('comics.messages.upload_required'));
       return;
     }
 
@@ -595,7 +606,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save comic");
+      toast.error(t('comics.messages.save_failed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -617,7 +628,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
         }}
         title={
           <Text size="xl" weight={800} className="tracking-widest uppercase">
-            {editingComic ? "EDIT COMIC" : "CREATE NEW COMIC"}
+            {editingComic ? t('comics.edit_comic') : t('comics.create_comic')}
           </Text>
         }
         styles={{
@@ -655,14 +666,14 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
               leftSection={<IconSettings size={18} />}
               className="font-bold !text-[#F6F4D3]"
             >
-              DETAILS
+              {t('comics.tabs.details')}
             </Tabs.Tab>
             <Tabs.Tab
               value="media"
               leftSection={<IconPhoto size={18} />}
               className="font-bold !text-[#F6F4D3]"
             >
-              MEDIA & PAGES
+              {t('comics.tabs.media')}
             </Tabs.Tab>
           </Tabs.List>
 
@@ -671,25 +682,25 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
               <Group grow>
                 <Box>
                   <Text color="#F6F4D3" size="sm" mb={5} weight={700}>
-                    Comic Title
+                    {t('comics.form.title')}
                   </Text>
                   <input
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    placeholder="Enter Title"
+                    placeholder={t('comics.form.title_placeholder')}
                     className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font"
                   />
                 </Box>
                 <Box>
                   <Text color="#F6F4D3" size="sm" mb={5} weight={700}>
-                    Artist Name
+                    {t('comics.form.artist')}
                   </Text>
                   <input
                     name="author_name"
                     value={formData.author_name}
                     onChange={handleInputChange}
-                    placeholder="Enter Author"
+                    placeholder={t('comics.form.artist_placeholder')}
                     className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font"
                   />
                 </Box>
@@ -703,13 +714,13 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   weight={700}
                   className="uppercase"
                 >
-                  Chapter 1 Title
+                  {t('comics.form.chapter_title')}
                 </Text>
                 <input
                   name="chapter_title"
                   value={formData.chapter_title}
                   onChange={handleInputChange}
-                  placeholder="e.g. The Beginning"
+                  placeholder={t('comics.form.chapter_placeholder')}
                   className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font font-bold"
                 />
               </Box>
@@ -722,14 +733,14 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   weight={700}
                   className="uppercase"
                 >
-                  Comic Description
+                  {t('comics.form.description')}
                 </Text>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  placeholder="Enter Description"
+                  placeholder={t('comics.form.description_placeholder')}
                   className="w-full rounded-lg bg-[#191A22] text-[#F6F4D3] p-4 outline-none border border-white/10 resize-none alexandria-font font-bold"
                 />
               </Box>
@@ -742,7 +753,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   weight={700}
                   className="uppercase"
                 >
-                  Status
+                  {t('comics.form.status')}
                 </Text>
                 <select
                   name="status"
@@ -750,8 +761,8 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   onChange={handleInputChange}
                   className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font font-bold"
                 >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="active">{t('comics.form.active')}</option>
+                  <option value="inactive">{t('comics.form.inactive')}</option>
                 </select>
               </Box>
             </Box>
@@ -768,7 +779,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   weight={700}
                   className="uppercase"
                 >
-                  Thumbnail / Cover Image (Optional if setting from pages)
+                  {t('comics.form.cover_label')}
                 </Text>
                 <Group>
                   {coverUrl && (
@@ -788,7 +799,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     leftSection={<IconPlus size={18} />}
                     className="font-bold uppercase"
                   >
-                    {coverUrl ? "Change Cover" : "Upload Cover"}
+                    {coverUrl ? t('comics.form.change_cover') : t('comics.form.upload_cover')}
                   </Button>
                   <input
                     ref={coverInputRef}
@@ -809,7 +820,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     weight={700}
                     className="uppercase"
                   >
-                    Comic Pages ({pages.length})
+                    {t('comics.form.upload_pages')} ({pages.length})
                   </Text>
                   <Button
                     size="xs"
@@ -818,7 +829,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     leftSection={<IconPlus size={16} />}
                     className="font-bold uppercase"
                   >
-                    Add Pages
+                    {t('comics.form.upload_pages')}
                   </Button>
                   <input
                     ref={fileInputRef}
@@ -862,7 +873,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     <Box className="flex flex-col items-center justify-center h-[200px] opacity-40 alexandria-font">
                       <IconPhoto size={48} color="#CBC895" />
                       <Text color="#CBC895" mt={10} weight={700}>
-                        No pages uploaded yet
+                        {t('comics.messages.no_comics')}
                       </Text>
                     </Box>
                   )}
@@ -880,7 +891,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
             onClick={handleModalClose}
             disabled={isSubmitting}
           >
-            CANCEL
+            {t('comics.actions.cancel')}
           </Button>
           <Button
             color="yellow"
@@ -889,7 +900,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
             className="px-10 font-bold"
             styles={{ root: { backgroundColor: "#CBC895", color: "#191A22" } }}
           >
-            {editingComic ? "UPDATE COMIC" : "CREATE COMIC"}
+            {editingComic ? t('comics.actions.save') : t('comics.actions.create')}
           </Button>
         </Box>
       </Modal>
@@ -907,6 +918,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
 
 // --- List View Component ---
 const Comic = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { comics, isLoadingComics } = useSelector((state) => state.admin);
 
@@ -928,9 +940,9 @@ const Comic = () => {
   };
 
   const handleDeleteComic = async (comic) => {
-    if (window.confirm(`Permanently delete "${comic.title}"?`)) {
+    if (window.confirm(t('comics.messages.delete_confirm', { title: comic.title }))) {
       const res = await dispatch(deleteComic(comic._id));
-      if (res?.success) toast.success("Comic removed");
+      if (res?.success) toast.success(t('orders.messages.update_success'));
     }
   };
 
@@ -939,8 +951,8 @@ const Comic = () => {
       ? updateComic(editingComic._id, formData)
       : createComic(formData);
     const res = await dispatch(action);
-    if (res?.success) {
-      toast.success("Successfully saved");
+      if (res?.success) {
+        toast.success(t('orders.messages.update_success'));
       setIsModalOpen(false);
       setEditingComic(null);
       dispatch(getComics()); // Refresh the list
@@ -953,7 +965,7 @@ const Comic = () => {
         <header className="flex justify-between items-center mb-10 border-b border-[#CBC895]/30 pb-6">
           <Box>
             <h1 className="text-4xl font-bold tracking-widest text-[#F6F4D3]">
-              COMIC MANAGEMENT
+              {t('comics.title_page')}
             </h1>
             <p className="text-[#E0BC5A] opacity-70">
               Manage your series, chapters, and pages
@@ -967,7 +979,7 @@ const Comic = () => {
             onClick={handleCreateNew}
             className="shadow-[0_4px_1px_0_#000]"
           >
-            CREATE COMIC
+            {t('comics.actions.create')}
           </Button>
         </header>
 
@@ -990,7 +1002,7 @@ const Comic = () => {
 
             {comics.length === 0 && (
               <Box className="col-span-full py-20 text-center border-2 border-dashed border-white/10 rounded-2xl">
-                <Text color="dimmed">No comics found in the database.</Text>
+                <Text color="dimmed">{t('comics.messages.no_comics')}</Text>
                 <Button
                   variant="subtle"
                   color="yellow"

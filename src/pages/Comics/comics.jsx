@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getComics } from "../../store/actions/adminActions";
 import UserHeader from "../../components/common/UserHeader";
+import { useTranslation } from "react-i18next";
 
 const Comics = () => {
+  const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ const Comics = () => {
 
   return (
     <>
-      <UserHeader title="COMICS" />
+      <UserHeader title={t('comics_user.title')} />
 
       <Box
         style={{
@@ -63,7 +65,7 @@ const Comics = () => {
           className="!gap-[1rem]"
         >
           {isLoadingComics ? (
-             <Text className="vision-font" style={{ color: "#F6F4D3" }}>LOADING...</Text>
+             <Text className="vision-font" style={{ color: "#F6F4D3" }}>{t('comics_user.loading')}</Text>
           ) : authors.length > 0 ? (
             authors.map((item) => (
               <div
@@ -135,7 +137,7 @@ const Comics = () => {
               </div>
             ))
           ) : (
-            <Text className="vision-font" style={{ color: "#9ca3af" }}>NO ARTISTS FOUND</Text>
+            <Text className="vision-font" style={{ color: "#9ca3af" }}>{t('comics_user.no_artists')}</Text>
           )}
         </Box>
       </Box>

@@ -4,6 +4,7 @@ import {
   Box, Text, TextInput, Button, Stack, Loader, Center, Divider,
 } from '@mantine/core';
 import { toast } from 'sonner';
+import { useTranslation } from "react-i18next";
 import custAxios from '../../configs/axios.config';
 
 const CheckoutPage = () => {
@@ -37,16 +38,16 @@ const CheckoutPage = () => {
 
   const validate = () => {
     if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      toast.error('Please enter a valid email address.');
+      toast.error(t('checkout.errors.invalid_email'));
       return false;
     }
     if (!form.name.trim()) {
-      toast.error('Please enter your name.');
+      toast.error(t('checkout.errors.name_required'));
       return false;
     }
     if (isMerch) {
       if (!form.address.trim() || !form.city.trim() || !form.country.trim()) {
-        toast.error('Please fill in all shipping details.');
+        toast.error(t('checkout.errors.shipping_required'));
         return false;
       }
     }
@@ -83,11 +84,11 @@ const CheckoutPage = () => {
         // Redirect to Stripe's hosted payment page
         window.location.href = res.data.data.url;
       } else {
-        toast.error('Could not create checkout session. Please try again.');
+        toast.error(t('checkout.errors.session_failed'));
       }
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || 'Something went wrong. Please try again.');
+      toast.error(err.response?.data?.message || t('checkout.errors.generic_error'));
     } finally {
       setLoading(false);
     }
@@ -140,14 +141,14 @@ const CheckoutPage = () => {
           ta="center"
           style={{ fontSize: 32, color: 'white', letterSpacing: '4px', marginBottom: 8 }}
         >
-          { isMerch ? 'ORDER DETAILS' : 'SUPPORT ARTIST' }
+          { isMerch ? t('checkout.order_details') : t('checkout.support_artist') }
         </Text>
         <Text
           className="vision-font"
           ta="center"
           style={{ fontSize: 14, color: '#F6F4D3', opacity: 0.8, marginBottom: 28 }}
         >
-          * Amount to pay: €{total}
+          * {t('checkout.amount_to_pay', { amount: total })}
         </Text>
 
         <Divider color="#2b2f55" mb="xl" />
@@ -155,7 +156,7 @@ const CheckoutPage = () => {
         <Stack gap="md">
           {/* Common fields */}
           <TextInput
-            label={isMerch ? 'FULL NAME' : 'YOUR NAME'}
+            label={isMerch ? t('checkout.full_name') : t('checkout.your_name')}
             placeholder="John Doe"
             value={form.name}
             onChange={handleChange('name')}
@@ -163,7 +164,7 @@ const CheckoutPage = () => {
             className="vision-font"
           />
           <TextInput
-            label="EMAIL ADDRESS"
+            label={t('checkout.email_address')}
             placeholder="you@example.com"
             type="email"
             value={form.email}
@@ -177,11 +178,11 @@ const CheckoutPage = () => {
             <>
               <Divider label={
                 <Text className="vision-font" size="xs" color="#8b8fa8" style={{ letterSpacing: '1px' }}>
-                  SHIPPING ADDRESS
+                  {t('checkout.shipping_address')}
                 </Text>
               } color="#2b2f55" />
               <TextInput
-                label="STREET ADDRESS"
+                label={t('checkout.street_address')}
                 placeholder="123 Main Street, Apt 4B"
                 value={form.address}
                 onChange={handleChange('address')}
@@ -189,7 +190,7 @@ const CheckoutPage = () => {
                 className="vision-font"
               />
               <TextInput
-                label="CITY"
+                label={t('checkout.city')}
                 placeholder="New York"
                 value={form.city}
                 onChange={handleChange('city')}
@@ -197,7 +198,7 @@ const CheckoutPage = () => {
                 className="vision-font"
               />
               <TextInput
-                label="COUNTRY"
+                label={t('checkout.country')}
                 placeholder="United States"
                 value={form.country}
                 onChange={handleChange('country')}
@@ -212,7 +213,7 @@ const CheckoutPage = () => {
             <>
               <Divider label={
                 <Text className="vision-font" size="xs" color="#8b8fa8" style={{ letterSpacing: '1px' }}>
-                  ORDER SUMMARY
+                  {t('checkout.summary')}
                 </Text>
               } color="#2b2f55" />
               <Stack gap="xs">
@@ -236,7 +237,7 @@ const CheckoutPage = () => {
                   </Box>
                 ))}
                 <Box style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px' }}>
-                  <Text className="vision-font" size="sm" color="white" fw={700}>TOTAL</Text>
+                  <Text className="vision-font" size="sm" color="white" fw={700}>{t('checkout.total')}</Text>
                   <Text className="vision-font" size="sm" color="#F6F4D3" fw={700}>€{total}</Text>
                 </Box>
               </Stack>
@@ -264,9 +265,9 @@ const CheckoutPage = () => {
             {loading ? (
               <Center>
                 <Loader size="xs" color="#000" mr={8} />
-                REDIRECTING TO STRIPE...
+                {t('checkout.redirecting')}
               </Center>
-            ) : 'PROCEED TO PAYMENT →'}
+            ) : t('checkout.proceed_payment')}
           </Button>
 
           <Button
@@ -276,7 +277,7 @@ const CheckoutPage = () => {
             className="vision-font"
             style={{ color: '#8b8fa8', fontSize: 12, letterSpacing: '1px' }}
           >
-            ← GO BACK
+            {t('checkout.go_back')}
           </Button>
         </Stack>
       </Box>

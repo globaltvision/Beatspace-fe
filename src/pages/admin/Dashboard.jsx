@@ -13,8 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { me } from "../../store/actions/authActions";
 import { dashboard } from "../../store/actions/adminActions";
 import { Loader } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { dashboardData, isLoading } = useSelector((state) => state.admin);
 
@@ -28,32 +30,32 @@ const Dashboard = () => {
     const { stats: s } = dashboardData;
     return [
       {
-        title: "TRACKS",
+        title: t('dashboard.stats.tracks'),
         value: s.totalBeats?.toLocaleString() || "0",
-        subtitle: `+${s.beatsThisWeek || 0} this week`,
+        subtitle: t('dashboard.stats.this_week', { count: s.beatsThisWeek || 0 }),
         icon: MusicIcon1,
-        label: "Total Beats",
+        label: t('dashboard.stats.total_beats'),
       },
       {
-        title: "PRODUCTS",
+        title: t('dashboard.stats.products'),
         value: s.totalMerch?.toLocaleString() || "0",
-        subtitle: `+${s.merchThisWeek || 0} new items`,
+        subtitle: t('dashboard.stats.new_items', { count: s.merchThisWeek || 0 }),
         icon: ClothesIcon,
-        label: "Merch Items",
+        label: t('dashboard.stats.merch_items'),
       },
       {
-        title: "THIS MONTH",
+        title: t('dashboard.stats.this_month'),
         value: `€ ${s.totalDonations?.toLocaleString() || "0,00"}`,
-        subtitle: `+ €${s.donationsThisWeek?.toFixed(0) || "0"} this week`,
+        subtitle: t('dashboard.stats.this_week', { count: s.donationsThisWeek?.toFixed(0) || "0" }),
         icon: DollarIcon,
-        label: "Donations",
+        label: t('dashboard.stats.donations'),
       },
       {
-        title: "TOTAL",
+        title: t('dashboard.stats.total'),
         value: s.totalDownloads?.toLocaleString() || "0",
-        subtitle: `+${s.downloadsThisWeek || 0} this week`,
+        subtitle: t('dashboard.stats.this_week', { count: s.downloadsThisWeek || 0 }),
         icon: DownloadIcon,
-        label: "Downloads",
+        label: t('dashboard.stats.downloads'),
       },
     ];
   }, [dashboardData]);
@@ -97,7 +99,7 @@ const Dashboard = () => {
         <div className="lg:col-span-8 bg-[#2F2E24] border border-[#B5B387]/30 p-6 relative overflow-hidden">
           <CornerAccents />
           <h2 className="pixel-font text-[#F6F4D3] text-[12px] uppercase tracking-widest mb-10">
-            DONATIONS OVER TIME
+            {t('dashboard.charts.donations_title')}
           </h2>
           <div className="relative">
             <BarChart
@@ -111,9 +113,9 @@ const Dashboard = () => {
           <div className="bg-[#2F2E24] border border-[#B5B387]/30 p-6 relative h-full min-h-[400px]">
             <CornerAccents />
             <h2 className="pixel-font text-[#F6F4D3] text-[12px] uppercase tracking-widest mb-10 leading-relaxed">
-              MOST PLAYED
+              {t('dashboard.charts.most_played')}
               <br />
-              GENRES & CATEGORIES
+              {t('dashboard.charts.genres_categories')}
             </h2>
             <DonutChart
               genreDistribution={[
@@ -133,7 +135,7 @@ const Dashboard = () => {
       <div className="bg-[#2F2E24] border border-[#B5B387]/30  relative">
         <CornerAccents />
         <h2 className="pixel-font text-[#F6F4D3] text-[12px] uppercase tracking-widest p-6">
-          RECENT ACTIVITY LOG
+          {t('dashboard.activity.title')}
         </h2>
         <RecentActivityTable activity={dashboardData?.activity} />
       </div>

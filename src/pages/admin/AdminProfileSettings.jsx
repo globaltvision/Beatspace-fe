@@ -4,7 +4,9 @@ import CategoryAPI from "../../services/category.service";
 import SettingsAPI from "../../services/settings.service";
 import { useSettings } from "../../contexts/SettingsContext";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 const VolumeSlider = ({ value = 70, onChange }) => {
+  const { t } = useTranslation();
   const handleSliderChange = (event) => {
     const newValue = parseInt(event.target.value);
     onChange?.(newValue);
@@ -30,7 +32,7 @@ const VolumeSlider = ({ value = 70, onChange }) => {
             value={value}
             onChange={handleSliderChange}
             className="absolute inset-0 w-full h-8 opacity-0 cursor-pointer"
-            aria-label="Volume slider"
+            aria-label={t('settings.audio.volume')}
           />
           {/* Visual handle */}
           <div
@@ -122,18 +124,22 @@ const ToggleOption = ({
 
 // QualitySelector Component
 const QualitySelector = ({
-  options = [
-    { value: "high", label: "High Quality" },
-    { value: "medium", label: "Medium Quality" },
-    { value: "low", label: "Low Quality" },
-  ],
+  options,
   defaultValue = "high",
   onChange,
 }) => {
+  const { t } = useTranslation();
+  
+  const displayOptions = options || [
+    { value: "high", label: t('settings.audio.high') },
+    { value: "medium", label: t('settings.audio.medium') },
+    { value: "low", label: t('settings.audio.low') },
+  ];
+
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedOption = options.find(
+  const selectedOption = displayOptions.find(
     (option) => option.value === selectedValue,
   );
 
@@ -156,14 +162,14 @@ const QualitySelector = ({
         <img
           src="https://api.builder.io/api/v1/image/assets/8194e458f3d34aa4833822b7adb041ea/f0860431e613dd0cdb778835bef44a350aeaaa0d?placeholderIfAbsent=true"
           className={`aspect-[1.83] object-contain w-[22px] shrink-0 my-auto transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-          alt="Dropdown arrow"
+          alt={t('common.dropdown_arrow') || "Dropdown arrow"}
         />
       </button>
 
       {isOpen && (
         <div className="absolute alexandria-font top-full left-0 right-0 bg-[rgba(25,26,34,1)] border border-[rgba(203,200,149,1)] border-solid mt-1">
           <ul role="listbox" className="py-2">
-            {options.map((option) => (
+            {displayOptions.map((option) => (
               <li key={option.value}>
                 <button
                   className={`w-full text-left px-[18px] py-2 text-lg font-medium leading-loose hover:bg-[rgba(203,200,149,0.1)] transition-colors ${
@@ -261,19 +267,19 @@ const FileUpload = ({
         role="button"
         tabIndex={0}
         onKeyDown={handleKeyDown}
-        aria-label="Upload logo - drag & drop or browse files"
+        aria-label={t('settings.general.logo_upload')}
       >
         <div className="mb-4 sm:mb-6 lg:mb-8 flex flex-col items-center">
           {currentImage ? (
             <div className="relative group">
               <img
                 src={currentImage}
-                alt="Logo Preview"
+                alt={t('settings.general.logo') || "Logo Preview"}
                 className="max-h-[180px] w-auto object-contain transition-opacity group-hover:opacity-50"
               />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <p className="text-white alexandria-font text-xs bg-black/50 px-2 py-1">
-                  CHANGE LOGO
+                  {t('settings.general.change_logo') || "CHANGE LOGO"}
                 </p>
               </div>
             </div>
@@ -319,11 +325,11 @@ const FileUpload = ({
         <div className="text-center alexandria-font">
           <p className="text-[#EBE23C] text-base sm:text-lg lg:text-xl font-bold mb-2 sm:mb-3 lg:mb-4 max-w-md">
             {currentImage
-              ? "Click or drag to replace logo"
-              : "Drag & drop your logo here, or browse files"}
+              ? t('settings.general.logo_replace')
+              : t('settings.general.logo_upload')}
           </p>
           <p className="text-white text-sm sm:text-base lg:text-lg">
-            PNG, JPG up to 2MB
+            {t('settings.general.logo_help')}
           </p>
         </div>
       </div>
@@ -542,6 +548,7 @@ const AudioVisualizerIcon = (
 
 // Main Settings Component
 const Settings = () => {
+  const { t } = useTranslation();
   const { fetchSettings: refreshGlobalSettings } = useSettings();
   // General Settings State
   const [siteTitle, setSiteTitle] = useState("Beatspace");
@@ -800,7 +807,7 @@ const Settings = () => {
     <main className="min-h-screen w-full overflow-x-auto">
       <div className="max-w-none py-8 px-6 mb-3 border-1 border-[#CBC895] bg-[#2F2E24]  relative mx-auto">
         <h1 className="text-[#DFD74F] mb-10 text-lg sm:text-xl pixel-font">
-          GENERAL SETTINGS
+          {t('settings.general.title')}
         </h1>
         <div className="space-y-6 mb-10">
           <div className="w-full">
@@ -808,7 +815,7 @@ const Settings = () => {
               htmlFor="site-title"
               className="block text-white pixel-font  !text-sm  uppercase mb-4"
             >
-              SITE TITLE
+              {t('settings.general.site_title')}
             </label>
             <div className="relative alexandria-font">
               <input
@@ -817,7 +824,7 @@ const Settings = () => {
                 value={siteTitle}
                 onChange={(e) => setSiteTitle(e.target.value)}
                 className="w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
-                placeholder="Enter site title"
+                placeholder={t('settings.general.site_title_placeholder')}
                 aria-describedby="site-title-help"
               />
             </div>
@@ -827,7 +834,7 @@ const Settings = () => {
         <div className="relative mb-10 z-10">
           <section className="w-full mx-auto">
             <h2 className="pixel-font text-[#fff] text-[12px] uppercase tracking-widest mb-4">
-              LOGO UPLOAD
+              {t('settings.general.logo_upload_title')}
             </h2>
             <div className="relative">
               <FileUpload
@@ -840,10 +847,9 @@ const Settings = () => {
 
               {uploadedFile && (
                 <div className="mt-4 p-4 bg-[#191A22] border border-[#CBC895] rounded">
-                  <p className="text-[#9C963A] text-xs mb-2">FILE SELECTED:</p>
+                  <p className="text-[#9C963A] text-xs mb-2">{t('settings.general.file_selected')}</p>
                   <p className="text-[#9C963A] text-xs mt-2">
-                    Ready to upload: {uploadedFile.name} (
-                    {(uploadedFile.size / 1024).toFixed(1)} KB)
+                    {t('settings.general.ready_to_upload', { name: uploadedFile.name, size: (uploadedFile.size / 1024).toFixed(1) })}
                   </p>
                 </div>
               )}
@@ -882,14 +888,14 @@ const Settings = () => {
                       </svg>
                     )}
                   </span>
-                  DARK MODE
+                  {t('settings.general.dark_mode')}
                 </span>
               </label>
               <p
                 id="dark-mode-description"
                 className="text-[#FFF999] text-start text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 min-h-6 sm:min-h-7 mt-2"
               >
-                Default retro theme
+                {t('settings.general.dark_mode_desc')}
               </p>
             </div>
             <div className="w-full relative">
@@ -921,14 +927,14 @@ const Settings = () => {
                       </svg>
                     )}
                   </span>
-                  RETRO NEON MODE
+                  {t('settings.general.retro_mode')}
                 </span>
               </label>
               <p
                 id="retro-neon-description"
                 className="text-[#FFF999] text-start text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 min-h-6 sm:min-h-7 mt-2"
               >
-                Enhanced CRT effects
+                {t('settings.general.retro_mode_desc')}
               </p>
             </div>
           </div>
@@ -938,7 +944,7 @@ const Settings = () => {
             htmlFor="language"
             className="block text-white pixel-font  !text-sm  uppercase mb-4"
           >
-            Language
+            {t('settings.general.language')}
           </label>
           <div className="relative alexandria-font">
             <select
@@ -974,22 +980,22 @@ const Settings = () => {
           disabled={isSavingGeneral}
           className="mt-6 bg-[#DFD74F] alexandria-font text-[#191A22] px-8 py-3 rounded text-sm font-bold hover:bg-[#FFF999] transition-colors disabled:opacity-50"
         >
-          {isSavingGeneral ? "SAVING..." : "SAVE SETTINGS"}
+          {isSavingGeneral ? t('settings.general.saving') : t('settings.general.save')}
         </button>
       </div>
 
       {/* Category Management Section */}
       <div className="relative  py-8 px-6 mb-3 border-1 border-[#CBC895] bg-[#2F2E24] ">
         <h1 className="text-[#DFD74F] mb-6 text-lg sm:text-xl pixel-font">
-          CATEGORY & GENRE MANAGEMENT
+          {t('settings.categories.title')}
         </h1>
         <div className="w-full">
           <div className="w-full min-h-[60px] sm:min-h-[66px] lg:min-h-[72px] flex items-center bg-[#131319] px-4 sm:px-6 lg:px-[26px] py-4 sm:py-6 lg:py-0 hidden sm:flex">
             <div className="text-[#CBC895] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 min-w-0 sm:min-w-[200px] flex-shrink-0">
-              {activeType === "genre" ? "Genre Name" : "Category Name"}
+              {activeType === "genre" ? t('settings.categories.genre_name') : t('settings.categories.category_name')}
             </div>
             <div className="text-[#CBC895] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 min-w-0 sm:min-w-[150px] flex-shrink-0">
-              Type
+              {t('settings.categories.type')}
             </div>
             <div className="text-[#CBC895] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 ml-auto flex items-center gap-6">
               {/* Type Filter Toggle */}
@@ -998,13 +1004,13 @@ const Settings = () => {
                   onClick={() => setActiveType("genre")}
                   className={`px-3 py-1 text-xs font-bold transition-colors ${activeType === "genre" ? "bg-[#CBC895] text-[#191A22]" : "text-[#CBC895]"}`}
                 >
-                  GENRES
+                  {t('settings.categories.genres')}
                 </button>
                 <button
                   onClick={() => setActiveType("category")}
                   className={`px-3 py-1 text-xs font-bold transition-colors ${activeType === "category" ? "bg-[#CBC895] text-[#191A22]" : "text-[#CBC895]"}`}
                 >
-                  CATEGORIES
+                  {t('settings.categories.categories')}
                 </button>
               </div>
 
@@ -1016,9 +1022,9 @@ const Settings = () => {
                 }}
                 className="bg-[#CBC895] text-[#191A22] px-4 py-1 rounded text-sm font-bold hover:bg-[#FFF999] transition-colors"
               >
-                ADD {activeType === "genre" ? "GENRE" : "CATEGORY"}
+                ADD {activeType === "genre" ? t('settings.categories.genres') : t('settings.categories.categories')}
               </button>
-              <span>ACTIONS</span>
+              <span>{t('settings.categories.actions')}</span>
             </div>
           </div>
 
@@ -1030,7 +1036,7 @@ const Settings = () => {
               >
                 <div className="flex-1 w-full">
                   <label className="text-[#CBC895] text-xs font-bold mb-1 block">
-                    {activeType === "genre" ? "GENRE NAME" : "CATEGORY NAME"}
+                    {activeType === "genre" ? t('settings.categories.genre_name').toUpperCase() : t('settings.categories.category_name').toUpperCase()}
                   </label>
                   <input
                     type="text"
@@ -1054,7 +1060,7 @@ const Settings = () => {
                     type="submit"
                     className="flex-1 sm:flex-none bg-[#DFD74F] text-[#191A22] px-6 py-2 font-bold hover:bg-[#FFF999]"
                   >
-                    {editingCategory ? "UPDATE" : "SAVE"}
+                     {editingCategory ? t('common.update') : t('common.save')}
                   </button>
                   <button
                     type="button"
@@ -1064,7 +1070,7 @@ const Settings = () => {
                     }}
                     className="flex-1 sm:flex-none bg-red-600 text-white px-6 py-2 font-bold hover:bg-red-500"
                   >
-                    CANCEL
+                    {t('common.cancel')}
                   </button>
                 </div>
               </form>
@@ -1074,11 +1080,11 @@ const Settings = () => {
           <div className="space-y-0">
             {isLoadingCategories ? (
               <div className="text-center py-10 text-[#CBC895]">
-                Loading {activeType}s...
+                {t('settings.categories.loading', { type: activeType })}
               </div>
             ) : categories.filter((c) => c.type === activeType).length === 0 ? (
               <div className="text-center py-10 text-[#CBC895]">
-                No {activeType}s found
+                {t('settings.categories.none_found', { type: activeType })}
               </div>
             ) : (
               categories
@@ -1101,21 +1107,21 @@ const Settings = () => {
       <div className="relative py-8 px-6 mb-3 border-1 border-[#CBC895] bg-[#2F2E24] ">
         <section className="bg-[rgba(181,179,135,0.16)] border flex w-full flex-col pt-[42px] pb-[119px] px-[27px] border-[rgba(203,200,149,1)] border-solid max-md:max-w-full max-md:pb-[100px] max-md:px-5">
           <h1 className="text-[#DFD74F] text-lg sm:text-xl pixel-font">
-            AUDIO & PLAYER SETTINGS
+            {t('settings.audio.title')}
           </h1>
           <fieldset className="border-0 p-0 m-0">
-            <legend className="sr-only">Radio Settings</legend>
+            <legend className="sr-only">{t('settings.audio.radio_settings')}</legend>
 
             <ToggleOption
-              title="Enable radio"
-              description="Start radio automatically on page load"
+              title={t('settings.audio.radio')}
+              description={t('settings.audio.radio_desc')}
               checkedIcon={SpeakerOnIcon}
               uncheckedIcon={SpeakerOffIcon}
               defaultChecked={enableRadio}
               onChange={handleRadioToggle}
             />
 
-            <SettingsRow icon={AntennaIcon} title="Default Volume">
+            <SettingsRow icon={AntennaIcon} title={t('settings.audio.volume')}>
               <VolumeSlider
                 value={defaultVolume}
                 onChange={handleVolumeChange}
@@ -1123,8 +1129,8 @@ const Settings = () => {
             </SettingsRow>
 
             <ToggleOption
-              title="Pause radio when beat plays"
-              description="Automatically pause radio when a beat preview starts"
+              title={t('settings.audio.pause_on_beat')}
+              description={t('settings.audio.pause_on_beat_desc')}
               checkedIcon={PauseIcon}
               uncheckedIcon={PlayIcon}
               defaultChecked={pauseRadioOnBeat}
@@ -1133,8 +1139,8 @@ const Settings = () => {
 
             <SettingsRow
               icon={<div className="w-[40px] sm:w-[46px]" />}
-              title="Default audio quality"
-              description="Higher quality uses more bandwidth but provides better audio experience"
+              title={t('settings.audio.quality')}
+              description={t('settings.audio.quality_desc')}
             >
               <QualitySelector
                 defaultValue={audioQuality}
@@ -1144,7 +1150,7 @@ const Settings = () => {
 
             <SettingsRow
               icon={<div className="w-[40px] sm:w-[46px]" />}
-              title="Audio visualizer preview"
+              title={t('settings.audio.visualizer')}
               titleClassName="text-[rgba(255,239,46,1)] text-base sm:text-lg lg:text-xl alexandria-font leading-none block mb-3"
             >
               <div className="mt-1">{AudioVisualizerIcon}</div>
@@ -1156,7 +1162,7 @@ const Settings = () => {
       {/* Visual Customization Section */}
       <div className="relative py-8 px-6 mb-3 border-1 h-[400px] border-[#CBC895] bg-[#2F2E24] ">
         <h1 className="text-[#DFD74F] mb-10 text-lg sm:text-xl pixel-font">
-          VISUAL CUSTOMIZATION
+          {t('settings.visual.title')}
         </h1>
       </div>
 
@@ -1165,7 +1171,7 @@ const Settings = () => {
         <section className="w-full mx-auto px-4 sm:px-6 lg:px-[27px]">
           <header className="mb-8 sm:mb-10 lg:mb-[50px]">
             <h1 className="text-[#DFD74F] sm:text-md lg:text-lg pixel-font uppercase block mb-1 sm:mb-2 cursor-pointer">
-              SECURITY & BACKUP
+              {t('settings.security.title')}
             </h1>
           </header>
 
@@ -1188,10 +1194,10 @@ const Settings = () => {
                 </div>
                 <div className="flex-1 w-full">
                   <h3 className="text-white text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 uppercase mb-2">
-                    EXPORT DATA BACKUP
+                    {t('settings.security.export')}
                   </h3>
                   <p className="text-[#FFF999] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7">
-                    Download all settings and configurations as JSON
+                    {t('settings.security.export_desc')}
                   </p>
                 </div>
               </div>
@@ -1215,7 +1221,7 @@ const Settings = () => {
                   />
                 </svg>
                 <span className="text-[#191A22] text-base sm:text-lg font-semibold leading-6 sm:leading-7">
-                  {isExporting ? "Exporting..." : "Export Backup"}
+                  {isExporting ? t('settings.security.exporting') : t('settings.security.export_button')}
                 </span>
               </button>
             </div>
@@ -1240,10 +1246,10 @@ const Settings = () => {
                 </div>
                 <div className="flex-1 w-full">
                   <h3 className="text-white text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 uppercase mb-2">
-                    RESET TO DEFAULT SETTINGS
+                    {t('settings.security.reset')}
                   </h3>
                   <p className="text-[#FFF999] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7">
-                    Restore all settings to factory defaults
+                    {t('settings.security.reset_desc')}
                   </p>
                 </div>
               </div>
@@ -1267,7 +1273,7 @@ const Settings = () => {
                   />
                 </svg>
                 <span className="text-[#191A22] text-base sm:text-lg font-semibold leading-6 sm:leading-7">
-                  {isResetting ? "Resetting..." : "Reset Setting"}
+                  {isResetting ? t('settings.security.resetting') : t('settings.security.reset_button')}
                 </span>
               </button>
             </div>
@@ -1277,16 +1283,16 @@ const Settings = () => {
 
       <ConfirmModal
         isOpen={resetConfirm}
-        title="RESET SETTINGS"
-        message="Are you sure you want to reset all settings to default? This action cannot be undone."
+        title={t('settings.security.reset_modal_title')}
+        message={t('settings.security.reset_modal_message')}
         onConfirm={confirmResetSettings}
         onCancel={() => setResetConfirm(false)}
       />
 
       <ConfirmModal
         isOpen={categoryDeleteConfirm.isOpen}
-        title="DELETE CATEGORY"
-        message="Are you sure you want to delete this category? This might affect items using it."
+        title={t('settings.categories.delete_modal_title')}
+        message={t('settings.categories.delete_modal_message')}
         onConfirm={confirmDeleteCategory}
         onCancel={() => setCategoryDeleteConfirm({ isOpen: false, id: null })}
       />

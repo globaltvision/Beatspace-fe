@@ -8,6 +8,7 @@ import { dashboard } from "../../store/actions/adminActions";
 import { playBeatAction } from "../../store/actions/beatActions";
 import ConfirmModal from "../../components/ConfirmModal";
 import CategoryAPI from "../../services/category.service";
+import { useTranslation } from "react-i18next";
 
 const AudioVisualizer = ({ isDark }) => (
   <div className="flex items-end gap-[2px] h-4 mb-1">
@@ -103,7 +104,7 @@ const BeatRow = ({
             className={`text-[10px] lg:text-xs font-bold ${isPlaying ? "text-black opacity-80" : "text-[#D4D4B0] opacity-80"}`}
             style={{ fontFamily: "monospace" }}
           >
-            Category:{" "}
+            {t('beatmaker.repository.table.category_prefix')}
             {beat.category?.toUpperCase().replace("_", " ") || "SAPHIRE"}
           </div>
           <div className="flex items-center gap-2 flex-wrap">
@@ -194,6 +195,7 @@ const BeatRow = ({
 };
 
 const Beat = () => {
+  const { t } = useTranslation();
   const {
     beats: reduxBeats,
     isLoading: isBeatsLoading,
@@ -207,10 +209,8 @@ const Beat = () => {
   const dispatch = useDispatch();
   const { dashboardData } = useSelector((state) => state.admin);
 
-  // Local state for UI interactions (playing, volume, etc.)
   const [beats, setBeats] = useState([]);
 
-  // Add Beat Form State
   const [newBeatForm, setNewBeatForm] = useState({
     name: "",
     genre: "HIP-HOP",
@@ -221,7 +221,6 @@ const Beat = () => {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Edit Beat Form State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentEditId, setCurrentEditId] = useState(null);
   const [editBeatForm, setEditBeatForm] = useState({
@@ -231,31 +230,24 @@ const Beat = () => {
     category: "saphire",
   });
 
-  // Audio Player State
   const [volume, setVolume] = useState(75);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState(null);
   const [pausedTime, setPausedTime] = useState(0);
 
-  // Confirm Modal State
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null });
 
-  // Audio ref - single instance
   const audioRef = useRef(new Audio());
-  const isAudioInitialized = useRef(false);
   const animationFrameRef = useRef(null);
 
-  // SearchAndFilter state
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All Genres");
   const [showGenreDropdown, setShowGenreDropdown] = useState(false);
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  // Dynamic Genres and Categories
   const [availableGenres, setAvailableGenres] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
@@ -269,7 +261,6 @@ const Beat = () => {
         setAvailableGenres(genresRes.data.data);
         setAvailableCategories(categoriesRes.data.data);
         
-        // Auto-select first option if available
         if (genresRes.data.data.length > 0) {
           setNewBeatForm(prev => ({ ...prev, genre: genresRes.data.data[0].name }));
         }
@@ -287,7 +278,6 @@ const Beat = () => {
     currentlyPlayingIdRef.current = currentlyPlayingId;
   }, [currentlyPlayingId]);
 
-  // FIXED: Proper audio time update using requestAnimationFrame
   const updateTime = useCallback(() => {
     if (audioRef.current && currentlyPlayingIdRef.current) {
       setCurrentTime(audioRef.current.currentTime);
@@ -296,7 +286,6 @@ const Beat = () => {
     }
   }, []);
 
-  // Initialize audio event listeners once
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -319,7 +308,6 @@ const Beat = () => {
     };
 
     const onPlay = () => {
-      // Start the animation frame when playing
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -327,7 +315,6 @@ const Beat = () => {
     };
 
     const onPause = () => {
-      // Cancel animation frame when paused
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -360,7 +347,6 @@ const Beat = () => {
     };
   }, [updateTime]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (audioRef.current) {
@@ -373,12 +359,10 @@ const Beat = () => {
     };
   }, []);
 
-  // Volume control
   useEffect(() => {
     audioRef.current.volume = volume / 100;
   }, [volume]);
 
-  // Handle play/pause and track changes
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -389,17 +373,15 @@ const Beat = () => {
         const newSrc = playingBeat.mp3_url;
 
         if (!currentSrc || !currentSrc.includes(newSrc)) {
-          // New track - reset position
           audio.src = newSrc;
           audio.load();
           setPausedTime(0);
           setCurrentTime(0);
 
-          // Play after metadata is loaded
           const playAudio = () => {
             audio.play().catch((err) => {
               console.error("Playback error:", err);
-              toast.error("Audio playback blocked or failed");
+              toast.error(t('beatmaker.messages.playback_error') || "Audio playback blocked or failed");
             });
           };
 
@@ -409,7 +391,6 @@ const Beat = () => {
             audio.addEventListener("canplay", playAudio, { once: true });
           }
         } else {
-          // Same track - resume from paused position
           if (
             pausedTime > 0 &&
             Math.abs(audio.currentTime - pausedTime) > 0.1
@@ -418,7 +399,7 @@ const Beat = () => {
           }
           audio.play().catch((err) => {
             console.error("Playback error:", err);
-            toast.error("Audio playback blocked or failed");
+            toast.error(t('beatmaker.messages.playback_error') || "Audio playback blocked or failed");
           });
         }
       }
@@ -427,7 +408,6 @@ const Beat = () => {
     }
   }, [currentlyPlayingId, beats, pausedTime]);
 
-  // Sync redux beats to local state
   useEffect(() => {
     if (reduxBeats) {
       setBeats(
@@ -445,12 +425,10 @@ const Beat = () => {
     dispatch(dashboard());
   }, [fetchBeats, dispatch]);
 
-  // Reset page when search or filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, selectedGenre]);
 
-  // Drag and Drop Handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -479,13 +457,13 @@ const Beat = () => {
         file.name.endsWith(".wav"))
     ) {
       if (file.size > 50 * 1024 * 1024) {
-        toast.error("File size exceeds 50MB");
+        toast.error(t('beatmaker.messages.file_size_error'));
         return;
       }
       setNewBeatForm((prev) => ({ ...prev, beat: file }));
-      toast.success(`File selected: ${file.name}`);
+      toast.success(t('beatmaker.messages.file_selected', { name: file.name }));
     } else {
-      toast.error("Invalid file type. Please upload MP3 or WAV.");
+      toast.error(t('beatmaker.messages.invalid_file'));
     }
   };
 
@@ -499,7 +477,7 @@ const Beat = () => {
   const handleAddBeat = async (e) => {
     e.preventDefault();
     if (!newBeatForm.name || !newBeatForm.beat) {
-      toast.error("Please provide at least a name and an audio file");
+      toast.error(t('beatmaker.messages.missing_fields'));
       return;
     }
 
@@ -521,7 +499,7 @@ const Beat = () => {
 
     const res = await addBeat(formData);
     if (res?.success) {
-      toast.success("Beat uploaded successfully!");
+      toast.success(t('beatmaker.messages.upload_success'));
       setNewBeatForm({
         name: "",
         genre: "HIP-HOP",
@@ -531,7 +509,7 @@ const Beat = () => {
       });
       fetchBeats();
     } else {
-      toast.error(res?.message || "Upload failed");
+      toast.error(res?.message || t('beatmaker.messages.upload_failed'));
     }
   };
 
@@ -543,7 +521,6 @@ const Beat = () => {
     if (!deleteConfirm.id) return;
     const id = deleteConfirm.id;
 
-    // Stop playback if deleting currently playing beat
     if (currentlyPlayingId === id) {
       audioRef.current.pause();
       setCurrentlyPlayingId(null);
@@ -556,10 +533,10 @@ const Beat = () => {
 
     const res = await removeBeat(id);
     if (res?.success) {
-      toast.success("Beat deleted successfully");
+      toast.success(t('beatmaker.messages.delete_success'));
       fetchBeats();
     } else {
-      toast.error(res?.message || "Delete failed");
+      toast.error(res?.message || t('beatmaker.messages.delete_failed'));
     }
     setDeleteConfirm({ isOpen: false, id: null });
   };
@@ -585,7 +562,7 @@ const Beat = () => {
   const handleEditBeat = async (e) => {
     e.preventDefault();
     if (!editBeatForm.name) {
-      toast.error("Name is required");
+      toast.error(t('beatmaker.messages.name_required') || "Name is required");
       return;
     }
 
@@ -606,12 +583,12 @@ const Beat = () => {
 
     const res = await editBeat(currentEditId, formData);
     if (res?.success) {
-      toast.success("Beat updated successfully!");
+      toast.success(t('beatmaker.messages.update_success'));
       setIsEditModalOpen(false);
       setCurrentEditId(null);
       fetchBeats();
     } else {
-      toast.error(res?.message || "Failed to update beat");
+      toast.error(res?.message || t('beatmaker.messages.update_failed'));
     }
   };
 
@@ -621,7 +598,6 @@ const Beat = () => {
       const isCurrentlyPlaying = currentBeat?.isPlaying || false;
 
       if (isCurrentlyPlaying) {
-        // Pausing - store current position
         setPausedTime(audioRef.current.currentTime);
         setCurrentlyPlayingId(null);
         if (animationFrameRef.current) {
@@ -629,19 +605,16 @@ const Beat = () => {
         }
         return prevBeats.map((beat) => ({ ...beat, isPlaying: false }));
       } else {
-        // Stop current audio if any before playing new one
         if (currentlyPlayingId && currentlyPlayingId !== id) {
           audioRef.current.pause();
           if (animationFrameRef.current) {
             cancelAnimationFrame(animationFrameRef.current);
           }
         }
-        // Use stored paused time if resuming same track
         if (currentlyPlayingId === id && pausedTime > 0) {
           audioRef.current.currentTime = pausedTime;
         }
 
-        // Increment play count on backend
         dispatch(playBeatAction(id, false));
 
         setCurrentlyPlayingId(id);
@@ -679,32 +652,31 @@ const Beat = () => {
   const stats = [
     {
       value: (dashboardData?.stats?.totalBeats || beats.length).toString(),
-      label: "Total Beats",
+      label: t('beatmaker.repository.stats.total_beats'),
     },
     {
       value: (
         dashboardData?.stats?.totalPlays ||
         beats.reduce((acc, b) => acc + (b.plays || 0), 0)
       ).toLocaleString(),
-      label: "Total Plays",
+      label: t('beatmaker.repository.stats.total_plays'),
     },
     {
       value: (
         dashboardData?.stats?.totalDownloads ||
         beats.reduce((acc, b) => acc + (b.no_of_downloads || 0), 0)
       ).toLocaleString(),
-      label: "Total Downloads",
+      label: t('beatmaker.repository.stats.total_downloads'),
     },
     {
       value: `€${(
         dashboardData?.stats?.totalDonations ||
         beats.reduce((acc, b) => acc + (b.donations?.amount || 0), 0)
       ).toFixed(2)}`,
-      label: "Total Donations",
+      label: t('beatmaker.repository.stats.total_donations'),
     },
   ];
 
-  // Add animation CSS to your global styles or create a style tag
   const animationStyles = `
     @keyframes musicBar {
       0%, 100% { height: 4px; }
@@ -730,10 +702,8 @@ const Beat = () => {
 
   return (
     <div className="min-h-screen alexandria-font space-y-10">
-      {/* Add animation styles */}
       <style>{animationStyles}</style>
 
-      {/* Upload Section */}
       <section
         className={`w-full bg-[#CBC895] border-[3px] border-dotted transition-all duration-300 rounded-xl p-8 flex flex-col items-center gap-8 ${dragActive ? "border-[#FFD700] bg-[#D4D1A0] scale-[1.01]" : "border-[#D4D4B0]"}`}
         onDragEnter={handleDrag}
@@ -761,29 +731,29 @@ const Beat = () => {
             style={{ fontFamily: "monospace" }}
           >
             {newBeatForm.beat
-              ? `SELECTED: ${newBeatForm.beat.name}`
-              : "DRAG AUDIO FILE HERE OR CLICK TO BROWSE"}
+              ? t('beatmaker.upload.selected', { name: newBeatForm.beat.name })
+              : t('beatmaker.upload.drag_drop')}
           </p>
         </div>
 
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-1">
             <label className="text-[10px] font-bold uppercase text-[#191A22]">
-              Beat Name
+              {t('beatmaker.upload.name_label')}
             </label>
             <input
               type="text"
               name="name"
               value={newBeatForm.name}
               onChange={handleInputChange}
-              placeholder="Untilted Beat"
+              placeholder={t('beatmaker.upload.name_placeholder')}
               className="w-full h-12 bg-[#4A4A3C] border border-[#D4D4B0] px-4 text-white focus:outline-none focus:border-[#FFD700]"
               style={{ fontFamily: "monospace" }}
             />
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold uppercase text-[#191A22]">
-              Genre (Enum)
+              {t('beatmaker.upload.genre_label')}
             </label>
             <select
               name="genre"
@@ -801,21 +771,21 @@ const Beat = () => {
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold uppercase text-[#191A22]">
-              Tags (Comma Separated)
+              {t('beatmaker.upload.tags_label')}
             </label>
             <input
               type="text"
               name="genre_tags"
               value={newBeatForm.genre_tags}
               onChange={handleInputChange}
-              placeholder="dark, hard, 808s"
+              placeholder={t('beatmaker.upload.tags_placeholder')}
               className="w-full h-12 bg-[#4A4A3C] border border-[#D4D4B0] px-4 text-white focus:outline-none focus:border-[#FFD700]"
               style={{ fontFamily: "monospace" }}
             />
           </div>
           <div className="md:col-span-3 space-y-1">
             <label className="text-[10px] font-bold uppercase text-[#191A22]">
-              Beat Category (Producer)
+              {t('beatmaker.upload.category_label')}
             </label>
             <select
               name="category"
@@ -844,16 +814,15 @@ const Beat = () => {
           ) : (
             <UploadIcon />
           )}
-          {isCreating ? "PROCESSING..." : "UPLOAD TRACK"}
+          {isCreating ? t('beatmaker.upload.uploading') : t('beatmaker.upload.button')}
         </button>
       </section>
 
-      {/* Search & Stats */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 relative">
           <input
             type="text"
-            placeholder="SEARCH BEATS..."
+            placeholder={t('beatmaker.repository.filters.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full h-16 bg-[#4A4A3C] border border-[#D4D4B0] px-6 text-[#FFD700] font-bold focus:outline-none focus:border-[#E4DA33] placeholder:text-[#9C963A]"
@@ -874,7 +843,7 @@ const Beat = () => {
           {showGenreDropdown && (
             <div className="absolute top-18 left-0 w-full bg-[#D4D4B0] border-2 border-black z-50 shadow-2xl">
               {[
-                "All Genres",
+                t('beatmaker.repository.filters.all_genres'),
                 "HIP-HOP",
                 "TRAP",
                 "R&B",
@@ -900,7 +869,6 @@ const Beat = () => {
         </div>
       </div>
 
-      {/* Beats Table */}
       <div className="w-full overflow-hidden border-2 border-[#D4D4B0] rounded-xl shadow-2xl">
         <div className="bg-[#4A4A3C]">
           {isBeatsLoading ? (
@@ -917,15 +885,15 @@ const Beat = () => {
                   >
                     <th className="px-3 lg:px-6 py-6">
                       <div className="flex items-center gap-2">
-                        NAME <MusicIcon />
+                        {t('beatmaker.repository.table.name')} <MusicIcon />
                       </div>
                     </th>
-                    <th className="px-3 lg:px-6 py-6">GENRE</th>
-                    <th className="px-3 lg:px-6 py-6">PLAYS</th>
-                    <th className="px-3 lg:px-6 py-6">DOWNLOADS</th>
-                    <th className="px-3 lg:px-6 py-6">DONATIONS</th>
+                    <th className="px-3 lg:px-6 py-6">{t('beatmaker.repository.table.genre_category')}</th>
+                    <th className="px-3 lg:px-6 py-6">{t('beatmaker.repository.table.plays')}</th>
+                    <th className="px-3 lg:px-6 py-6">{t('beatmaker.repository.table.downloads')}</th>
+                    <th className="px-3 lg:px-6 py-6">{t('beatmaker.repository.table.donations')}</th>
                     <th className="px-3 lg:px-6 py-6 shadow-[inset_0_-2px_0_black]">
-                      ACTIONS
+                      {t('beatmaker.repository.table.actions')}
                     </th>
                   </tr>
                 </thead>
@@ -946,7 +914,7 @@ const Beat = () => {
                     ))
                   ) : (
                     <tr className="h-48 text-center text-[#D4D4B0] font-bold">
-                      <td colSpan="6">NO TRACKS FOUND IN THE DATABASE</td>
+                      <td colSpan="6">{t('beatmaker.repository.table.no_tracks')}</td>
                     </tr>
                   )}
                 </tbody>
@@ -955,13 +923,14 @@ const Beat = () => {
           )}
         </div>
 
-        {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="bg-[#191A22] border-t-2 border-[#D4D4B0] p-4 flex items-center justify-between px-6">
             <div className="text-[#D4D4B0] text-sm font-bold tracking-widest uppercase">
-              Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-              {Math.min(currentPage * rowsPerPage, filteredBeats.length)} of{" "}
-              {filteredBeats.length} Tracks
+              {t('beatmaker.repository.table.showing', {
+                start: (currentPage - 1) * rowsPerPage + 1,
+                end: Math.min(currentPage * rowsPerPage, filteredBeats.length),
+                total: filteredBeats.length
+              })}
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -1010,7 +979,6 @@ const Beat = () => {
         )}
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((s, i) => (
           <div
@@ -1033,7 +1001,6 @@ const Beat = () => {
         ))}
       </div>
 
-      {/* Edit Modal */}
       <Modal
         opened={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
@@ -1058,7 +1025,7 @@ const Beat = () => {
         <div className="w-full max-w-2xl bg-[#191A22] border-2 border-[#FFD700] shadow-[0_0_30px_rgba(255,215,0,0.15)] rounded-xl overflow-hidden relative alexandria-font">
           <div className="bg-[#FFD700] px-6 py-4 flex justify-between items-center">
             <div className="text-black font-bold tracking-widest uppercase text-sm">
-              Edit Track Attributes
+              {t('beatmaker.edit_modal.title')}
             </div>
             <button
               onClick={() => setIsEditModalOpen(false)}
@@ -1080,7 +1047,7 @@ const Beat = () => {
           <div className="p-8 space-y-6">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase text-[#D4D4B0] tracking-widest">
-                Track Name
+                {t('beatmaker.upload.name_label')}
               </label>
               <input
                 type="text"
@@ -1095,7 +1062,7 @@ const Beat = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase text-[#D4D4B0] tracking-widest">
-                  Genre Sequence
+                  {t('beatmaker.upload.genre_label')}
                 </label>
                 <div className="relative">
                   <select
@@ -1125,24 +1092,24 @@ const Beat = () => {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase text-[#D4D4B0] tracking-widest">
-                  Meta Tags Array
+                  {t('beatmaker.upload.tags_label')}
                 </label>
                 <input
                   type="text"
                   name="genre_tags"
                   value={editBeatForm.genre_tags}
                   onChange={handleEditInputChange}
-                  placeholder="dark, hard, 808s"
+                  placeholder={t('beatmaker.upload.tags_placeholder')}
                   className="w-full h-12 bg-[#4A4A3C] border border-[#D4D4B0] px-4 text-[#FFD700] focus:outline-none focus:border-[#FFD700] text-sm"
                 />
                 <p className="text-[10px] text-[#D4D4B0] opacity-50 mt-1 uppercase">
-                  SEPARATE MULTIPLE TAGS WITH COMMAS
+                  {t('beatmaker.upload.tags_hint')}
                 </p>
               </div>
 
               <div className="md:col-span-2 space-y-2">
                 <label className="text-xs font-bold uppercase text-[#D4D4B0] tracking-widest">
-                  Beat Category (Producer)
+                  {t('beatmaker.upload.category_label')}
                 </label>
                 <div className="relative">
                   <select

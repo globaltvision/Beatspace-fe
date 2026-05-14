@@ -8,16 +8,18 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import { FaUserCircle, FaEye, FaEyeSlash, FaLock, FaExclamationTriangle } from "react-icons/fa";
 
 const Setting = () => {
+  const { t } = useTranslation();
   return (
     <div className="h-[76vh] overflow-auto">
       {false ? (
         <div className="p-4 lg:p-8 rounded-2xl flex items-center justify-center min-h-[400px] bg-white">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500 mx-auto"></div>
-            <Text size="sm" c="dimmed" mt="md">Loading profile...</Text>
+            <Text size="sm" c="dimmed" mt="md">{t('user_settings.loading')}</Text>
           </div>
         </div>
       ) : (
@@ -28,7 +30,7 @@ const Setting = () => {
               fw={500}
               className="bg-gradient-to-r text-transparent bg-clip-text from-[#050505] to-[#767676]"
             >
-              User Profile
+              {t('user_settings.profile_title')}
             </Title>
             <Button
               size="md"
@@ -37,7 +39,7 @@ const Setting = () => {
               onClick={() => {}}
               disabled={false}
             >
-              Save Changes
+              {t('user_settings.save_changes')}
             </Button>
           </div>
 
@@ -60,7 +62,7 @@ const Setting = () => {
                     w={160}
                     h={40}
                   >
-                    Choose File
+                    {t('user_settings.choose_file')}
                   </Button>
                   <input
                     id="profileImage"
@@ -77,19 +79,19 @@ const Setting = () => {
                     w={160}
                     h={40}
                   >
-                    Remove
+                    {t('user_settings.remove')}
                   </Button>
                   {false && (
                     <Text color="red" size="sm" mt={5}>
                       <FaExclamationTriangle className="inline mr-1" />
-                      Error
+                      {t('user_settings.error')}
                     </Text>
                   )}
                 </div>
               </div>
               <div className="flex-1 space-y-4">
                 <TextInput
-                  placeholder="Full Name"
+                  placeholder={t('user_settings.full_name')}
                   className="w-full lg:w-[80%]"
                   disabled={false}
                   value=""
@@ -114,17 +116,16 @@ const Setting = () => {
 
           <div className="mb-10 w-full lg:w-[80%]">
             <Title order={3} fw={600} mb="md">
-              Password & Security
+              {t('user_settings.password_security')}
             </Title>
             <div className="p-5 bg-[#F7F7F7] mb-10 rounded-xl w-[90%]">
               <Text size="h1" c="dark">
-                Your password must be at least 6 characters and should include a
-                combination of numbers, letters and special characters (!$@%).
+                {t('user_settings.password_hint')}
               </Text>
             </div>
             <div className="space-y-4">
               <PasswordInput
-                placeholder="Current Password"
+                placeholder={t('user_settings.current_password')}
                 visibilityToggleIcon={({ reveal }) =>
                   reveal ? <FaEyeSlash size={16} /> : <FaEye size={16} />
                 }
@@ -132,7 +133,7 @@ const Setting = () => {
                 onChange={() => {}}
               />
               <PasswordInput
-                placeholder="New Password"
+                placeholder={t('user_settings.new_password')}
                 visibilityToggleIcon={({ reveal }) =>
                   reveal ? <FaEyeSlash size={16} /> : <FaEye size={16} />
                 }
@@ -140,7 +141,7 @@ const Setting = () => {
                 onChange={() => {}}
               />
               <PasswordInput
-                placeholder="Confirm New Password"
+                placeholder={t('user_settings.confirm_new_password')}
                 visibilityToggleIcon={({ reveal }) =>
                   reveal ? <FaEyeSlash size={16} /> : <FaEye size={16} />
                 }
@@ -154,35 +155,33 @@ const Setting = () => {
 
           <div className="w-full lg:w-[80%]">
             <Title order={3} fw={600} mb="md">
-              Notifications
+              {t('user_settings.notifications')}
             </Title>
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
                   <Text size="sm" c="#7184B4">
-                    Transaction Alerts
+                    {t('user_settings.transaction_alerts')}
                   </Text>
-                  <Text fw={500}>Get notified when an achievement goals</Text>
+                  <Text fw={500}>{t('user_settings.transaction_hint')}</Text>
                 </div>
                 <Switch defaultChecked size="md" color="#0391A5" />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <Text size="sm" c="#7184B4">
-                    Subscription Updates
+                    {t('user_settings.subscription_updates')}
                   </Text>
-                  <Text fw={500}>
-                    Stay informed about upcoming renewals and cancellations.
-                  </Text>
+                    {t('user_settings.subscription_hint')}
                 </div>
                 <Switch defaultChecked size="md" color="#0391A5" />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <Text size="sm" c="#7184B4">
-                    Spending Insights
+                    {t('user_settings.spending_insights')}
                   </Text>
-                  <Text fw={500}>Receive alerts based on deadline goals</Text>
+                  <Text fw={500}>{t('user_settings.spending_hint')}</Text>
                 </div>
                 <Switch defaultChecked size="md" color="#0391A5" />
               </div>

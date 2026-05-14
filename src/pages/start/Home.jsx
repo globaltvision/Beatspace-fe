@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Box, Text, Group, Image } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "../../contexts/SettingsContext";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const { settings } = useSettings();
@@ -149,7 +151,7 @@ const Home = () => {
                 letterSpacing: "4px",
               }}
             >
-              {">"} PRESS START
+              {">"} {t('home.press_start')}
             </Text>
           </div>
         </Group>

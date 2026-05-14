@@ -4,8 +4,10 @@ import { FaTrash } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserHeader from "../../components/common/UserHeader";
 import cartImg from "../../assets/Vector.png";
+import { useTranslation } from "react-i18next";
 
 const BuyShirt = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const item = location.state?.item || {
@@ -45,7 +47,7 @@ const BuyShirt = () => {
   return (
     <>
       <UserHeader
-        title="MERCH"
+        title={t('merch_user.title')}
         suffix={
           <Box className="cursor-pointer flex items-center" onClick={() => setIsModalOpen(true)}>
             <div className="relative">
@@ -151,7 +153,7 @@ const BuyShirt = () => {
                   }}
                   className="vision-font"
                 >
-                  Size:
+                  {t('merch_user.cart.size').split(':')[0]}:
                 </Text>
                 <Flex gap="sm">
                   {["S", "L", "M", "E"].map((size) => (
@@ -199,7 +201,7 @@ const BuyShirt = () => {
                 }}
                 className="vision-font hover:scale-105 transition-all duration-300 active:scale-95"
               >
-                Add To Cart
+                {t('merch_user.buy_shirt.add_to_cart')}
               </Button>
 
               {/* Thumbnails Placeholder (Matching Figma) */}
@@ -244,7 +246,7 @@ const BuyShirt = () => {
         onClose={() => setIsModalOpen(false)}
         title={
           <Text className="vision-font" size="xl" weight={900} color="#F6F4D3" style={{ letterSpacing: '2px' }}>
-            YOUR CART
+            {t('merch_user.cart.title')}
           </Text>
         }
         styles={{
@@ -258,7 +260,7 @@ const BuyShirt = () => {
         <Box className="flex flex-col gap-4" mt="md">
           {cartItems.length === 0 ? (
             <Text color="dimmed" align="center" className="vision-font py-8">
-              YOUR CART IS EMPTY
+              {t('merch_user.cart.empty')}
             </Text>
           ) : (
             <>
@@ -295,7 +297,7 @@ const BuyShirt = () => {
                   </Text>
                   
                   <Text color="dimmed" size="xs" className="vision-font text-center">
-                    Size: {cartItem.selectedSize}
+                    {t('merch_user.cart.size', { size: cartItem.selectedSize })}
                   </Text>
                   
                   <Flex align="center" justify="space-between" className="w-full mt-2 bg-[#1a1b1e] p-2 rounded-lg border border-[#333]">
@@ -306,7 +308,7 @@ const BuyShirt = () => {
                       color="red"
                       variant="light"
                       onClick={() => handleRemoveItem(cartItem.cartItemId)}
-                      title="Remove Item"
+                      title={t('merch_user.cart.remove')}
                       size="lg"
                       radius="md"
                     >
@@ -321,7 +323,7 @@ const BuyShirt = () => {
               
               <Flex justify="space-between" align="center" px="sm">
                 <Text color="#F6F4D3" weight={700} size="lg" className="vision-font" style={{ letterSpacing: '1px' }}>
-                  TOTAL
+                  {t('merch_user.cart.total')}
                 </Text>
                 <Text color="#5EEAD4" weight={900} size="lg" className="vision-font">
                   €{cartItems.reduce((acc, item) => acc + item.price, 0)}
@@ -347,7 +349,7 @@ const BuyShirt = () => {
                   }
                 }}
               >
-                CHECKOUT
+                {t('merch_user.cart.checkout')}
               </Button>
             </>
           )}

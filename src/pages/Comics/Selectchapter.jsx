@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Text } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserHeader from "../../components/common/UserHeader";
+import { useTranslation } from "react-i18next";
 
 const COLORS = {
   background: "#111827",
@@ -15,6 +16,7 @@ const COLORS = {
 
 // Chapter Item Component
 const ChapterItem = ({ chapter, index, isHovered, onHover, onClick }) => {
+  const { t } = useTranslation();
   const chapterNumber = String(index + 1).padStart(2, "0");
   return (
     <div className="border-4 border-[#C0BC75] p-2">
@@ -57,7 +59,7 @@ const ChapterItem = ({ chapter, index, isHovered, onHover, onClick }) => {
               }}
               className="!vision-font max-sm:!text-[1rem] min-sm:!text-[1.1rem] min-md:!text-[1.3rem] min-lg:!text-[2rem]"
             >
-              Chapter {index + 1} : {chapter.chapter_title}
+              {t('comics_user.chapter')} {index + 1} : {chapter.chapter_title}
             </Text>
             <Text
               style={{
@@ -66,7 +68,7 @@ const ChapterItem = ({ chapter, index, isHovered, onHover, onClick }) => {
               }}
               className="!vision-font max-sm:!text-[0.8rem] min-sm:!text-[0.9rem] min-md:!text-[1.1rem] min-lg:!text-[1.5rem]"
             >
-              {chapter.images?.length || 0} Pages
+              {chapter.images?.length || 0} {t('comics_user.pages')}
             </Text>
           </Box>
         </Box>
@@ -79,7 +81,7 @@ const ChapterItem = ({ chapter, index, isHovered, onHover, onClick }) => {
             }}
             className="!vision-font max-sm:!text-[0.8rem] min-sm:!text-[0.9rem] min-md:!text-[1.1rem] min-lg:!text-[1.5rem]"
           >
-            READ
+            {t('comics_user.read')}
           </Text>
           <Box
             style={{
@@ -97,6 +99,7 @@ const ChapterItem = ({ chapter, index, isHovered, onHover, onClick }) => {
 
 // Main Component
 const SelectChapter = () => {
+  const { t } = useTranslation();
   const [hoveredChapter, setHoveredChapter] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -113,7 +116,7 @@ const SelectChapter = () => {
         }}
       >
         <Text className="vision-font" style={{ color: COLORS.primary }}>
-          NO COMIC SELECTED
+          {t('comics_user.no_comic_selected')}
         </Text>
       </Box>
     );
@@ -131,7 +134,7 @@ const SelectChapter = () => {
 
   return (
     <>
-      <UserHeader title="COMICS" subtitle={comic.author_name.toUpperCase()} />
+      <UserHeader title={t('comics_user.title')} subtitle={comic.author_name.toUpperCase()} />
 
       {/* Main Content */}
       <Box
@@ -240,7 +243,7 @@ const SelectChapter = () => {
               <Text
                 style={{ color: COLORS.textSecondary, textAlign: "center" }}
               >
-                NO CHAPTERS AVAILABLE
+                {t('comics_user.no_chapters')}
               </Text>
             )}
           </Box>
@@ -266,7 +269,7 @@ const SelectChapter = () => {
             textAlign: "center",
           }}
         >
-          Click on a chapter to start reading
+          {t('comics_user.click_start_reading')}
         </Text>
       </Box>
     </>

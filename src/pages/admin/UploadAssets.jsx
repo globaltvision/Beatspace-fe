@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useRef, memo } from 'react';
+import React, { useState, useRef, useCallback, memo } from "react";
 import { UploadIcon1, MusicIcons1 } from '../../customIcons';
+import { useTranslation } from "react-i18next";
 
 // Constants for better maintainability
 const VALID_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'audio/mp3', 'audio/wav'];
@@ -22,6 +23,7 @@ const ThreeDotsIcon = () => (
 
 // AssetUpload Component
 const AssetUpload = memo(({ onFileUpload }) => {
+  const { t } = useTranslation();
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -64,7 +66,7 @@ const AssetUpload = memo(({ onFileUpload }) => {
     <section className="bg-[rgba(181,179,135,0.16)] border w-full px-4 sm:px-6 lg:px-[23px] py-6 sm:py-7 lg:py-[29px] border-[rgba(203,200,149,1)] border-solid overflow-hidden">
       <div className="flex w-full items-center gap-4 sm:gap-5 flex-col sm:flex-row justify-between">
         <h1 className="text-[rgba(223,215,79,1)] text-lg sm:text-xl lg:text-[23px] font-normal leading-tight">
-          Upload Assets
+          {t('assets.title')}
         </h1>
         <button className="bg-[rgba(203,200,149,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] items-center gap-2 sm:gap-2.5 text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-lg hover:bg-[rgba(213,210,159,1)] transition-colors">
           <img
@@ -73,7 +75,7 @@ const AssetUpload = memo(({ onFileUpload }) => {
             className="aspect-[1.07] object-contain w-3 sm:w-4 shrink-0"
           />
           <span className="whitespace-nowrap">
-            Add New Merch Item
+            {t('assets.add_merch')}
           </span>
         </button>
       </div>
@@ -86,25 +88,25 @@ const AssetUpload = memo(({ onFileUpload }) => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         role="region"
-        aria-label="File upload area"
+        aria-label={t('assets.drop_here')}
       >
         <div className="flex w-full max-w-lg flex-col items-center">
           <div className="mb-6">
             <UploadIcon1 />
           </div>
           <div className="text-[rgba(235,226,60,1)] text-lg sm:text-xl lg:text-[22px] leading-tight text-center border border-black border-solid px-2 py-1">
-            Drop files here to upload
+            {t('assets.drop_here')}
           </div>
           <div className="text-white text-base sm:text-lg lg:text-xl leading-tight text-center mt-3 sm:mt-4">
-            Supports PNG, JPEG, MP3, WAV files up to 50MB each
+            {t('assets.supports')}
           </div>
           <button 
             onClick={handleFileSelect}
             className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] w-full sm:w-auto sm:min-w-[180px] lg:w-[202px] items-center gap-2 sm:gap-[5px] text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center mt-8 sm:mt-12 lg:mt-[60px] px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-lg hover:bg-[rgba(231,219,187,1)] transition-colors"
             type="button"
-            aria-label="Select files to upload"
+            aria-label={t('assets.select_files')}
           >
-            <span>Select Files</span>
+            <span>{t('assets.select_files')}</span>
           </button>
         </div>
         
@@ -126,6 +128,7 @@ AssetUpload.displayName = 'AssetUpload';
 
 // AssetFilters Component
 const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = useCallback((e) => {
@@ -137,15 +140,15 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
   return (
     <section className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-5 text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose mt-4 sm:mt-[18px]">
       <div className="bg-[rgba(156,150,58,1)] flex flex-col font-medium justify-center flex-1 min-w-0 px-4 sm:px-6 lg:px-[27px] py-3 sm:py-4 lg:py-[18px] rounded-lg">
-        <label htmlFor="asset-search" className="sr-only">Search assets</label>
+        <label htmlFor="asset-search" className="sr-only">{t('assets.search_placeholder')}</label>
         <input
           id="asset-search"
           type="text"
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Search assets..."
+          placeholder={t('assets.search_placeholder')}
           className="bg-transparent border-none outline-none text-[rgba(25,26,34,1)] placeholder-[rgba(25,26,34,1)] w-full font-semibold"
-          aria-label="Search through uploaded assets"
+          aria-label={t('assets.search_placeholder')}
         />
       </div>
       
@@ -153,12 +156,12 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
         <select 
           onChange={(e) => onTypeFilter(e.target.value)}
           className="bg-transparent border-none outline-none text-[rgba(25,26,34,1)] font-semibold cursor-pointer appearance-none w-full text-center pr-6"
-          aria-label="Filter by file type"
+          aria-label={t('assets.types.all')}
         >
-          <option value="">All Types</option>
-          <option value="audio">Audio</option>
-          <option value="image">Images</option>
-          <option value="other">Other</option>
+          <option value="">{t('assets.types.all')}</option>
+          <option value="audio">{t('assets.types.audio')}</option>
+          <option value="image">{t('assets.types.image')}</option>
+          <option value="other">{t('assets.types.other')}</option>
         </select>
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
           <ChevronDownIcon />
@@ -169,12 +172,12 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
         <select 
           onChange={(e) => onCategoryFilter(e.target.value)}
           className="bg-transparent border-none outline-none text-[rgba(25,26,34,1)] font-semibold cursor-pointer appearance-none w-full text-center pr-6"
-          aria-label="Filter by category"
+          aria-label={t('assets.categories.all')}
         >
-          <option value="">All Categories</option>
-          <option value="Games">Games</option>
-          <option value="Merch">Merch</option>
-          <option value="Beats">Beats</option>
+          <option value="">{t('assets.categories.all')}</option>
+          <option value="Games">{t('assets.categories.games')}</option>
+          <option value="Merch">{t('assets.categories.merch')}</option>
+          <option value="Beats">{t('assets.categories.beats')}</option>
         </select>
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
           <ChevronDownIcon />
@@ -188,6 +191,7 @@ AssetFilters.displayName = 'AssetFilters';
 
 // AssetRow Component
 const AssetRow = memo(({ asset, onAction }) => {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -253,7 +257,7 @@ const AssetRow = memo(({ asset, onAction }) => {
           onClick={handleMenuToggle}
           className="text-[rgba(203,200,149,1)] hover:text-[rgba(223,220,169,1)] transition-colors p-1"
           aria-label={`Actions for ${asset.fileName}`}
-          title="More actions"
+          title={t('assets.table.actions')}
         >
           <ThreeDotsIcon />
         </button>
@@ -264,19 +268,19 @@ const AssetRow = memo(({ asset, onAction }) => {
               onClick={() => handleAction('download')}
               className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[rgba(197,194,116,0.16)] transition-colors first:rounded-t-lg"
             >
-              Download
+              {t('assets.actions.download')}
             </button>
             <button
               onClick={() => handleAction('edit')}
               className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[rgba(197,194,116,0.16)] transition-colors"
             >
-              Edit
+              {t('assets.actions.edit')}
             </button>
             <button
               onClick={() => handleAction('delete')}
               className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-[rgba(197,194,116,0.16)] transition-colors last:rounded-b-lg"
             >
-              Remove
+              {t('assets.actions.remove')}
             </button>
           </div>
         )}
@@ -289,23 +293,24 @@ AssetRow.displayName = 'AssetRow';
 
 // AssetTable Component
 const AssetTable = memo(({ assets, onAssetAction }) => {
+  const { t } = useTranslation();
   return (
-    <div className="mt-4 sm:mt-[17px]" role="region" aria-label="Asset management table">
+    <div className="mt-4 sm:mt-[17px]" role="region" aria-label={t('assets.title')}>
       <div className="bg-[rgba(19,19,25,1)] grid grid-cols-[60px_1fr_120px_100px_120px_120px_80px] gap-4 text-sm sm:text-base lg:text-xl text-[rgba(203,200,149,1)] font-normal leading-tight px-3 sm:px-6 lg:px-[26px] py-3 sm:py-4 lg:py-[22px]">
-        <div className="text-left">PREVIEW</div>
-        <div className="text-left">File Name</div>
-        <div className="hidden sm:block text-left">Category</div>
-        <div className="hidden lg:block text-left">Size</div>
-        <div className="hidden lg:block text-left">Uploaded By</div>
-        <div className="hidden lg:block text-left">Date Added</div>
-        <div className="text-left">ACTIONS</div>
+        <div className="text-left">{t('assets.table.preview')}</div>
+        <div className="text-left">{t('assets.table.file_name')}</div>
+        <div className="hidden sm:block text-left">{t('assets.table.category')}</div>
+        <div className="hidden lg:block text-left">{t('assets.table.size')}</div>
+        <div className="hidden lg:block text-left">{t('assets.table.uploaded_by')}</div>
+        <div className="hidden lg:block text-left">{t('assets.table.date_added')}</div>
+        <div className="text-left">{t('assets.table.actions')}</div>
       </div>
       
-      <div role="table" aria-label="Asset list">
+      <div role="table" aria-label={t('assets.title')}>
         {assets.length === 0 ? (
           <div className="bg-[rgba(197,194,116,0.16)] border border-[rgba(203,200,149,1)] border-solid px-3 sm:px-6 lg:px-[30px] py-8 sm:py-10 lg:py-12 text-center text-white">
-            <p className="text-lg sm:text-xl">No assets found</p>
-            <p className="text-sm sm:text-base text-gray-300 mt-2">Upload some files to get started</p>
+            <p className="text-lg sm:text-xl">{t('assets.no_assets')}</p>
+            <p className="text-sm sm:text-base text-gray-300 mt-2">{t('assets.upload_started')}</p>
           </div>
         ) : (
           assets.map((asset) => (
@@ -425,7 +430,7 @@ const Assets = () => {
         fileName: file.name,
         category: 'Uncategorized',
         size: formatFileSize(file.size),
-        uploadedBy: 'Current User',
+        uploadedBy: t('assets.current_user'),
         dateAdded: new Date().toISOString().split('T')[0],
         fileType
       };

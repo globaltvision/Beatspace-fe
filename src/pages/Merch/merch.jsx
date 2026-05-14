@@ -17,8 +17,10 @@ import { getMerchs } from "../../store/actions/adminActions";
 import { logoutAction } from "../../store/actions/authActions";
 import { cartIcon } from "../../customIcons";
 import { FaUserCircle, FaSignOutAlt, FaTrash } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const Merch = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { merchs, isLoadingMerchs } = useSelector((state) => state.admin);
@@ -52,13 +54,13 @@ const Merch = () => {
   return (
     <>
       <UserHeader
-        title="MERCH"
+        title={t('merch_user.title')}
         suffix={
           <Flex gap="md" align="center">
             {isAuthenticated && (
               <Menu shadow="md" width={200} position="bottom-end">
                 <Menu.Target>
-                  <ActionIcon variant="transparent" size="xl" title="Account">
+                  <ActionIcon variant="transparent" size="xl" title={t('merch_user.account')}>
                     <FaUserCircle size={32} color="#F6F4D3" />
                   </ActionIcon>
                 </Menu.Target>
@@ -67,7 +69,7 @@ const Merch = () => {
                   bg="#1a1b1e"
                   style={{ border: "1px solid #C1BE91" }}
                 >
-                  <Menu.Label color="#C1BE91">Account</Menu.Label>
+                  <Menu.Label color="#C1BE91">{t('merch_user.account')}</Menu.Label>
                   <Menu.Item disabled color="#fff">
                     {user?.email || "User"}
                   </Menu.Item>
@@ -77,7 +79,7 @@ const Merch = () => {
                     color="red"
                     onClick={handleLogout}
                   >
-                    Logout
+                    {t('merch_user.logout')}
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
@@ -124,7 +126,7 @@ const Merch = () => {
               style={{ minHeight: "200px" }}
             >
               <Text color="#F6F4D3" className="vision-font">
-                LOADING...
+                {t('merch_user.loading')}
               </Text>
             </Flex>
           ) : merchs.length > 0 ? (
@@ -183,7 +185,7 @@ const Merch = () => {
                         boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
                       }}
                     >
-                      BUY | € {item.price}
+                      {t('merch_user.buy', { price: item.price })}
                     </Button>
                   </Box>
                 </Flex>
@@ -196,7 +198,7 @@ const Merch = () => {
               style={{ minHeight: "200px" }}
             >
               <Text color="#F6F4D3" className="vision-font">
-                NO ITEMS FOUND
+                {t('merch_user.no_items')}
               </Text>
             </Flex>
           )}
@@ -208,7 +210,7 @@ const Merch = () => {
         onClose={() => setIsModalOpen(false)}
         title={
           <Text className="vision-font" size="xl" weight={900} color="#F6F4D3" style={{ letterSpacing: '2px' }}>
-            YOUR CART
+            {t('merch_user.cart.title')}
           </Text>
         }
         styles={{
@@ -222,7 +224,7 @@ const Merch = () => {
         <Box className="flex flex-col gap-4" mt="md">
           {cartItems.length === 0 ? (
             <Text color="dimmed" align="center" className="vision-font py-8">
-              YOUR CART IS EMPTY
+              {t('merch_user.cart.empty')}
             </Text>
           ) : (
             <>
@@ -259,7 +261,7 @@ const Merch = () => {
                   </Text>
                   
                   <Text color="dimmed" size="xs" className="vision-font text-center">
-                    Size: {cartItem.selectedSize}
+                    {t('merch_user.cart.size', { size: cartItem.selectedSize })}
                   </Text>
                   
                   <Flex align="center" justify="space-between" className="w-full mt-2 bg-[#1a1b1e] p-2 rounded-lg border border-[#333]">
@@ -270,7 +272,7 @@ const Merch = () => {
                       color="red"
                       variant="light"
                       onClick={() => handleRemoveItem(cartItem.cartItemId)}
-                      title="Remove Item"
+                      title={t('merch_user.cart.remove')}
                       size="lg"
                       radius="md"
                     >
@@ -285,7 +287,7 @@ const Merch = () => {
               
               <Flex justify="space-between" align="center" px="sm">
                 <Text color="#F6F4D3" weight={700} size="lg" className="vision-font" style={{ letterSpacing: '1px' }}>
-                  TOTAL
+                  {t('merch_user.cart.total')}
                 </Text>
                 <Text color="#5EEAD4" weight={900} size="lg" className="vision-font">
                   €{cartItems.reduce((acc, item) => acc + item.price, 0)}
@@ -311,7 +313,7 @@ const Merch = () => {
                   }
                 }}
               >
-                CHECKOUT
+                {t('merch_user.cart.checkout')}
               </Button>
             </>
           )}

@@ -6,8 +6,11 @@ import { logoutAction } from "../../store/actions/authActions";
 import NotificationPanel from "./NotificationPanel";
 import { useNotifications } from "../../contexts/NotificationContext";
 import { useSettings } from "../../contexts/SettingsContext";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "../LanguageSwitcher";
 
 const Navbar = ({ opened, toggle }) => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,7 +29,7 @@ const Navbar = ({ opened, toggle }) => {
       month: "long",
       day: "2-digit",
     };
-    return now.toLocaleDateString("en-US", options);
+    return now.toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', options);
   };
 
   // Close dropdown when clicking outside
@@ -84,15 +87,16 @@ const Navbar = ({ opened, toggle }) => {
         {/* Left side - Title and subtitle */}
         <div className="flex flex-col items-center lg:items-start lg:translate-x-0 w-full lg:w-auto">
           <h1 className="font-bold text-[#191A22] pixel-font mb-1 !text-[14px] md:!text-[18px] tracking-widest uppercase">
-            ADMIN DASHBOARD
+            {t('navbar.title')}
           </h1>
           <p className="text-[#191A22]/70 pixel-font !text-[8px] md:!text-[10px] uppercase font-bold">
-            {settings.site_title || "BEATSPACE"} • SYSTEM CONTROL INTERFACE • {getCurrentDate()}
+            {settings.site_title || "BEATSPACE"} • {t('navbar.subtitle')} • {getCurrentDate()}
           </p>
         </div>
 
         {/* Right side - User controls */}
         <div className="flex items-center space-x-2 lg:space-x-4">
+          <LanguageSwitcher />
           {/* Notification Icon */}
 
           <div className="relative flex items-center" ref={dropdownRef}>
@@ -148,7 +152,7 @@ const Navbar = ({ opened, toggle }) => {
                   >
                     <FaSignOutAlt className="text-base text-[#CBC895] group-hover:scale-110 transition-transform duration-200" />
                     <span className="font-bold text-xs uppercase tracking-widest">
-                      Logout
+                      {t('navbar.logout')}
                     </span>
                   </button>
                 </div>

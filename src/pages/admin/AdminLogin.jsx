@@ -4,8 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaLock, FaUser, FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa';
 import { loginAction } from '../../store/actions/authActions';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const AdminLogin = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: 'admin@beatspace.com',
@@ -37,13 +39,13 @@ const AdminLogin = () => {
           return;
         }
         navigate('/admin/login');
-        setError('You are not authorized to access this page.');
+        setError(t('admin.login.error_not_authorized'));
         
       } else {
-        setError(res?.error || 'Login failed. Please check your credentials.');
+        setError(res?.error || t('admin.login.error_failed'));
       }
     } catch (error) {
-      setError(error.message || 'An error occurred during login.');
+      setError(error.message || t('admin.login.error_generic'));
     }
   };
 
@@ -113,7 +115,7 @@ const AdminLogin = () => {
               letterSpacing: '0.1em'
             }}
           >
-            ADMIN ACCESS
+            {t('admin.login.title')}
           </Text>
           <Text
             className="alexandria-font"
@@ -123,7 +125,7 @@ const AdminLogin = () => {
               marginBottom: '1.5rem'
             }}
           >
-            RESTRICTED AREA
+            {t('admin.login.subtitle')}
           </Text>
         </Box>
 
@@ -160,7 +162,7 @@ const AdminLogin = () => {
             {/* Username Input */}
             <TextInput
               leftSection={<FaUser style={{ color: '#9CA3AF' }} />}
-              placeholder="Admin Username"
+              placeholder={t('admin.login.username_placeholder')}
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
               style={{ marginBottom: '1rem' }}
@@ -185,7 +187,7 @@ const AdminLogin = () => {
             {/* Password Input */}
             <PasswordInput
               leftSection={<FaLock style={{ color: '#9CA3AF' }} />}
-              placeholder="Admin Password"
+              placeholder={t('admin.login.password_placeholder')}
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               style={{ marginBottom: '1.5rem' }}
@@ -227,7 +229,7 @@ const AdminLogin = () => {
               onMouseLeave={() => setIsHovered(false)}
             >
               <Text style={{ fontSize: '0.8rem' }}>
-                  LOGIN
+                  {t('admin.login.button')}
                 </Text>
             </Button>
           </form>
@@ -253,7 +255,7 @@ const AdminLogin = () => {
             onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
           >
             <FaArrowLeft size={12} />
-            BACK TO WEBSITE
+            {t('admin.login.back_to_website')}
           </Link>
 
           <Text
@@ -263,7 +265,7 @@ const AdminLogin = () => {
               fontSize: '0.7rem',
             }}
           >
-            © 2025 GLOBAL VISION - ADMIN PANEL
+            {t('admin.login.footer')}
           </Text>
         </Box>
       </Box>

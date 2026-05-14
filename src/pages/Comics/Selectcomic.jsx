@@ -4,8 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getComics } from "../../store/actions/adminActions";
 import UserHeader from "../../components/common/UserHeader";
+import { useTranslation } from "react-i18next";
 
 const Selectcomic = () => {
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +32,7 @@ const Selectcomic = () => {
 
   return (
     <>
-      <UserHeader title="COMICS" subtitle={selectedAuthor.toUpperCase()} />
+      <UserHeader title={t('comics_user.title')} subtitle={selectedAuthor.toUpperCase()} />
 
       {/* Main Content Scrollable Area */}
       <Box
@@ -51,7 +53,7 @@ const Selectcomic = () => {
       >
         {isLoadingComics ? (
           <Text className="vision-font" style={{ color: "#F6F4D3" }}>
-            LOADING...
+            {t('comics_user.loading')}
           </Text>
         ) : filteredComics.length > 0 ? (
           filteredComics.map((comic) => (
@@ -138,7 +140,7 @@ const Selectcomic = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  Chapter {comic.chapter_info?.length || 0}
+                  {t('comics_user.chapter')} {comic.chapter_info?.length || 0}
                 </Text>
 
                 {/* Decorative line near bottom of text box */}
@@ -156,7 +158,7 @@ const Selectcomic = () => {
           ))
         ) : (
           <Text className="vision-font" style={{ color: "#9ca3af" }}>
-            NO COMICS FOUND FOR THIS ARTIST
+            {t('comics_user.no_comics_artist')}
           </Text>
         )}
       </Box>
@@ -185,7 +187,7 @@ const Selectcomic = () => {
               textShadow: "0 0 10px rgba(0,0,0,0.8)",
             }}
           >
-            Click on a comic to view chapters
+            {t('comics_user.click_view_chapters')}
           </Text>
         </Box>
       )}

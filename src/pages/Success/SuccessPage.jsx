@@ -3,8 +3,10 @@ import { Box, Text, Button, Stack, Center, Loader } from '@mantine/core';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import custAxios from '../../configs/axios.config';
 import { toast } from 'sonner';
+import { useTranslation } from "react-i18next";
 
 const SuccessPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -16,11 +18,11 @@ const SuccessPage = () => {
         if (sessionId) {
           await custAxios.post('/donations/verify-checkout-session', { sessionId });
           localStorage.removeItem('cartItems');
-          toast.success("Payment verified successfully!");
+          toast.success(t('success.verified_toast'));
         }
       } catch (err) {
         console.error("Verification error:", err);
-        toast.error("There was an issue verifying your payment, but it was likely successful. Please contact support if you don't receive an email.");
+        toast.error(t('success.error_toast'));
       } finally {
         setVerifying(false);
       }
@@ -55,7 +57,7 @@ const SuccessPage = () => {
         {verifying ? (
           <Stack align="center" gap="md">
             <Loader size="xl" color="#F6F4D3" />
-            <Text className="vision-font" color="#F6F4D3">VERIFYING PAYMENT...</Text>
+            <Text className="vision-font" color="#F6F4D3">{t('success.verifying')}</Text>
           </Stack>
         ) : (
           <>
@@ -81,14 +83,14 @@ const SuccessPage = () => {
               className="vision-font"
               style={{ fontSize: 28, color: '#5EEAD4', letterSpacing: '4px', marginBottom: 16 }}
             >
-              PAYMENT COMPLETE
+              {t('success.complete')}
             </Text>
 
             <Text
               className="vision-font"
               style={{ fontSize: 14, color: '#F6F4D3', opacity: 0.8, marginBottom: 8, lineHeight: 1.8 }}
             >
-              Thank you! Your transaction has been processed successfully.
+              {t('success.message')}
             </Text>
 
             {sessionId && (
@@ -96,7 +98,7 @@ const SuccessPage = () => {
                 className="vision-font"
                 style={{ fontSize: 10, color: '#8b8fa8', marginBottom: 32, letterSpacing: '1px' }}
               >
-                Session: {sessionId.slice(-12)}
+                {t('success.session', { id: sessionId.slice(-12) })}
               </Text>
             )}
 
@@ -115,7 +117,7 @@ const SuccessPage = () => {
                   borderRadius: 10,
                 }}
               >
-                BACK TO HOME
+                {t('success.back_home')}
               </Button>
               <Button
                 fullWidth
@@ -124,7 +126,7 @@ const SuccessPage = () => {
                 className="vision-font"
                 style={{ color: '#8b8fa8', fontSize: 12, letterSpacing: '1px' }}
               >
-                CONTINUE SHOPPING
+                {t('success.continue_shopping')}
               </Button>
             </Stack>
           </>

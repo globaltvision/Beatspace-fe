@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { BackButtonIcon } from "../../customIcons";
 import { BACK_NAVIGATION_MAP } from "../../configs/navigationMapping";
 import { useSettings } from "../../contexts/SettingsContext";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "../LanguageSwitcher";
 
 const COLORS = {
   primary: "#F6F4D3",
@@ -11,6 +13,7 @@ const COLORS = {
 };
 
 const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { settings } = useSettings();
@@ -78,7 +81,7 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
           <Box
             w={"fit-content"}
             role="button"
-            aria-label="Back"
+            aria-label={t('common.back')}
             onClick={handleBack}
             style={{ cursor: "pointer", flexShrink: 0 }}
             className="!scale-[0.7] md:!scale-[0.9] lg:!scale-[1.2]"
@@ -130,6 +133,7 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
           pointerEvents: "auto",
         }}
       >
+        <LanguageSwitcher />
         {suffix && suffix}
         <Box onClick={handleLogoClick} style={{ cursor: "pointer" }}>
           <Image

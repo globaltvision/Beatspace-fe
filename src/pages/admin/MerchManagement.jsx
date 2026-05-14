@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { getMerchs, createMerch, updateMerch, deleteMerch } from "../../store/actions/adminActions";
 import { toast } from "sonner";
 import ConfirmModal from "../../components/ConfirmModal";
+import { useTranslation } from "react-i18next";
 
 export default function MerchManagement() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [replaceIndex, setReplaceIndex] = useState(null);
@@ -62,11 +64,11 @@ export default function MerchManagement() {
   const handleDragOver = (e) => e.preventDefault();
   const handleUpload = async () => {
     if (!newMerch.name || !newMerch.price || newMerch.sizes.length === 0) {
-      toast.error("Please fill in all required fields (Name, Price, Sizes)");
+      toast.error(t('merch.messages.missing_fields'));
       return;
     }
     if (selectedFiles.length === 0) {
-      toast.error("Please select at least one image");
+      toast.error(t('merch.messages.missing_image'));
       return;
     }
 
@@ -84,12 +86,12 @@ export default function MerchManagement() {
     const res = await dispatch(createMerch(formData));
 
     if (res?.success) {
-      toast.success("Merch item uploaded successfully");
+      toast.success(t('merch.messages.upload_success'));
       setNewMerch({ name: "", description: "", price: 0, sizes: [] });
       setSelectedFiles([]);
       dispatch(getMerchs()); // Refresh list
     } else {
-      toast.error(res?.message || "Failed to upload merch item");
+      toast.error(res?.message || t('merch.messages.upload_failed'));
     }
   };
 
@@ -112,7 +114,7 @@ export default function MerchManagement() {
 
   const handleEditUpload = async () => {
     if (!editMerch.name || !editMerch.price || editMerch.sizes.length === 0) {
-      toast.error("Please fill in all required fields (Name, Price, Sizes)");
+      toast.error(t('merch.messages.missing_fields'));
       return;
     }
 
@@ -142,13 +144,13 @@ export default function MerchManagement() {
     const res = await dispatch(updateMerch(editMerch.id, formData));
 
     if (res?.success) {
-      toast.success("Merch item updated successfully");
+      toast.success(t('merch.messages.update_success'));
       setEditMerch({ id: null, name: "", description: "", price: 0, sizes: [] });
       setEditSelectedFiles([]);
       setEditModalOpen(false);
       dispatch(getMerchs());
     } else {
-      toast.error(res?.message || "Failed to update merch item");
+      toast.error(res?.message || t('merch.messages.update_failed'));
     }
   };
 
@@ -177,9 +179,9 @@ export default function MerchManagement() {
     if (!deleteConfirm.id) return;
     const res = await dispatch(deleteMerch(deleteConfirm.id));
     if (res?.success) {
-      toast.success("Item deleted successfully");
+      toast.success(t('merch.messages.delete_success'));
     } else {
-      toast.error(res?.message || "Failed to delete item");
+      toast.error(res?.message || t('merch.messages.delete_failed'));
     }
     setDeleteConfirm({ isOpen: false, id: null });
   };
@@ -323,9 +325,7 @@ export default function MerchManagement() {
               height={90}
             />
             <h1 className="upload-title pixel">
-              DRAG & DROP PNG/JPEG HERE
-              <br />
-              OR CLICK TO UPLOAD
+              {t('merch.upload.drag_drop')}
             </h1>
 
             <div
@@ -368,26 +368,26 @@ export default function MerchManagement() {
               hidden
             />
 
-            <button className="btn" onClick={() => document.getElementById("file-input")?.click()}>Select Files</button>
+            <button className="btn" onClick={() => document.getElementById("file-input")?.click()}>{t('merch.upload.select_files')}</button>
             {selectedFiles.length > 0 && (
               <div className="stats" style={{ fontSize: 14 }}>
-                {selectedFiles.length} file(s) selected
+                {t('merch.upload.files_selected', { count: selectedFiles.length })}
               </div>
             )}     
                                                                                                                                                                                                        
             {/* Inline form fields */}
             <div style={{ width: "100%", maxWidth: 720, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Name</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.name_label')}</span>
                 <input
                   value={newMerch.name}
                   onChange={(e) => setNewMerch((m) => ({ ...m, name: e.target.value }))}
-                  placeholder="Product name"
+                  placeholder={t('merch.upload.name_placeholder')}
                   style={{ background: "#0f1016", color: "#fff", border: "2px solid var(--tan)", borderRadius: 6, padding: "0.7rem 0.85rem", width: "100%" }}
                 />                                                                                                                                                              
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Price (€)</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.price_label')}</span>
                 <input
                   type="number"
                   min={0}
@@ -398,17 +398,17 @@ export default function MerchManagement() {
                 />                                                                                 
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)", gridColumn: "1 / -1" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Description</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.description_label')}</span>
                 <textarea
                   value={newMerch.description}
                   onChange={(e) => setNewMerch((m) => ({ ...m, description: e.target.value }))}
-                  placeholder="Enter product description"
+                  placeholder={t('merch.upload.description_placeholder')}
                   rows={3}
                   style={{ background: "#0f1016", color: "#fff", border: "2px solid var(--tan)", borderRadius: 6, padding: "0.7rem 0.85rem", width: "100%", resize: "vertical" }}
                 />
               </label>
               <div style={{ display: "grid", gap: "0.4rem", color: "var(--tan)", gridColumn: "1 / -1" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Sizes</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.sizes_label')}</span>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   {["S", "M", "L", "XL"].map((s) => (
                     <button
@@ -441,7 +441,7 @@ export default function MerchManagement() {
                 disabled={isCreatingMerch}
                 style={{ background: "var(--yellow)", color: "var(--ink)", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: 14, opacity: isCreatingMerch ? 0.7 : 1 }}
               >
-                <UploadArrowIcon /> {isCreatingMerch ? "UPLOADING..." : "UPLOAD MERCH ITEM"}
+                <UploadArrowIcon /> {isCreatingMerch ? t('merch.upload.uploading') : t('merch.upload.button')}
               </button>
             </div>
           </div>
@@ -456,10 +456,10 @@ export default function MerchManagement() {
               className="pixel inv-title"
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
             >
-              <span>MERCH INVENTORY</span>
+              <span>{t('merch.inventory.title')}</span>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 <span className="stats">
-                  Total Items: {merchItems.length} | In Stock: {inStockCount}
+                  {t('merch.inventory.stats.total_items', { count: merchItems.length })} | {t('merch.inventory.stats.in_stock', { count: inStockCount })}
                 </span>
               </div>
             </div>
@@ -473,7 +473,7 @@ export default function MerchManagement() {
               {["PREVIEW", "PRODUCT NAME", "PRICE", "SIZES", "STOCK", "ACTIONS"].map(
                 (h) => (
                   <div key={h} className="pixel head-cell">
-                    {h}
+                    {t(`merch.inventory.table.${h.toLowerCase().replace(' ', '_')}`)}
                   </div>
                 )
               )}
@@ -536,15 +536,15 @@ export default function MerchManagement() {
             <button className="modal-close" onClick={() => setViewModalOpen(false)}>
               <XIcon />
             </button>
-            <h2 className="pixel" style={{ color: "var(--yellow)", marginBottom: "1.5rem" }}>MERCH DETAILS</h2>
+            <h2 className="pixel" style={{ color: "var(--yellow)", marginBottom: "1.5rem" }}>{t('merch.modals.view_title')}</h2>
             <div style={{ display: "flex", gap: "2rem", flexDirection: "column", alignItems: "center" }}>
               <img src={viewItem.prod_image || viewItem.image} alt={viewItem.name} style={{ width: "200px", height: "200px", objectFit: "contain", background: "rgba(0,0,0,0.5)", borderRadius: "8px", padding: "1rem" }} />
               <div style={{ width: "100%", display: "grid", gap: "1rem" }}>
-                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>Name</span><div style={{ fontSize: "20px", marginTop: "0.25rem" }}>{viewItem.name}</div></div>
-                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>Price</span><div style={{ fontSize: "20px", marginTop: "0.25rem", color: "var(--cyan)" }}>€{viewItem.price}</div></div>
-                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>Sizes</span><div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>{(viewItem.sizes || []).map(s => <span className="size" key={s}>{s}</span>)}</div></div>
-                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>Stock</span><div className={`stock ${(viewItem.stock || "").toLowerCase() === "in stock" ? "in" : "out"}`} style={{ fontSize: "20px", marginTop: "0.25rem", textTransform: "capitalize" }}>{viewItem.stock}</div></div>
-                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>Description</span><div style={{ fontSize: "16px", marginTop: "0.25rem", color: "#ccc", whiteSpace: "pre-wrap" }}>{viewItem.description || "N/A"}</div></div>
+                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>{t('merch.upload.name_label')}</span><div style={{ fontSize: "20px", marginTop: "0.25rem" }}>{viewItem.name}</div></div>
+                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>{t('merch.upload.price_label')}</span><div style={{ fontSize: "20px", marginTop: "0.25rem", color: "var(--cyan)" }}>€{viewItem.price}</div></div>
+                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>{t('merch.upload.sizes_label')}</span><div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>{(viewItem.sizes || []).map(s => <span className="size" key={s}>{s}</span>)}</div></div>
+                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>{t('merch.inventory.table.stock')}</span><div className={`stock ${(viewItem.stock || "").toLowerCase() === "in stock" ? "in" : "out"}`} style={{ fontSize: "20px", marginTop: "0.25rem", textTransform: "capitalize" }}>{viewItem.stock}</div></div>
+                <div><span style={{ color: "var(--tan)", fontSize: "12px", textTransform: "uppercase", fontFamily: '"Press Start 2P"' }}>{t('merch.upload.description_label')}</span><div style={{ fontSize: "16px", marginTop: "0.25rem", color: "#ccc", whiteSpace: "pre-wrap" }}>{viewItem.description || "N/A"}</div></div>
               </div>
             </div>
           </div>
@@ -558,11 +558,11 @@ export default function MerchManagement() {
             <button className="modal-close" onClick={() => setEditModalOpen(false)}>
               <XIcon />
             </button>
-            <h2 className="pixel" style={{ color: "var(--yellow)", marginBottom: "1.5rem" }}>EDIT MERCH ITEM</h2>
+            <h2 className="pixel" style={{ color: "var(--yellow)", marginBottom: "1.5rem" }}>{t('merch.modals.edit_title')}</h2>
             
             <div style={{ display: "grid", gap: "1rem" }}>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Name</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.name_label')}</span>
                 <input
                   value={editMerch.name}
                   onChange={(e) => setEditMerch((m) => ({ ...m, name: e.target.value }))}
@@ -570,7 +570,7 @@ export default function MerchManagement() {
                 />                                                                                                                                                              
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Price (€)</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.price_label')}</span>
                 <input
                   type="number" min={0} step="0.01"
                   value={editMerch.price}
@@ -579,7 +579,7 @@ export default function MerchManagement() {
                 />                                                                                 
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Description</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.description_label')}</span>
                 <textarea
                   value={editMerch.description}
                   onChange={(e) => setEditMerch((m) => ({ ...m, description: e.target.value }))}
@@ -589,7 +589,7 @@ export default function MerchManagement() {
               </label>
 
               <div style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Sizes</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.sizes_label')}</span>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   {["S", "M", "L", "XL"].map((s) => (
                     <button
@@ -608,7 +608,7 @@ export default function MerchManagement() {
               </div>
 
               <div style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
-                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Merch Images</span>
+                <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.merch_images_label') || "Merch Images"}</span>
                 <div
                   className="icons"
                   style={{ justifyContent: "center" }}
@@ -647,7 +647,7 @@ export default function MerchManagement() {
                   hidden
                 />
                 <div style={{ textAlign: "center", color: "var(--green2)", fontSize: 12 }}>
-                  {editSelectedFiles.length} file(s) selected
+                  {t('merch.upload.files_selected', { count: editSelectedFiles.length })}
                 </div>
               </div>
 
@@ -657,7 +657,7 @@ export default function MerchManagement() {
                 disabled={isUpdatingMerch}
                 style={{ marginTop: "1rem", background: "var(--yellow)", color: "var(--ink)", display: "flex", justifyContent: "center", alignItems: "center", gap: "0.8rem", fontSize: 14, opacity: isUpdatingMerch ? 0.7 : 1 }}
               >
-                <PencilIcon /> {isUpdatingMerch ? "UPDATING..." : "SAVE CHANGES"}
+                <PencilIcon /> {isUpdatingMerch ? t('merch.modals.updating') : t('merch.modals.save_changes')}
               </button>
             </div>
           </div>
@@ -667,8 +667,8 @@ export default function MerchManagement() {
       {/* Delete Confirm Modal */}
       <ConfirmModal 
         isOpen={deleteConfirm.isOpen}
-        title="DELETE MERCH ITEM"
-        message="Are you sure you want to permanently delete this item?"
+        title={t('merch.modals.delete_title')}
+        message={t('merch.modals.delete_message')}
         onConfirm={confirmDelete}
         onCancel={() => setDeleteConfirm({ isOpen: false, id: null })}
       />

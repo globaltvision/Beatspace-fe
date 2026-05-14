@@ -23,6 +23,7 @@ import {
 } from "../../store/actions/adminActions";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 // Fulfillment status options — payment status is separate (set by Stripe)
 const FULFILLMENT_OPTIONS = [
@@ -60,6 +61,7 @@ const EyeIcon = () => (
 );
 
 const OrdersPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
   const {
@@ -85,13 +87,13 @@ const OrdersPage = () => {
     setUpdatingId(orderId);
     const res = await dispatch(updateOrderStatus(orderId, newStatus));
     if (res?.success) {
-      toast.success("Order status updated!");
+      toast.success(t('orders.messages.update_success'));
       dispatch(getOrders()); // refresh
       if (selectedOrder?._id === orderId) {
         setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
       }
     } else {
-      toast.error(res?.message || "Failed to update status");
+      toast.error(res?.message || t('orders.messages.update_failed'));
     }
     setUpdatingId(null);
   };
@@ -249,11 +251,11 @@ const OrdersPage = () => {
       {/* Header */}
       <Box className="bg-[#2F2E24] border border-[#B5B387]/30 p-6 relative overflow-hidden mb-6">
         <CornerAccents />
-        <h1 className="pixel-font text-[#F6F4D3] text-[24px] uppercase tracking-widest mb-2">
-          SALES & DONATIONS
+        <h1 className="text-[#F6F4D3] vision-font text-2xl mb-8 tracking-widest">
+          {t('orders.title')}
         </h1>
         <Text color="dimmed" size="sm" className="alexandria-font">
-          Manage your merch orders and view support artist contributions.
+          {t('orders.subtitle')}
         </Text>
       </Box>
 
@@ -286,10 +288,10 @@ const OrdersPage = () => {
         >
           <Tabs.List mb="md">
             <Tabs.Tab value="merch" className="alexandria-font">
-              MERCH ORDERS
+              {t('orders.tabs.merch')}
             </Tabs.Tab>
             <Tabs.Tab value="donations" className="alexandria-font">
-              DONATIONS
+              {t('orders.tabs.donations')}
             </Tabs.Tab>
           </Tabs.List>
 
@@ -304,15 +306,15 @@ const OrdersPage = () => {
                 <Table className="alexandria-font" style={{ color: "white" }}>
                   <Table.Thead>
                     <Table.Tr>
-                      <Table.Th style={{ color: "#F6F4D3" }}>DATE</Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>CUSTOMER</Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>ITEMS</Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>TOTAL</Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>PAYMENT</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.date')}</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.customer')}</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.items')}</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.total')}</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.payment')}</Table.Th>
                       <Table.Th style={{ color: "#F6F4D3" }}>
-                        FULFILLMENT
+                        {t('orders.table.fulfillment')}
                       </Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>VIEW</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.view')}</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody>{merchRows}</Table.Tbody>
@@ -325,7 +327,7 @@ const OrdersPage = () => {
                     className="pixel-font"
                     style={{ fontSize: 10 }}
                   >
-                    No merch orders found.
+                    {t('orders.table.no_orders')}
                   </Text>
                 )}
               </ScrollArea>
@@ -343,12 +345,12 @@ const OrdersPage = () => {
                 <Table className="alexandria-font" style={{ color: "white" }}>
                   <Table.Thead>
                     <Table.Tr>
-                      <Table.Th style={{ color: "#F6F4D3" }}>DATE</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.date')}</Table.Th>
                       <Table.Th style={{ color: "#F6F4D3" }}>
-                        ARTIST SUPPORTER
+                        {t('orders.table.artist_supporter')}
                       </Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>AMOUNT</Table.Th>
-                      <Table.Th style={{ color: "#F6F4D3" }}>STATUS</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.amount')}</Table.Th>
+                      <Table.Th style={{ color: "#F6F4D3" }}>{t('orders.table.status')}</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody>{donationRows}</Table.Tbody>
@@ -361,7 +363,7 @@ const OrdersPage = () => {
                     className="pixel-font"
                     style={{ fontSize: 10 }}
                   >
-                    No donations found.
+                    {t('orders.table.no_donations')}
                   </Text>
                 )}
               </ScrollArea>
@@ -403,7 +405,7 @@ const OrdersPage = () => {
                 marginBottom: 4,
               }}
             >
-              Order Details
+              {t('orders.details.title')}
             </Text>
             <Text
               className="alexandria-font"
@@ -427,7 +429,7 @@ const OrdersPage = () => {
                 textTransform: "uppercase",
               }}
             >
-              Customer Info
+              {t('orders.details.customer_info')}
             </Text>
             <Box
               style={{
@@ -468,7 +470,7 @@ const OrdersPage = () => {
                 textTransform: "uppercase",
               }}
             >
-              Shipping Address
+              {t('orders.details.shipping_address')}
             </Text>
             <Box
               style={{
@@ -498,7 +500,7 @@ const OrdersPage = () => {
                 textTransform: "uppercase",
               }}
             >
-              Order Items
+              {t('orders.details.order_items')}
             </Text>
             <Stack gap="xs" mb="md">
               {Array.isArray(selectedOrder.items) &&
@@ -551,7 +553,7 @@ const OrdersPage = () => {
                   className="alexandria-font"
                   style={{ color: "#F6F4D3", fontSize: 13, fontWeight: 700 }}
                 >
-                  Total
+                  {t('orders.details.total')}
                 </Text>
                 <Text
                   className="alexandria-font"
@@ -576,7 +578,7 @@ const OrdersPage = () => {
                 textTransform: "uppercase",
               }}
             >
-              Payment Status
+              {t('orders.details.payment_status')}
             </Text>
             <Box style={{ marginBottom: 14 }}>
               <Badge
@@ -605,7 +607,7 @@ const OrdersPage = () => {
                 textTransform: "uppercase",
               }}
             >
-              Fulfillment Status
+              {t('orders.details.fulfillment_status')}
             </Text>
             <Select
               value={
@@ -646,10 +648,7 @@ const OrdersPage = () => {
               ta="center"
               style={{ color: "#8b8fa8", fontSize: 11, marginTop: 16 }}
             >
-              Placed:{" "}
-              {selectedOrder.createdAt
-                ? dayjs(selectedOrder.createdAt).format("DD MMM YYYY · HH:mm")
-                : "N/A"}
+              {t('orders.details.placed', { date: dayjs(selectedOrder.createdAt).format("DD MMM YYYY · HH:mm") })}
             </Text>
 
             {/* Close button */}
@@ -668,7 +667,7 @@ const OrdersPage = () => {
                 cursor: "pointer",
               }}
             >
-              Close
+              {t('orders.details.close')}
             </button>
           </Box>
         )}

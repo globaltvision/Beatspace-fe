@@ -3,8 +3,10 @@ import { Box, Text, Image } from "@mantine/core";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { BookreadIcon, SliderIcon } from "../../customIcons";
 import UserHeader from "../../components/common/UserHeader";
+import { useTranslation } from "react-i18next";
 
 const Comicview = () => {
+  const { t } = useTranslation();
   const { chapterNumber } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,7 +47,7 @@ const Comicview = () => {
         }}
       >
         <Text className="vision-font" style={{ color: "#F6F4D3" }}>
-          COMIC OR CHAPTER NOT FOUND
+          {t('comics_user.not_found')}
         </Text>
       </Box>
     );
@@ -54,7 +56,7 @@ const Comicview = () => {
   return (
     <>
       <UserHeader
-        title="COMICS"
+        title={t('comics_user.title')}
         subtitle={`${comic.title} - ${chapter.chapter_title}`}
       />
 
