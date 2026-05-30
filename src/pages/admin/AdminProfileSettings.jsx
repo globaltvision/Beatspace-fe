@@ -1040,7 +1040,7 @@ const Settings = () => {
                 className="flex flex-col sm:flex-row gap-4 items-end"
               >
                 <div className="flex-1 w-full">
-                  <label className="text-[#CBC895] text-xs font-bold mb-1 block">
+                  <label className="text-[#CBC895] text-xs font-bold mb-1 block alexandria-font">
                     {activeType === "genre" ? t('settings.categories.genre_name').toUpperCase() : t('settings.categories.category_name').toUpperCase()}
                   </label>
                   <input
@@ -1052,7 +1052,7 @@ const Settings = () => {
                         name: e.target.value,
                       })
                     }
-                    className="w-full bg-[#131319] border border-[#CBC895] px-3 py-2 text-white"
+                    className="w-full bg-[#131319] border border-[#CBC895] px-3 py-2 text-white alexandria-font"
                     placeholder={
                       activeType === "genre"
                         ? t('settings.categories.placeholders.genre')

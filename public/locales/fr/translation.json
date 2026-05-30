@@ -179,7 +179,7 @@
       "selected": "SÉLECTIONNÉ : {{name}}",
       "name_label": "Nom du Beat",
       "name_placeholder": "Beat sans titre",
-      "genre_label": "Genre (Enum)",
+      "genre_label": "Genre",
       "category_label": "Catégorie",
       "tags_label": "Tags de genre (séparés par des virgules)",
       "tags_placeholder": "trap, dark, melodic",
