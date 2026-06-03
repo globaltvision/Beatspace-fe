@@ -68,7 +68,7 @@ const AssetUpload = memo(({ onFileUpload }) => {
         <h1 className="text-[rgba(223,215,79,1)] text-lg sm:text-xl lg:text-[23px] font-normal leading-tight">
           {t('assets.title')}
         </h1>
-        <button className="bg-[rgba(203,200,149,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] items-center gap-2 sm:gap-2.5 text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-lg hover:bg-[rgba(213,210,159,1)] transition-colors">
+        <button className="bg-[rgba(203,200,149,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] items-center gap-2 sm:gap-2.5 text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-none hover:bg-[rgba(213,210,159,1)] transition-colors">
           <img
             src="https://api.builder.io/api/v1/image/assets/8194e458f3d34aa4833822b7adb041ea/9befb545c1f7036df55ef6ec8d09750635d056d2?placeholderIfAbsent=true"
             alt="Add icon"
@@ -102,7 +102,7 @@ const AssetUpload = memo(({ onFileUpload }) => {
           </div>
           <button 
             onClick={handleFileSelect}
-            className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] w-full sm:w-auto sm:min-w-[180px] lg:w-[202px] items-center gap-2 sm:gap-[5px] text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center mt-8 sm:mt-12 lg:mt-[60px] px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-lg hover:bg-[rgba(231,219,187,1)] transition-colors"
+            className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_2px_rgba(0,0,0,1)] flex min-h-[45px] sm:min-h-[53px] w-full sm:w-auto sm:min-w-[180px] lg:w-[202px] items-center gap-2 sm:gap-[5px] text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose justify-center mt-8 sm:mt-12 lg:mt-[60px] px-3 sm:px-[13px] py-2 sm:py-[13px] rounded-none hover:bg-[rgba(231,219,187,1)] transition-colors"
             type="button"
             aria-label={t('assets.select_files')}
           >
@@ -139,7 +139,7 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
 
   return (
     <section className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-5 text-base sm:text-lg text-[rgba(25,26,34,1)] font-semibold leading-loose mt-4 sm:mt-[18px]">
-      <div className="bg-[rgba(156,150,58,1)] flex flex-col font-medium justify-center flex-1 min-w-0 px-4 sm:px-6 lg:px-[27px] py-3 sm:py-4 lg:py-[18px] rounded-lg">
+      <div className="bg-[rgba(156,150,58,1)] flex flex-col font-medium justify-center flex-1 min-w-0 px-4 sm:px-6 lg:px-[27px] py-3 sm:py-4 lg:py-[18px] rounded-none">
         <label htmlFor="asset-search" className="sr-only">{t('assets.search_placeholder')}</label>
         <input
           id="asset-search"
@@ -152,7 +152,7 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
         />
       </div>
       
-      <div className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_0px_rgba(140,129,0,1)] flex min-h-[50px] sm:min-h-[60px] items-center gap-3 sm:gap-[18px] justify-center w-full sm:w-auto sm:min-w-[180px] lg:w-[201px] px-3 sm:px-[13px] py-3 sm:py-4 rounded-lg relative">
+      <div className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_0px_rgba(140,129,0,1)] flex min-h-[50px] sm:min-h-[60px] items-center gap-3 sm:gap-[18px] justify-center w-full sm:w-auto sm:min-w-[180px] lg:w-[201px] px-3 sm:px-[13px] py-3 sm:py-4 rounded-none relative">
         <select 
           onChange={(e) => onTypeFilter(e.target.value)}
           className="bg-transparent border-none outline-none text-[rgba(25,26,34,1)] font-semibold cursor-pointer appearance-none w-full text-center pr-6"
@@ -168,7 +168,7 @@ const AssetFilters = memo(({ onSearchChange, onTypeFilter, onCategoryFilter }) =
         </div>
       </div>
       
-      <div className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_0px_rgba(140,129,0,1)] flex min-h-[50px] sm:min-h-[60px] items-center gap-3 sm:gap-[18px] justify-center w-full sm:w-auto sm:min-w-[180px] lg:w-[201px] px-3 sm:px-[13px] py-3 sm:py-4 rounded-lg relative">
+      <div className="bg-[rgba(221,209,177,1)] shadow-[0px_7px_0px_rgba(140,129,0,1)] flex min-h-[50px] sm:min-h-[60px] items-center gap-3 sm:gap-[18px] justify-center w-full sm:w-auto sm:min-w-[180px] lg:w-[201px] px-3 sm:px-[13px] py-3 sm:py-4 rounded-none relative">
         <select 
           onChange={(e) => onCategoryFilter(e.target.value)}
           className="bg-transparent border-none outline-none text-[rgba(25,26,34,1)] font-semibold cursor-pointer appearance-none w-full text-center pr-6"
@@ -263,7 +263,7 @@ const AssetRow = memo(({ asset, onAction }) => {
         </button>
         
         {isMenuOpen && (
-          <div className="absolute right-0 top-full mt-1 bg-[rgba(19,19,25,1)] border border-[rgba(203,200,149,1)] rounded-lg shadow-lg z-10 min-w-[120px]">
+          <div className="absolute right-0 top-full mt-1 bg-[rgba(19,19,25,1)] border border-[rgba(203,200,149,1)] rounded-none shadow-lg z-10 min-w-[120px]">
             <button
               onClick={() => handleAction('download')}
               className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[rgba(197,194,116,0.16)] transition-colors first:rounded-t-lg"

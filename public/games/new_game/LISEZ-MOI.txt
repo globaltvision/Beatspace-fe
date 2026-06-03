@@ -1,0 +1,31 @@
+ETERNAL RUN — version web complète (Phaser 3)
+=============================================
+
+LANCER :
+    bash serve.sh
+puis ouvrir http://localhost:8000
+
+(Le serveur local est obligatoire : le navigateur bloque le chargement
+des cartes/images en file:// quand on ouvre index.html en double-clic.)
+
+COMMANDES :
+    Déplacement      : flèches  ou  Z Q S D
+    Parler / valider : Espace
+    Les portes te font changer de carte automatiquement.
+
+CONTENU :
+    - Les 19 cartes converties depuis Tiled (tes vraies tuiles)
+    - Tous les portails fonctionnels (jeu parcourable de bout en bout)
+    - Joueur animé + collisions + caméra zoom x2 (comme pyscroll)
+    - PNJ avec dialogues ; les "DiskGiver" te donnent un morceau de CD
+      (affiché en haut à droite, conservé d'une carte à l'autre)
+    - Musique par carte
+
+LIMITES CONNUES (sur le même modèle, à compléter) :
+    - Les QCM / champs de saisie de certains dialogues (Boss) affichent
+      seulement la 1re ligne du choix pour l'instant.
+    - La séquence de fin (image + reset) et les pancartes ne sont pas
+      encore portées.
+
+REGÉNÉRER / AJOUTER DU CONTENU :
+    Le build se relance avec build_web.py (à la racine du projet Pygame).

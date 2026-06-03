@@ -6,6 +6,8 @@ import ListOfHorus from "../pages/start/list-of-horus";
 import Beats from "../pages/Beats/Beats";
 import BeatPlay from "../pages/Beats/beatplay";
 import Games from "../pages/Games/Games";
+import EternalRunPage from "../pages/Games/EternalRunPage";
+import GamePlayer from "../pages/Games/GamePlayer";
 import Comics from "../pages/Comics/comics";
 import Selectcomic from "../pages/Comics/Selectcomic";
 import Selectchapter from "../pages/Comics/Selectchapter";
@@ -176,6 +178,8 @@ const Router = () => {
         <Route index element={<UploadAssets />} />
       </Route>
 
+      <Route path="/games/play" element={<GamePlayer />} />
+      <Route path="/games/eternal-run" element={<EternalRunPage />} />
       <Route path="*" element={<div />} />
     </Routes>
   );

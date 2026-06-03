@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eternal Run — Web</title>
+  <style>
+    @font-face { font-family: 'DialogFont'; src: url('assets/ui/dialog_font.ttf'); }
+    html, body { margin: 0; height: 100%; background: #11131a;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: system-ui, sans-serif; color: #c7cad1; }
+    #game { border: 3px solid #2a2e3a; border-radius: 6px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.5); image-rendering: pixelated; }
+    #hint { margin-top: 14px; font-size: 13px; opacity: .7; }
+    #hint b { color: #8fb7d6; }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="hint">Déplacement <b>flèches</b> / <b>ZQSD</b> · Parler / valider <b>Espace</b> · les portes changent de carte</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
+  <script src="js/dialog.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

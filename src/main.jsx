@@ -5,7 +5,9 @@ import "./index.css";
 import App from "./App.jsx";
 import { theme } from "./configs/theme.config.js";
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
 import { Provider } from "react-redux";
 import "mantine-react-table/styles.css";
@@ -26,6 +28,7 @@ createRoot(document.getElementById("root")).render(
       </div>
       <div className="app-content">  
       <MantineProvider theme={theme}>
+        <Notifications position="bottom-right" />
         <QueryProvider>
           <SettingsProvider>
             <App />

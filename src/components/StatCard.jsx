@@ -10,7 +10,7 @@ const StatCard = ({
 }) => {
   return (
     <div
-      className={`relative bg-[#2F2E24] border border-[#B5B387]/30 p-5 min-h-[160px] overflow-hidden ${className}`}
+      className={`relative bg-[#2F2E24] border-0 border  border-[#B5B387]/30 p-2 min-h-[90px] overflow-hidden rounded-none ${className}`}
     >
       {/* Corner Accents */}
       <div className="absolute top-0 left-0 w-2 h-2 bg-[#F6F4D3] z-20"></div>
@@ -19,7 +19,7 @@ const StatCard = ({
       <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#F6F4D3] z-20"></div>
 
       {/* Content */}
-      <div className="relative z-10 alexandria-font h-full flex flex-col justify-between">
+      <div className="relative pixel alexandria-font  z-10 h-full flex flex-col justify-between">
         <div className="flex justify-between items-start">
           <div className="p-2 border border-[#F6F4D3]/20">
             <Icon className="text-[#F6F4D3] text-xl" />

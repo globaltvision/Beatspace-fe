@@ -88,7 +88,7 @@ const SortablePage = ({ page, index, onSetThumbnail, onRemove, onPreview }) => {
     <Box
       ref={setNodeRef}
       style={style}
-      className="relative group aspect-[3/4] bg-[#191A22] border border-[#C1BE91]/30 rounded-lg overflow-hidden flex flex-col"
+      className="relative group aspect-[3/4] bg-[#191A22] border border-[#C1BE91]/30 rounded-none overflow-hidden flex flex-col"
     >
       {/* Page Image */}
       <Box
@@ -275,7 +275,7 @@ const PagePreviewModal = ({
 const ComicCard = ({ comic, onEdit, onDelete }) => {
   const { t } = useTranslation();
   return (
-    <article className="w-full flex flex-col bg-[#C0BC75] border border-[#C0BC75] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 alexandria-font">
+    <article className="w-full flex flex-col bg-[#C0BC75] border border-[#C0BC75] rounded-none overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* Cover Image Container */}
       <div className="relative w-full aspect-[3/4] overflow-hidden bg-gray-900">
         <img
@@ -346,7 +346,7 @@ const EditButton = ({ onClick }) => {
   return (
   <button
     onClick={onClick}
-    className="alexandria-font flex items-center justify-center gap-2 px-3 py-2 min-w-[100px] h-10 rounded-md bg-[#CBC895] shadow-[0_4px_1px_0_#000] hover:bg-[#B8B482] transition-all"
+    className="flex items-center justify-center gap-2 px-3 py-2 min-w-[100px] h-10 rounded-none bg-[#CBC895] shadow-[0_4px_1px_0_#000] hover:bg-[#B8B482] transition-all"
   >
     <IconSettings size={20} color="#191A22" />
     <span className="text-[#191A22] text-sm font-bold uppercase">{t('comics.edit')}</span>
@@ -689,7 +689,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     value={formData.title}
                     onChange={handleInputChange}
                     placeholder={t('comics.form.title_placeholder')}
-                    className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font"
+                    className="w-full h-12 rounded-none bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10"
                   />
                 </Box>
                 <Box>
@@ -701,7 +701,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                     value={formData.author_name}
                     onChange={handleInputChange}
                     placeholder={t('comics.form.artist_placeholder')}
-                    className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font"
+                    className="w-full h-12 rounded-none bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10"
                   />
                 </Box>
               </Group>
@@ -721,7 +721,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   value={formData.chapter_title}
                   onChange={handleInputChange}
                   placeholder={t('comics.form.chapter_placeholder')}
-                  className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font font-bold"
+                  className="w-full h-12 rounded-none bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 font-bold"
                 />
               </Box>
 
@@ -741,7 +741,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   onChange={handleInputChange}
                   rows={4}
                   placeholder={t('comics.form.description_placeholder')}
-                  className="w-full rounded-lg bg-[#191A22] text-[#F6F4D3] p-4 outline-none border border-white/10 resize-none alexandria-font font-bold"
+                  className="w-full rounded-none bg-[#191A22] text-[#F6F4D3] p-4 outline-none border border-white/10 resize-none font-bold"
                 />
               </Box>
 
@@ -759,7 +759,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="w-full h-12 rounded-lg bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 alexandria-font font-bold"
+                  className="w-full h-12 rounded-none bg-[#191A22] text-[#F6F4D3] px-4 outline-none border border-white/10 font-bold"
                 >
                   <option value="active">{t('comics.form.active')}</option>
                   <option value="inactive">{t('comics.form.inactive')}</option>
@@ -771,7 +771,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
           <Tabs.Panel value="media">
             <Box className="space-y-6">
               {/* Cover Upload */}
-              <Box className="p-4 bg-[#191A22] rounded-lg border border-dashed border-[#C1BE91]">
+              <Box className="p-4 bg-[#191A22] rounded-none border border-dashed border-[#C1BE91]">
                 <Text
                   color="#F6F4D3"
                   size="sm"
@@ -841,7 +841,7 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
                   />
                 </Group>
 
-                <Box className="bg-[#191A22] p-4 rounded-lg min-h-[300px]">
+                <Box className="bg-[#191A22] p-4 rounded-none min-h-[300px]">
                   <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}

@@ -264,7 +264,7 @@ const Merch = () => {
                     {t('merch_user.cart.size', { size: cartItem.selectedSize })}
                   </Text>
                   
-                  <Flex align="center" justify="space-between" className="w-full mt-2 bg-[#1a1b1e] p-2 rounded-lg border border-[#333]">
+                  <Flex align="center" justify="space-between" className="w-full mt-2 bg-[#1a1b1e] p-2 rounded-none border border-[#333]">
                     <Text color="#5EEAD4" weight={900} className="vision-font" size="lg">
                       €{cartItem.price}
                     </Text>

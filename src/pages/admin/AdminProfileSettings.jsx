@@ -1210,7 +1210,7 @@ const Settings = () => {
               <button
                 onClick={handleExportBackup}
                 disabled={isExporting}
-                className="flex w-full alexandria-font sm:w-auto sm:min-w-[200px] lg:w-[246px] h-12 sm:h-14 lg:h-[53px] justify-center items-center gap-2 sm:gap-2.5 shadow-[0_7px_2px_0_#000] bg-[#CBC895] px-3 sm:px-4 lg:px-[13px] py-3 sm:py-3.5 rounded-lg hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
+                className="flex w-full sm:w-auto sm:min-w-[200px] lg:w-[246px] h-12 sm:h-14 lg:h-[53px] justify-center items-center gap-2 sm:gap-2.5 shadow-[0_7px_2px_0_#000] bg-[#CBC895] px-3 sm:px-4 lg:px-[13px] py-3 sm:py-3.5 rounded-none hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
                 aria-describedby="export-description"
               >
                 <svg
@@ -1262,7 +1262,7 @@ const Settings = () => {
               <button
                 onClick={handleResetSettings}
                 disabled={isResetting}
-                className="flex w-full alexandria-font sm:w-auto sm:min-w-[200px] lg:w-[246px] h-12 sm:h-14 lg:h-[53px] justify-center items-center gap-2 sm:gap-2.5 shadow-[0_7px_2px_0_#000] bg-[#CBC895] px-3 sm:px-4 lg:px-[13px] py-3 sm:py-3.5 rounded-lg hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
+                className="flex w-full sm:w-auto sm:min-w-[200px] lg:w-[246px] h-12 sm:h-14 lg:h-[53px] justify-center items-center gap-2 sm:gap-2.5 shadow-[0_7px_2px_0_#000] bg-[#CBC895] px-3 sm:px-4 lg:px-[13px] py-3 sm:py-3.5 rounded-none hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
                 aria-describedby="reset-description"
               >
                 <svg
