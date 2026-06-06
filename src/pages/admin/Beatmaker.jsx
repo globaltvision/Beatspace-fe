@@ -9,6 +9,7 @@ import { playBeatAction } from "../../store/actions/beatActions";
 import ConfirmModal from "../../components/ConfirmModal";
 import CategoryAPI from "../../services/category.service";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const AudioVisualizer = ({ isDark }) => (
   <div className="flex items-end gap-[2px] h-4 mb-1">
@@ -35,6 +36,13 @@ const getBeatGenres = (beat) => {
   return rawGenres.map((genre) => genre.trim()).filter(Boolean);
 };
 
+const normalizeGenrePayload = (genre) => {
+  if (Array.isArray(genre)) {
+    return genre.join(",");
+  }
+  return genre || "";
+};
+
 const GenreMultiSelect = ({
   genres,
   value,
@@ -43,6 +51,18 @@ const GenreMultiSelect = ({
   label,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleGenre = (genreName) => {
     const nextGenres = value.includes(genreName)
@@ -53,7 +73,7 @@ const GenreMultiSelect = ({
   };
 
   return (
-    <div className="space-y-1 relative">
+    <div className="space-y-1 relative" ref={dropdownRef}>
       <label className={labelClassName}>{label}</label>
       <button
         type="button"
@@ -195,7 +215,7 @@ const BeatRow = ({
             className={`text-[10px] lg:text-xs font-bold ${isPlaying ? "text-black opacity-80" : "text-[#D4D4B0] opacity-80"}`}
             style={{ fontFamily: "monospace" }}
           >
-            Category:{" "}
+            {t('beatmaker.repository.table.artist_name_label')}: {" "}
             {beat.category?.toUpperCase().replace("_", " ") || "SAPHIRE"}
           </div>
           <div className="flex items-center gap-2 flex-wrap">
@@ -333,6 +353,7 @@ const Beat = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All Genres");
   const [showGenreDropdown, setShowGenreDropdown] = useState(false);
+  const genreFilterRef = useRef(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
@@ -362,6 +383,23 @@ const Beat = () => {
     };
     fetchSelectOptions();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (genreFilterRef.current && !genreFilterRef.current.contains(event.target)) {
+        setShowGenreDropdown(false);
+      }
+    };
+
+    if (showGenreDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showGenreDropdown]);
+
   const currentlyPlayingIdRef = useRef(currentlyPlayingId);
   useEffect(() => {
     currentlyPlayingIdRef.current = currentlyPlayingId;
@@ -578,9 +616,7 @@ const Beat = () => {
     const formData = new FormData();
     formData.append("name", newBeatForm.name);
     formData.append("beat", newBeatForm.beat);
-    newBeatForm.genre.forEach((genre) => {
-      formData.append("genre", genre);
-    });
+    formData.append("genre", normalizeGenrePayload(newBeatForm.genre));
     formData.append("category", newBeatForm.category);
 
     const res = await addBeat(formData);
@@ -659,9 +695,7 @@ const Beat = () => {
 
     const formData = new FormData();
     formData.append("name", editBeatForm.name);
-    editBeatForm.genre.forEach((genre) => {
-      formData.append("genre", genre);
-    });
+    formData.append("genre", normalizeGenrePayload(editBeatForm.genre));
     formData.append("category", editBeatForm.category);
 
     const res = await editBeat(currentEditId, formData);
@@ -888,7 +922,7 @@ const Beat = () => {
             style={{ fontFamily: "monospace" }}
           />
         </div>
-        <div className="relative w-full lg:w-64">
+        <div className="relative w-full lg:w-64" ref={genreFilterRef}>
           <button
             onClick={() => setShowGenreDropdown(!showGenreDropdown)}
             className="w-full h-16 bg-[#D4D4B0] text-[#191A22] font-black uppercase flex items-center justify-between px-6 border-b-4 border-black active:translate-y-1 active:border-b-0 transition-all"

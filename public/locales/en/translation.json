@@ -180,7 +180,7 @@
       "name_label": "Beat Name",
       "name_placeholder": "Untitled Beat",
       "genre_label": "Genre",
-      "category_label": "Category",
+      "category_label": "Artist Name",
       "tags_label": "Genre Tags (comma separated)",
       "tags_placeholder": "trap, dark, melodic",
       "button": "UPLOAD BEAT",

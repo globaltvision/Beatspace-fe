@@ -198,7 +198,8 @@
       },
       "table": {
         "name": "NOM / ARTISTE",
-        "genre_category": "GENRE / CATÉGORIE",
+        "genre_category": "GENRE / NOM DE L'ARTISTE",
+        "artist_name_label": "Nom de l'artiste",
         "plays": "ÉCOUTES",
         "downloads": "TÉLÉCHARGEMENTS",
         "donations": "DONS",

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import UserHeader from "../../components/common/UserHeader";
+import { cartIcon } from "../../customIcons";
 import { useTranslation } from "react-i18next";
 
 const ShopList = () => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState("shirts");
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
   const menuItems = ["shirts"];
@@ -26,9 +28,41 @@ const ShopList = () => {
     // Selection stays on the last hovered item
   };
 
+  useEffect(() => {
+    const saved = localStorage.getItem("cartItems");
+    const items = saved ? JSON.parse(saved) : [];
+    setCartCount(Array.isArray(items) ? items.length : 0);
+  }, []);
+
   return (
     <>
-      <UserHeader title={t('shop_page.title')} />
+      <UserHeader
+        title={t('shop_page.title')}
+        suffix={
+          <Box
+            style={{ cursor: 'pointer', position: 'relative' }}
+            onClick={() => navigate('/merch')}
+          >
+            {cartIcon()}
+            {cartCount > 0 && (
+              <span style={{
+                position: 'absolute',
+                top: '-0.4rem',
+                right: '-0.5rem',
+                background: '#e11d48',
+                color: '#fff',
+                borderRadius: '999px',
+                padding: '0.1rem 0.45rem',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                lineHeight: 1,
+              }}>
+                {cartCount}
+              </span>
+            )}
+          </Box>
+        }
+      />
 
       <Box
         style={{

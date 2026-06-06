@@ -180,7 +180,7 @@
       "name_label": "Beat Name",
       "name_placeholder": "Untitled Beat",
       "genre_label": "Genre",
-      "category_label": "Category",
+      "category_label": "Artist Name",
       "button": "UPLOAD BEAT",
       "uploading": "UPLOADING..."
     },
@@ -198,7 +198,8 @@
       },
       "table": {
         "name": "NAME / ARTIST",
-        "genre_category": "GENRE / CATEGORY",
+        "genre_category": "GENRE / ARTIST NAME",
+        "artist_name_label": "Artist Name",
         "plays": "PLAYS",
         "downloads": "DOWNLOADS",
         "donations": "DONATIONS",
