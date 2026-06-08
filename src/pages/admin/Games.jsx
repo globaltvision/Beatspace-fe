@@ -36,6 +36,7 @@ const EMPTY_FORM = {
   image: "",
   launch_url: "",
   status: true,
+  imageFit: "contain",
 };
 
 const INPUT_STYLES = {
@@ -159,6 +160,7 @@ export default function Games() {
       image: game.image || game.image_url || "",
       launch_url: game.launch_url || game.launchUrl || "",
       status: normalizeStatus(game.status),
+      imageFit: game.imageFit || "contain",
     });
     setImageFile(null);
     setModalOpen(true);
@@ -414,17 +416,31 @@ export default function Games() {
                 <Text size="xs" mt={4} style={{ color: "#CBC895" }}>Uploading…</Text>
               )}
               {!imageUploading && form.image && (
-                <div style={{ marginTop: "0.5rem" }}>
-                  <Image
-                    src={form.image}
-                    alt="Thumbnail preview"
-                    radius="sm"
-                    h={80}
-                    w="auto"
-                    fit="contain"
-                    style={{ border: "1px solid #6b6b3a", borderRadius: 6, background: "#1a1c10" }}
+                <>
+                  <Select
+                    label="Image fit"
+                    placeholder="Choose how the thumbnail is displayed"
+                    data={[
+                      { value: "contain", label: "Fit full image (preserve borders)" },
+                      { value: "cover", label: "Fill card (crop edges)" },
+                    ]}
+                    value={form.imageFit}
+                    onChange={(v) => setForm((c) => ({ ...c, imageFit: v || "contain" }))}
+                    styles={INPUT_STYLES}
+                    mt="sm"
                   />
-                </div>
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <Image
+                      src={form.image}
+                      alt="Thumbnail preview"
+                      radius="sm"
+                      h={80}
+                      w="auto"
+                      fit={form.imageFit}
+                      style={{ border: "1px solid #6b6b3a", borderRadius: 6, background: "#1a1c10" }}
+                    />
+                  </div>
+                </>
               )}
             </div>
 

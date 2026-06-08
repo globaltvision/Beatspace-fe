@@ -124,18 +124,20 @@ const Games = () => {
                     }}
                   >
                     {/* ── thumbnail ── */}
-                    <div style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden", background: "#060d24" }}>
-                      {game.image ? (
-                        <img
-                          src={game.image}
-                          alt={game.name}
-                          style={{
-                            width: "100%", height: "100%", objectFit: "cover",
-                            transition: "transform 0.45s ease",
-                            transform: isHovered ? "scale(1.07)" : "scale(1)",
-                          }}
-                        />
-                      ) : (
+                    <div style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden", background: "#fff", borderRadius: "20px", padding: "8px" }}>
+                      <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", background: "#fff" }}>
+                        {game.image ? (
+                          <img
+                            src={game.image}
+                            alt={game.name}
+                            style={{
+                              width: "100%", height: "100%", objectFit: "contain",
+                              transition: "transform 0.45s ease",
+                              transform: isHovered ? "scale(1.02)" : "scale(1)",
+                              background: "#fff",
+                            }}
+                          />
+                        ) : (
                         <div style={{
                           width: "100%", height: "100%",
                           display: "flex", alignItems: "center", justifyContent: "center",
@@ -159,6 +161,7 @@ const Games = () => {
                         </span>
                       </div> */}
                     </div>
+                  </div>
 
                     {/* ── card body ── */}
                     <div style={{ padding: "18px 20px 20px", display: "flex", flexDirection: "column", flex: 1, gap: "8px" }}>
