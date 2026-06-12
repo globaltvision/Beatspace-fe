@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Box, Text } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserHeader from "../../components/common/UserHeader";
@@ -103,7 +103,14 @@ const SelectChapter = () => {
   const [hoveredChapter, setHoveredChapter] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const chapterListRef = useRef(null);
   const comic = location.state?.comic;
+
+  const scrollChapters = (dir) => {
+    if (chapterListRef.current) {
+      chapterListRef.current.scrollBy({ top: dir * 120, behavior: "smooth" });
+    }
+  };
 
   if (!comic) {
     return (
@@ -170,20 +177,66 @@ const SelectChapter = () => {
               gap: "1.25rem",
             }}
           >
-            {/* Thumbnail */}
+            {/* Thumbnail + scroll arrows */}
             {(comic.thumbnailUrl || comic.image) && (
-              <img
-                src={comic.thumbnailUrl || comic.image}
-                alt={comic.title}
-                style={{
-                  width: "80px",
-                  height: "110px",
-                  objectFit: "cover",
-                  border: `2px solid ${COLORS.accent}`,
-                  flexShrink: 0,
-                }}
-                className="max-sm:!w-[60px] max-sm:!h-[85px] min-lg:!w-[110px] min-lg:!h-[150px]"
-              />
+              <Box style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                {/* Up arrow */}
+                <button
+                  onClick={() => scrollChapters(-1)}
+                  style={{
+                    background: "transparent",
+                    border: `1px solid ${COLORS.accent}`,
+                    color: COLORS.accent,
+                    width: "28px",
+                    height: "24px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "14px",
+                    borderRadius: "3px",
+                  }}
+                >
+                  ▲
+                </button>
+
+                <img
+                  src={comic.thumbnailUrl || comic.image}
+                  alt={comic.title}
+                  onClick={() => handleChapterClick(1)}
+                  style={{
+                    width: "80px",
+                    height: "110px",
+                    objectFit: "cover",
+                    border: `2px solid ${COLORS.accent}`,
+                    cursor: "pointer",
+                    transition: "opacity 0.2s",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.opacity = "0.75")}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+                  className="max-sm:!w-[60px] max-sm:!h-[85px] min-lg:!w-[110px] min-lg:!h-[150px]"
+                />
+
+                {/* Down arrow */}
+                <button
+                  onClick={() => scrollChapters(1)}
+                  style={{
+                    background: "transparent",
+                    border: `1px solid ${COLORS.accent}`,
+                    color: COLORS.accent,
+                    width: "28px",
+                    height: "24px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "14px",
+                    borderRadius: "3px",
+                  }}
+                >
+                  ▼
+                </button>
+              </Box>
             )}
 
             {/* Title & Author */}
@@ -215,6 +268,7 @@ const SelectChapter = () => {
 
           {/* Chapter List */}
           <Box
+            ref={chapterListRef}
             style={{
               display: "flex",
               flexDirection: "column",

@@ -174,19 +174,38 @@ const Merch = () => {
                     </Text>
 
                     <Button
-                      className="p-2 hover:scale-110 transition-all duration-300 vision-font !text-lg"
+                      className="hover:scale-110 transition-all duration-300 vision-font !text-lg"
                       onClick={() => navigate("/buyshirt", { state: { item } })}
                       bg={"#000"}
                       c={"#FFF"}
                       style={{
                         height: "auto",
+                        minHeight: "52px",
+                        minWidth: "160px",
+                        padding: "12px 28px",
                         border: "2px solid #F6F4D3",
                         borderRadius: "10px",
                         boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
+                        fontSize: "1.1rem",
                       }}
                     >
                       {t('merch_user.buy', { price: item.price })}
                     </Button>
+
+                    {item.description && (
+                      <Text
+                        style={{
+                          color: "#9ca3af",
+                          textAlign: "center",
+                          fontSize: "0.82rem",
+                          maxWidth: "240px",
+                          lineHeight: 1.5,
+                        }}
+                        className="vision-font"
+                      >
+                        {item.description}
+                      </Text>
+                    )}
                   </Box>
                 </Flex>
               ))}

@@ -8,30 +8,35 @@ const GamePlayer = () => {
   const url = searchParams.get("url");
 
   const dispatchGameKeyEvent = (type, key, code, keyCode) => {
-    const targetWindow = iframeRef.current?.contentWindow;
-    if (!targetWindow) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
 
-    try {
-      const event = new KeyboardEvent(type, {
-        key,
-        code,
-        keyCode,
-        bubbles: true,
-        cancelable: true,
+    // Build event with forced keyCode (read-only in constructor on modern browsers)
+    const makeEvent = () => {
+      const evt = new KeyboardEvent(type, {
+        key, code, bubbles: true, cancelable: true, keyCode, which: keyCode,
       });
+      try { Object.defineProperty(evt, "keyCode", { get: () => keyCode }); } catch {}
+      try { Object.defineProperty(evt, "which",   { get: () => keyCode }); } catch {}
+      return evt;
+    };
 
-      targetWindow.document.dispatchEvent(event);
-      targetWindow.dispatchEvent(event);
-    } catch (error) {
-      console.warn("Could not send game control event", error);
-    }
+    // Same-origin: dispatch to document and body
+    try { iframe.contentWindow.document.dispatchEvent(makeEvent()); } catch {}
+    try { iframe.contentWindow.document.body?.dispatchEvent(makeEvent()); } catch {}
+    // Same-origin: dispatch to window
+    try { iframe.contentWindow.dispatchEvent(makeEvent()); } catch {}
+    // Cross-origin fallback: postMessage (works if the game listens for it)
+    try { iframe.contentWindow?.postMessage({ type, key, code, keyCode }, "*"); } catch {}
   };
 
-  const handleControlDown = (key, code, keyCode) => {
+  const handleControlDown = (e, key, code, keyCode) => {
+    e.preventDefault();
     dispatchGameKeyEvent("keydown", key, code, keyCode);
   };
 
-  const handleControlUp = (key, code, keyCode) => {
+  const handleControlUp = (e, key, code, keyCode) => {
+    e.preventDefault();
     dispatchGameKeyEvent("keyup", key, code, keyCode);
   };
 
@@ -87,47 +92,57 @@ const GamePlayer = () => {
             allow="autoplay"
           />
 
-          <div style={{ position: "absolute", bottom: "1.5rem", left: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem", zIndex: 100000, pointerEvents: "auto" }}>
+          {/* D-pad: ↑ on top, ← ↓ → on bottom row — triangle layout */}
+          <div style={{ position: "absolute", bottom: "1.5rem", left: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
+            {/* Up */}
             <button
-              onPointerDown={() => handleControlDown("ArrowUp", "ArrowUp", 38)}
-              onPointerUp={() => handleControlUp("ArrowUp", "ArrowUp", 38)}
-              onPointerLeave={() => handleControlUp("ArrowUp", "ArrowUp", 38)}
+              onPointerDown={e => handleControlDown(e, "ArrowUp", "ArrowUp", 38)}
+              onPointerUp={e => handleControlUp(e, "ArrowUp", "ArrowUp", 38)}
+              onPointerLeave={e => handleControlUp(e, "ArrowUp", "ArrowUp", 38)}
+              onContextMenu={e => e.preventDefault()}
               style={controlButtonStyle}
             >
               ↑
             </button>
-            <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* ← ↓ → row */}
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <button
-                onPointerDown={() => handleControlDown("ArrowLeft", "ArrowLeft", 37)}
-                onPointerUp={() => handleControlUp("ArrowLeft", "ArrowLeft", 37)}
-                onPointerLeave={() => handleControlUp("ArrowLeft", "ArrowLeft", 37)}
+                onPointerDown={e => handleControlDown(e, "ArrowLeft", "ArrowLeft", 37)}
+                onPointerUp={e => handleControlUp(e, "ArrowLeft", "ArrowLeft", 37)}
+                onPointerLeave={e => handleControlUp(e, "ArrowLeft", "ArrowLeft", 37)}
+                onContextMenu={e => e.preventDefault()}
                 style={controlButtonStyle}
               >
                 ←
               </button>
               <button
-                onPointerDown={() => handleControlDown("ArrowRight", "ArrowRight", 39)}
-                onPointerUp={() => handleControlUp("ArrowRight", "ArrowRight", 39)}
-                onPointerLeave={() => handleControlUp("ArrowRight", "ArrowRight", 39)}
+                onPointerDown={e => handleControlDown(e, "ArrowDown", "ArrowDown", 40)}
+                onPointerUp={e => handleControlUp(e, "ArrowDown", "ArrowDown", 40)}
+                onPointerLeave={e => handleControlUp(e, "ArrowDown", "ArrowDown", 40)}
+                onContextMenu={e => e.preventDefault()}
+                style={controlButtonStyle}
+              >
+                ↓
+              </button>
+              <button
+                onPointerDown={e => handleControlDown(e, "ArrowRight", "ArrowRight", 39)}
+                onPointerUp={e => handleControlUp(e, "ArrowRight", "ArrowRight", 39)}
+                onPointerLeave={e => handleControlUp(e, "ArrowRight", "ArrowRight", 39)}
+                onContextMenu={e => e.preventDefault()}
                 style={controlButtonStyle}
               >
                 →
               </button>
             </div>
-            <button
-              onPointerDown={() => handleControlDown("ArrowDown", "ArrowDown", 40)}
-              onPointerUp={() => handleControlUp("ArrowDown", "ArrowDown", 40)}
-              onPointerLeave={() => handleControlUp("ArrowDown", "ArrowDown", 40)}
-              style={controlButtonStyle}
-            >
-              ↓
-            </button>
           </div>
 
-          <div style={{ position: "absolute", bottom: "1.5rem", right: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100000, pointerEvents: "auto" }}>
+          {/* Action button — bottom right */}
+          <div style={{ position: "absolute", bottom: "1.5rem", right: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
             <button
-              onPointerDown={() => handleControlDown(" ", "Space", 32)}
-              onPointerUp={() => handleControlUp(" ", "Space", 32)}
+              onPointerDown={e => handleControlDown(e, " ", "Space", 32)}
+              onPointerUp={e => handleControlUp(e, " ", "Space", 32)}
+              onPointerLeave={e => handleControlUp(e, " ", "Space", 32)}
+              onContextMenu={e => e.preventDefault()}
               style={actionButtonStyle}
             >
               A
@@ -164,6 +179,9 @@ const controlButtonStyle = {
   fontWeight: 700,
   cursor: "pointer",
   pointerEvents: "auto",
+  touchAction: "none",
+  userSelect: "none",
+  WebkitUserSelect: "none",
 };
 
 const actionButtonStyle = {
@@ -177,6 +195,9 @@ const actionButtonStyle = {
   fontWeight: 700,
   cursor: "pointer",
   pointerEvents: "auto",
+  touchAction: "none",
+  userSelect: "none",
+  WebkitUserSelect: "none",
 };
 
 export default GamePlayer;

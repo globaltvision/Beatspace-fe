@@ -11,6 +11,7 @@ const Comicread = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSupportOpen, setIsSupportOpen] = useState(false);
+  const [showPagePicker, setShowPagePicker] = useState(false);
   
   const comic = location.state?.comic;
   const chapterIndex = location.state?.chapterIndex ?? 0;
@@ -466,6 +467,72 @@ const Comicread = () => {
             </Box>
           </Box>
         )}
+      </Box>
+
+      {/* Go-to-page button — bottom left */}
+      <Box
+        style={{
+          position: "absolute",
+          bottom: "2rem",
+          left: "2rem",
+          zIndex: 100,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: "0.5rem",
+        }}
+      >
+        {showPagePicker && (
+          <Box
+            style={{
+              background: "rgba(0,0,0,0.92)",
+              border: "1px solid #d1c676",
+              borderRadius: "6px",
+              maxHeight: "220px",
+              overflowY: "auto",
+              minWidth: "90px",
+            }}
+            className="custom-scrollbar"
+          >
+            {pages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setCurrentPage(i); setShowPagePicker(false); }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "6px 14px",
+                  background: i === currentPage ? "#d1c676" : "transparent",
+                  color: i === currentPage ? "#000" : "#F6F4D3",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "0.82rem",
+                  fontFamily: '"Vision Font", monospace',
+                  textAlign: "left",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </Box>
+        )}
+        <button
+          onClick={() => setShowPagePicker(p => !p)}
+          style={{
+            background: "rgba(0,0,0,0.7)",
+            border: "1px solid rgba(209,198,118,0.5)",
+            color: "#d1c676",
+            padding: "6px 14px",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "0.78rem",
+            fontFamily: '"Vision Font", monospace',
+            letterSpacing: "0.5px",
+          }}
+        >
+          {t('comics_user.go_to_page') || "Go to page"} {currentPage + 1}/{pages.length}
+        </button>
       </Box>
 
       {/* Support Modal */}

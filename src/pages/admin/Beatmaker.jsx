@@ -337,6 +337,7 @@ const Beat = () => {
     name: "",
     genre: [],
     category: "saphire",
+    beat: null,
   });
 
   const [volume, setVolume] = useState(75);
@@ -361,28 +362,34 @@ const Beat = () => {
   const [availableGenres, setAvailableGenres] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
 
-  useEffect(() => {
-    const fetchSelectOptions = async () => {
-      try {
-        const [genresRes, categoriesRes] = await Promise.all([
-          CategoryAPI.getAll('genre'),
-          CategoryAPI.getAll('category')
-        ]);
-        setAvailableGenres(genresRes.data.data);
-        setAvailableCategories(categoriesRes.data.data);
-        
-        if (genresRes.data.data.length > 0) {
-          setNewBeatForm(prev => ({ ...prev, genre: [genresRes.data.data[0].name] }));
-        }
-        if (categoriesRes.data.data.length > 0) {
-          setNewBeatForm(prev => ({ ...prev, category: categoriesRes.data.data[0].name }));
-        }
-      } catch (error) {
-        console.error("Error fetching category options:", error);
-      }
-    };
-    fetchSelectOptions();
+  // Category management state (#21)
+  const [catActiveType, setCatActiveType] = useState("genre");
+  const [isAddingCat, setIsAddingCat] = useState(false);
+  const [newCat, setNewCat] = useState({ name: "" });
+  const [editingCat, setEditingCat] = useState(null);
+  const [catDeleteConfirm, setCatDeleteConfirm] = useState({ isOpen: false, id: null });
+
+  const fetchSelectOptions = useCallback(async () => {
+    try {
+      const [genresRes, categoriesRes] = await Promise.all([
+        CategoryAPI.getAll('genre'),
+        CategoryAPI.getAll('category')
+      ]);
+      setAvailableGenres(genresRes.data.data);
+      setAvailableCategories(categoriesRes.data.data);
+      return { genres: genresRes.data.data, categories: categoriesRes.data.data };
+    } catch (error) {
+      console.error("Error fetching category options:", error);
+      return { genres: [], categories: [] };
+    }
   }, []);
+
+  useEffect(() => {
+    fetchSelectOptions().then(({ genres, categories }) => {
+      if (genres.length > 0) setNewBeatForm(prev => ({ ...prev, genre: [genres[0].name] }));
+      if (categories.length > 0) setNewBeatForm(prev => ({ ...prev, category: categories[0].name }));
+    });
+  }, [fetchSelectOptions]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -668,6 +675,7 @@ const Beat = () => {
       name: beat.name || "",
       genre: getBeatGenres(beat),
       category: beat.category || "saphire",
+      beat: null,
     });
     setIsEditModalOpen(true);
   };
@@ -697,6 +705,9 @@ const Beat = () => {
     formData.append("name", editBeatForm.name);
     formData.append("genre", normalizeGenrePayload(editBeatForm.genre));
     formData.append("category", editBeatForm.category);
+    if (editBeatForm.beat) {
+      formData.append("beat", editBeatForm.beat);
+    }
 
     const res = await editBeat(currentEditId, formData);
     if (res?.success) {
@@ -795,6 +806,46 @@ const Beat = () => {
       label: t('beatmaker.repository.stats.total_donations'),
     },
   ];
+
+  // Category management handlers (#21)
+  const handleSaveCat = async (e) => {
+    e.preventDefault();
+    if (!newCat.name.trim()) { toast.error("Name is required"); return; }
+    try {
+      if (editingCat) {
+        await CategoryAPI.update(editingCat._id, { name: newCat.name, type: catActiveType });
+        toast.success(`${catActiveType === "genre" ? "Genre" : "Category"} updated`);
+      } else {
+        await CategoryAPI.create({ name: newCat.name, type: catActiveType });
+        toast.success(`${catActiveType === "genre" ? "Genre" : "Category"} added`);
+      }
+      setNewCat({ name: "" });
+      setEditingCat(null);
+      setIsAddingCat(false);
+      fetchSelectOptions();
+    } catch {
+      toast.error(editingCat ? "Update failed" : "Add failed");
+    }
+  };
+
+  const handleEditCat = (cat) => {
+    setEditingCat(cat);
+    setNewCat({ name: cat.name });
+    setIsAddingCat(true);
+  };
+
+  const confirmDeleteCat = async () => {
+    if (!catDeleteConfirm.id) return;
+    try {
+      await CategoryAPI.delete(catDeleteConfirm.id);
+      toast.success("Deleted");
+      fetchSelectOptions();
+    } catch {
+      toast.error("Delete failed");
+    } finally {
+      setCatDeleteConfirm({ isOpen: false, id: null });
+    }
+  };
 
   const animationStyles = `
     @keyframes musicBar {
@@ -1186,6 +1237,39 @@ const Beat = () => {
               </div>
             </div>
 
+            {/* Replace audio file — optional */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase text-[#D4D4B0] tracking-widest">
+                {t('beatmaker.edit_modal.replace_file') || "Replace Audio File (optional)"}
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer bg-[#4A4A3C] border border-[#D4D4B0] px-4 py-3 hover:border-[#FFD700] transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFD700" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                </svg>
+                <span className="text-sm text-[#D4D4B0] font-bold truncate">
+                  {editBeatForm.beat ? editBeatForm.beat.name : (t('beatmaker.edit_modal.choose_file') || "Choose MP3/WAV to overwrite")}
+                </span>
+                <input
+                  type="file"
+                  accept=".mp3,.wav"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) setEditBeatForm(prev => ({ ...prev, beat: file }));
+                  }}
+                />
+              </label>
+              {editBeatForm.beat && (
+                <button
+                  type="button"
+                  onClick={() => setEditBeatForm(prev => ({ ...prev, beat: null }))}
+                  className="text-xs text-red-400 hover:text-red-300 font-bold"
+                >
+                  ✕ Remove selected file
+                </button>
+              )}
+            </div>
+
             <div className="pt-6 border-t border-[#4A4A3C] flex justify-end gap-4">
               <button
                 onClick={() => setIsEditModalOpen(false)}
@@ -1205,12 +1289,109 @@ const Beat = () => {
         </div>
       </Modal>
 
-      <ConfirmModal 
+      {/* Category / Genre Management (#21) */}
+      <div className="bg-[#3C3C30] border-2 border-[#D4D4B0] rounded-xl overflow-hidden">
+        <div className="bg-black px-6 py-4 flex items-center justify-between flex-wrap gap-3">
+          <span className="text-[#FFD700] font-black uppercase tracking-widest text-sm pixel-font">
+            Genre / Category Management
+          </span>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex bg-[#191A22] border border-[#D4D4B0] rounded overflow-hidden">
+              <button
+                onClick={() => { setCatActiveType("genre"); setIsAddingCat(false); setEditingCat(null); setNewCat({ name: "" }); }}
+                className={`px-4 py-1.5 text-xs font-bold uppercase transition-colors ${catActiveType === "genre" ? "bg-[#FFD700] text-black" : "text-[#D4D4B0]"}`}
+              >
+                Genres
+              </button>
+              <button
+                onClick={() => { setCatActiveType("category"); setIsAddingCat(false); setEditingCat(null); setNewCat({ name: "" }); }}
+                className={`px-4 py-1.5 text-xs font-bold uppercase transition-colors ${catActiveType === "category" ? "bg-[#FFD700] text-black" : "text-[#D4D4B0]"}`}
+              >
+                Categories
+              </button>
+            </div>
+            <button
+              onClick={() => { setEditingCat(null); setNewCat({ name: "" }); setIsAddingCat(true); }}
+              className="px-4 py-1.5 bg-[#FFD700] text-black font-black uppercase text-xs hover:bg-[#E4DA33] transition-colors"
+            >
+              + Add {catActiveType === "genre" ? "Genre" : "Category"}
+            </button>
+          </div>
+        </div>
+
+        {isAddingCat && (
+          <form onSubmit={handleSaveCat} className="flex gap-3 items-end bg-[#191A22] border-b border-[#D4D4B0] px-6 py-4">
+            <div className="flex-1">
+              <label className="block text-[10px] font-bold uppercase text-[#D4D4B0] mb-1">Name</label>
+              <input
+                type="text"
+                value={newCat.name}
+                onChange={e => setNewCat({ name: e.target.value })}
+                placeholder={catActiveType === "genre" ? "e.g. Trap" : "e.g. Saphire"}
+                className="w-full h-10 bg-[#4A4A3C] border border-[#D4D4B0] px-3 text-white focus:outline-none focus:border-[#FFD700] font-bold"
+                style={{ fontFamily: "monospace" }}
+                autoFocus
+              />
+            </div>
+            <button type="submit" className="px-5 py-2 bg-[#FFD700] text-black font-black uppercase text-xs hover:bg-[#E4DA33] h-10">
+              {editingCat ? "Update" : "Save"}
+            </button>
+            <button type="button" onClick={() => { setIsAddingCat(false); setEditingCat(null); setNewCat({ name: "" }); }} className="px-5 py-2 bg-red-700 text-white font-black uppercase text-xs hover:bg-red-600 h-10">
+              Cancel
+            </button>
+          </form>
+        )}
+
+        <div>
+          {(catActiveType === "genre" ? availableGenres : availableCategories).length === 0 ? (
+            <div className="px-6 py-8 text-center text-[#D4D4B0] text-sm font-bold">
+              No {catActiveType}s found. Add one above.
+            </div>
+          ) : (
+            (catActiveType === "genre" ? availableGenres : availableCategories).map((item) => (
+              <div key={item._id} className="flex items-center justify-between px-6 py-3 border-b border-[#4A4A3C] hover:bg-[#4A4A3C] transition-colors">
+                <div>
+                  <span className="text-white font-bold text-sm" style={{ fontFamily: "monospace" }}>{item.name}</span>
+                  <span className="ml-3 text-[10px] text-[#D4D4B0] uppercase opacity-60">{item.type}</span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditCat(item)}
+                    className="w-8 h-8 bg-[#4A4A3C] border border-[#D4D4B0] hover:bg-[#D4D1A0] hover:text-black text-[#D4D4B0] flex items-center justify-center transition-colors"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setCatDeleteConfirm({ isOpen: true, id: item._id })}
+                    className="w-8 h-8 bg-red-800 hover:bg-red-600 flex items-center justify-center transition-colors"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="white" stroke="white" strokeWidth="2">
+                      <path d="M12 4L4 12M4 4L12 12" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <ConfirmModal
         isOpen={deleteConfirm.isOpen}
         title={t('beatmaker.delete_modal.title')}
         message={t('beatmaker.delete_modal.message')}
         onConfirm={confirmDeleteBeat}
         onCancel={() => setDeleteConfirm({ isOpen: false, id: null })}
+      />
+
+      <ConfirmModal
+        isOpen={catDeleteConfirm.isOpen}
+        title={`Delete ${catActiveType}`}
+        message={`Are you sure you want to delete this ${catActiveType}? Beats using it will not be affected.`}
+        onConfirm={confirmDeleteCat}
+        onCancel={() => setCatDeleteConfirm({ isOpen: false, id: null })}
       />
     </div>
   );

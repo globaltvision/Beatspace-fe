@@ -11,24 +11,19 @@ export default function MerchManagement() {
   const navigate = useNavigate();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [coverIndex, setCoverIndex] = useState(0);
-  const [newMerch, setNewMerch] = useState({ name: "", description: "", price: 0, sizes: [], stock: "in stock" });
+  const AVAIL_SIZES = ["S", "M", "L", "XL"];
+  const [newMerch, setNewMerch] = useState({ name: "", description: "", price: 0, sizes: [], sizeQtys: { S: 0, M: 0, L: 0, XL: 0 }, stock: "in stock" });
 
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [viewItem, setViewItem] = useState(null);
 
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editMerch, setEditMerch] = useState({ id: null, name: "", description: "", price: 0, sizes: [], stock: "in stock" });
+  const [editMerch, setEditMerch] = useState({ id: null, name: "", description: "", price: 0, sizes: [], sizeQtys: { S: 0, M: 0, L: 0, XL: 0 }, stock: "in stock" });
   const [editSelectedFiles, setEditSelectedFiles] = useState([]);
   const [editCoverIndex, setEditCoverIndex] = useState(0);
 
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null });
 
-  const toggleSize = (s) =>
-    setNewMerch((m) =>
-      m.sizes.includes(s)
-        ? { ...m, sizes: m.sizes.filter((x) => x !== s) }
-        : { ...m, sizes: [...m.sizes, s] }
-    );
   const dispatch = useDispatch();
   const { merchs: merchItems, isLoadingMerchs, isCreatingMerch, isUpdatingMerch } = useSelector((state) => state.admin);
 
@@ -83,7 +78,7 @@ export default function MerchManagement() {
   };
 
   const handleUpload = async () => {
-    if (!newMerch.name || !newMerch.price || newMerch.sizes.length === 0) {
+    if (!newMerch.name || !newMerch.price) {
       toast.error(t('merch.messages.missing_fields'));
       return;
     }
@@ -92,11 +87,13 @@ export default function MerchManagement() {
       return;
     }
 
+    const sizes = AVAIL_SIZES.filter(s => (newMerch.sizeQtys[s] || 0) > 0);
     const formData = new FormData();
     formData.append("name", newMerch.name);
     formData.append("description", newMerch.description);
     formData.append("price", newMerch.price);
-    formData.append("sizes", newMerch.sizes.join(","));
+    formData.append("sizes", sizes.join(","));
+    formData.append("size_quantities", JSON.stringify(newMerch.sizeQtys));
     formData.append("stock", newMerch.stock || "in stock");
 
     formData.append("cover_img", selectedFiles[coverIndex]);
@@ -108,7 +105,7 @@ export default function MerchManagement() {
 
     if (res?.success) {
       toast.success(t('merch.messages.upload_success'));
-      setNewMerch({ name: "", description: "", price: 0, sizes: [], stock: "in stock" });
+      setNewMerch({ name: "", description: "", price: 0, sizes: [], sizeQtys: { S: 0, M: 0, L: 0, XL: 0 }, stock: "in stock" });
       setSelectedFiles([]);
       setCoverIndex(0);
       dispatch(getMerchs()); // Refresh list
@@ -152,16 +149,18 @@ export default function MerchManagement() {
   };
 
   const handleEditUpload = async () => {
-    if (!editMerch.name || !editMerch.price || editMerch.sizes.length === 0) {
+    if (!editMerch.name || !editMerch.price) {
       toast.error(t('merch.messages.missing_fields'));
       return;
     }
 
+    const editSizes = AVAIL_SIZES.filter(s => (editMerch.sizeQtys[s] || 0) > 0);
     const formData = new FormData();
     formData.append("name", editMerch.name);
     formData.append("description", editMerch.description);
     formData.append("price", editMerch.price);
-    formData.append("sizes", editMerch.sizes.join(","));
+    formData.append("sizes", editSizes.join(","));
+    formData.append("size_quantities", JSON.stringify(editMerch.sizeQtys));
     formData.append("stock", editMerch.stock || "in stock");
 
     if (editSelectedFiles.length > 0) {
@@ -186,7 +185,7 @@ export default function MerchManagement() {
 
     if (res?.success) {
       toast.success(t('merch.messages.update_success'));
-      setEditMerch({ id: null, name: "", description: "", price: 0, sizes: [], stock: "in stock" });
+      setEditMerch({ id: null, name: "", description: "", price: 0, sizes: [], sizeQtys: { S: 0, M: 0, L: 0, XL: 0 }, stock: "in stock" });
       setEditSelectedFiles([]);
       setEditCoverIndex(0);
       setEditModalOpen(false);
@@ -197,12 +196,19 @@ export default function MerchManagement() {
   };
 
   const handleEdit = (item) => {
+    const sizeQtys = { S: 0, M: 0, L: 0, XL: 0 };
+    if (item.size_quantities && typeof item.size_quantities === "object") {
+      Object.assign(sizeQtys, item.size_quantities);
+    } else {
+      (item.sizes || []).forEach(s => { if (s in sizeQtys) sizeQtys[s] = 1; });
+    }
     setEditMerch({
       id: item._id,
       name: item.name,
       description: item.description || "",
       price: item.price,
       sizes: item.sizes || [],
+      sizeQtys,
       stock: item.stock || "in stock",
     });
     const images = item.images ? [...item.images] : (item.prod_image ? [item.prod_image] : []);
@@ -516,28 +522,37 @@ export default function MerchManagement() {
               </label>
               <div style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
                 <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.sizes_label')}</span>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  {["S", "M", "L", "XL"].map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => toggleSize(s)}
-                      style={{
-                        background: newMerch.sizes.includes(s) ? "var(--yellow2)" : "#0f1016",
-                        color: newMerch.sizes.includes(s) ? "#191A22" : "#fff",
-                        border: "2px solid var(--tan)",
-                        borderRadius: 6,
-                        padding: "0.5rem 0.85rem",
-                        minWidth: 44,
-                        cursor: "pointer",
-                        fontWeight: 700,
-                        fontSize: 13,
-                      }}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                  {AVAIL_SIZES.map((s) => {
+                    const qty = newMerch.sizeQtys[s] || 0;
+                    return (
+                      <div key={s} style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                        <span style={{
+                          minWidth: 36, textAlign: "center", padding: "0.4rem 0.5rem",
+                          background: qty > 0 ? "var(--yellow2)" : "#0f1016",
+                          color: qty > 0 ? "#191A22" : "var(--tan)",
+                          border: "2px solid var(--tan)", borderRadius: 6,
+                          fontWeight: 700, fontSize: 13,
+                        }}>{s}</span>
+                        <input
+                          type="number" min={0} step={1}
+                          value={qty}
+                          onChange={(e) => {
+                            const v = Math.max(0, parseInt(e.target.value) || 0);
+                            setNewMerch(m => ({ ...m, sizeQtys: { ...m.sizeQtys, [s]: v } }));
+                          }}
+                          style={{
+                            width: 52, background: "#0f1016", color: "#fff",
+                            border: "2px solid var(--tan)", borderRadius: 6,
+                            padding: "0.4rem 0.4rem", textAlign: "center", fontSize: 13,
+                          }}
+                          placeholder="0"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
+                <span style={{ fontSize: 9, color: "var(--tan)", opacity: 0.65, fontFamily: '"Press Start 2P"' }}>QTY PER SIZE (0 = not available)</span>
               </div>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
                 <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>Stock Status</span>
@@ -708,21 +723,37 @@ export default function MerchManagement() {
 
               <div style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
                 <span style={{ fontSize: 11, fontFamily: '"Press Start 2P", monospace', textTransform: "uppercase" }}>{t('merch.upload.sizes_label')}</span>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  {["S", "M", "L", "XL"].map((s) => (
-                    <button
-                      key={s} type="button"
-                      onClick={() => setEditMerch(m => ({ ...m, sizes: m.sizes.includes(s) ? m.sizes.filter(x => x !== s) : [...m.sizes, s] }))}
-                      style={{
-                        background: editMerch.sizes.includes(s) ? "var(--yellow2)" : "#0f1016",
-                        color: editMerch.sizes.includes(s) ? "#191A22" : "#fff",
-                        border: "2px solid var(--tan)", borderRadius: 6, padding: "0.5rem 0.85rem", cursor: "pointer", fontWeight: 700, fontSize: 13,
-                      }}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                  {AVAIL_SIZES.map((s) => {
+                    const qty = editMerch.sizeQtys[s] || 0;
+                    return (
+                      <div key={s} style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                        <span style={{
+                          minWidth: 36, textAlign: "center", padding: "0.4rem 0.5rem",
+                          background: qty > 0 ? "var(--yellow2)" : "#0f1016",
+                          color: qty > 0 ? "#191A22" : "var(--tan)",
+                          border: "2px solid var(--tan)", borderRadius: 6,
+                          fontWeight: 700, fontSize: 13,
+                        }}>{s}</span>
+                        <input
+                          type="number" min={0} step={1}
+                          value={qty}
+                          onChange={(e) => {
+                            const v = Math.max(0, parseInt(e.target.value) || 0);
+                            setEditMerch(m => ({ ...m, sizeQtys: { ...m.sizeQtys, [s]: v } }));
+                          }}
+                          style={{
+                            width: 52, background: "#0f1016", color: "#fff",
+                            border: "2px solid var(--tan)", borderRadius: 6,
+                            padding: "0.4rem 0.4rem", textAlign: "center", fontSize: 13,
+                          }}
+                          placeholder="0"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
+                <span style={{ fontSize: 9, color: "var(--tan)", opacity: 0.65, fontFamily: '"Press Start 2P"' }}>QTY PER SIZE (0 = not available)</span>
               </div>
 
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>

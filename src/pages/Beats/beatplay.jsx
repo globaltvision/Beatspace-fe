@@ -70,7 +70,9 @@ const BeatPlay = () => {
 
   const formatTime = (seconds) => {
     if (!seconds || isNaN(seconds)) return "0.00";
-    return seconds.toFixed(2);
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}.${String(s).padStart(2, "0")}`;
   };
 
   useEffect(() => {
@@ -324,7 +326,7 @@ const BeatPlay = () => {
                         lineHeight: 1,
                       }}
                     >
-                      {formatTime(audioDuration[beat.id] || 0)}
+                      -{formatTime(Math.max(0, (audioDuration[beat.id] || 0) - (audioCurrentTime[beat.id] || 0)))}
                     </span>
                   </Box>
                 </Box>

@@ -87,7 +87,7 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
   const [siteTitle, setSiteTitle] = useState("");
   const [fontFamily, setFontFamily] = useState("Vision Font");
   const [saving, setSaving] = useState(false);
-  const [sectionSaving, setSectionSaving] = useState(""); // which section is saving
+  const [sectionSaving, setSectionSaving] = useState("");
 
   useEffect(() => {
     if (settings) {
@@ -113,17 +113,23 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
     }
   };
 
-  // Assign (or clear) a BGM for a specific section
-  const handleSetSectionBGM = async (sectionKey, url) => {
+  // Parse a section's stored value into a URL array (supports comma-separated playlists)
+  const getSectionUrls = (sectionKey) => {
+    const val = settings?.section_music?.[sectionKey.toLowerCase()] || "";
+    if (!val) return [];
+    return val.split(",").map(s => s.trim()).filter(Boolean);
+  };
+
+  // Save a full URL array to a section (joined as comma-separated string)
+  const handleSetSectionPlaylist = async (sectionKey, urls) => {
     const key = sectionKey.toLowerCase();
     setSectionSaving(key);
     try {
-      await custAxios.patch("/admin/settings/section-music", { section: key, url: url || null });
+      const urlStr = urls.filter(Boolean).join(",") || null;
+      await custAxios.patch("/admin/settings/section-music", { section: key, url: urlStr });
       notifications.show({
-        title: url ? `${sectionKey} BGM Set` : `${sectionKey} BGM Cleared`,
-        message: url
-          ? `"${audioAssets.find((a) => a.url === url)?.fileName}" will auto-play on the ${sectionKey} section`
-          : `No BGM will play on the ${sectionKey} section`,
+        title: `${sectionKey} Playlist Updated`,
+        message: urls.length ? `${urls.length} track(s) in playlist` : "BGM cleared",
         color: "green",
       });
       refreshGlobal();
@@ -135,11 +141,18 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
     }
   };
 
-  // Get the URL currently assigned to a section
-  const getSectionUrl = (sectionKey) =>
-    settings?.section_music?.[sectionKey.toLowerCase()] || null;
+  const handleAddTrack = (sectionKey, url) => {
+    if (!url) return;
+    const current = getSectionUrls(sectionKey);
+    if (current.includes(url)) return;
+    handleSetSectionPlaylist(sectionKey, [...current, url]);
+  };
 
-  // The real sections (excluding "Other" which has no BGM concept)
+  const handleRemoveTrack = (sectionKey, url) => {
+    const current = getSectionUrls(sectionKey);
+    handleSetSectionPlaylist(sectionKey, current.filter(u => u !== url));
+  };
+
   const bgmSections = SECTIONS.filter((s) => s.key !== "Other");
 
   return (
@@ -188,14 +201,14 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
         {saving ? "Saving…" : "Save Configuration"}
       </button>
 
-      {/* Per-Section BGM */}
+      {/* Per-Section BGM Playlists */}
       <div>
         <label className="block text-[#CBC895] text-sm alexandria-font mb-1 uppercase">
           Background Music Per Section
         </label>
         <p className="text-[rgba(255,249,153,0.6)] text-xs alexandria-font mb-4">
-          Each section auto-plays its own track. Navigating to a section switches the music automatically.
-          Music stops when a beat plays or a game starts.
+          Each section has its own playlist. All tracks shuffle globally across sections.
+          Add multiple tracks per section — music continues across page navigation.
         </p>
 
         {audioAssets.length === 0 ? (
@@ -205,15 +218,15 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {bgmSections.map((sec) => {
-              const activeUrl = getSectionUrl(sec.key);
-              const activeAsset = audioAssets.find((a) => a.url === activeUrl);
+              const activeUrls = getSectionUrls(sec.key);
               const isSaving = sectionSaving === sec.key.toLowerCase();
+              const availableTracks = audioAssets.filter(a => !activeUrls.includes(a.url));
 
               return (
                 <div
                   key={sec.key}
                   className={`border p-4 transition-colors ${
-                    activeUrl
+                    activeUrls.length > 0
                       ? "border-[rgba(223,215,79,0.6)] bg-[rgba(223,215,79,0.05)]"
                       : "border-[rgba(203,200,149,0.25)] bg-[rgba(19,19,25,0.4)]"
                   }`}
@@ -223,48 +236,73 @@ const SiteConfigPanel = ({ audioAssets, onRefresh }) => {
                     <span className="text-[rgba(203,200,149,1)] text-sm font-semibold alexandria-font uppercase">
                       {sec.label}
                     </span>
-                    {activeUrl && (
-                      <button
-                        onClick={() => handleSetSectionBGM(sec.key, null)}
-                        disabled={isSaving}
-                        className="text-[rgba(239,68,68,0.8)] text-xs hover:text-red-400 transition-colors disabled:opacity-50"
-                        title="Clear BGM for this section"
-                      >
-                        ✕ Clear
-                      </button>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {activeUrls.length > 0 && (
+                        <span className="text-[rgba(223,215,79,0.7)] text-xs">
+                          {activeUrls.length} track{activeUrls.length > 1 ? "s" : ""}
+                        </span>
+                      )}
+                      {activeUrls.length > 0 && (
+                        <button
+                          onClick={() => handleSetSectionPlaylist(sec.key, [])}
+                          disabled={isSaving}
+                          className="text-[rgba(239,68,68,0.8)] text-xs hover:text-red-400 transition-colors disabled:opacity-50"
+                          title="Clear all tracks for this section"
+                        >
+                          ✕ Clear all
+                        </button>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Current track */}
-                  {activeAsset ? (
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-[rgba(223,215,79,1)]"><MusicNoteIcon /></span>
-                      <div className="min-w-0">
-                        <p className="text-white text-xs alexandria-font truncate">{activeAsset.fileName}</p>
-                        <p className="text-[rgba(223,215,79,0.6)] text-xs">▶ Playing</p>
-                      </div>
+                  {/* Current playlist */}
+                  {activeUrls.length > 0 ? (
+                    <div className="mb-3 space-y-1">
+                      {activeUrls.map((url, idx) => {
+                        const asset = audioAssets.find(a => a.url === url);
+                        return (
+                          <div key={url} className="flex items-center gap-2 bg-[rgba(19,19,25,0.6)] px-2 py-1 rounded">
+                            <span className="text-[rgba(223,215,79,0.7)] text-xs w-4 shrink-0">{idx + 1}.</span>
+                            <span className="text-[rgba(223,215,79,1)] shrink-0"><MusicNoteIcon /></span>
+                            <span className="text-white text-xs truncate flex-1">{asset?.fileName || url}</span>
+                            <button
+                              onClick={() => handleRemoveTrack(sec.key, url)}
+                              disabled={isSaving}
+                              className="text-[rgba(239,68,68,0.7)] text-xs hover:text-red-400 shrink-0 disabled:opacity-50"
+                              title="Remove from playlist"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        );
+                      })}
                     </div>
                   ) : (
-                    <p className="text-[rgba(203,200,149,0.35)] text-xs alexandria-font mb-3 italic">No track assigned</p>
+                    <p className="text-[rgba(203,200,149,0.35)] text-xs alexandria-font mb-3 italic">No tracks assigned</p>
                   )}
 
-                  {/* Audio selector */}
-                  <div className="relative">
-                    <select
-                      value={activeUrl || ""}
-                      onChange={(e) => handleSetSectionBGM(sec.key, e.target.value || null)}
-                      disabled={isSaving}
-                      className="w-full bg-[rgba(19,19,25,1)] border border-[rgba(203,200,149,0.4)] px-3 py-2 text-[#9C963A] text-xs alexandria-font appearance-none focus:outline-none focus:border-[rgba(223,215,79,1)] cursor-pointer disabled:opacity-50 pr-7"
-                    >
-                      <option value="">— No music —</option>
-                      {audioAssets.map((a) => (
-                        <option key={a._id} value={a.url}>{a.fileName}</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#CBC895]">
-                      <ChevronDownIcon />
+                  {/* Add track selector */}
+                  {availableTracks.length > 0 && (
+                    <div className="relative">
+                      <select
+                        value=""
+                        onChange={(e) => handleAddTrack(sec.key, e.target.value)}
+                        disabled={isSaving}
+                        className="w-full bg-[rgba(19,19,25,1)] border border-[rgba(203,200,149,0.4)] px-3 py-2 text-[#9C963A] text-xs alexandria-font appearance-none focus:outline-none focus:border-[rgba(223,215,79,1)] cursor-pointer disabled:opacity-50 pr-7"
+                      >
+                        <option value="">+ Add track to playlist</option>
+                        {availableTracks.map((a) => (
+                          <option key={a._id} value={a.url}>{a.fileName}</option>
+                        ))}
+                      </select>
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#CBC895]">
+                        <ChevronDownIcon />
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {availableTracks.length === 0 && audioAssets.length > 0 && (
+                    <p className="text-[rgba(203,200,149,0.4)] text-xs italic">All tracks assigned</p>
+                  )}
                 </div>
               );
             })}
@@ -392,10 +430,12 @@ AssetFilters.displayName = "AssetFilters";
 const AssetRow = memo(({ asset, onAction, sectionMusic }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  // Check if this audio is the active BGM for its own section
+  // Check if this audio is in the playlist for its own section
   const sectionKey = asset.section?.toLowerCase();
-  const isActiveBGM = asset.fileType === "audio" && sectionKey &&
-    sectionMusic?.[sectionKey] === asset.url;
+  const isActiveBGM = asset.fileType === "audio" && sectionKey && (() => {
+    const val = sectionMusic?.[sectionKey] || "";
+    return val.split(",").map(s => s.trim()).includes(asset.url);
+  })();
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -644,20 +684,26 @@ const Assets = () => {
       a.click();
       document.body.removeChild(a);
     } else if (action === "set-bgm") {
-      // For row-level "Set as BGM" — assign to the asset's own section
       const section = asset.section?.toLowerCase();
       const validSections = ["home", "menu", "beats", "comics", "shop", "games"];
       if (!section || !validSections.includes(section)) {
         notifications.show({ title: "No Section", message: "Edit this asset and assign it a section first, then use the section grid above.", color: "yellow" });
         return;
       }
-      const currentUrl = settings?.section_music?.[section];
-      const newUrl = currentUrl === asset.url ? null : asset.url;
+      const currentVal = settings?.section_music?.[section] || "";
+      const currentUrls = currentVal.split(",").map(s => s.trim()).filter(Boolean);
+      const isInPlaylist = currentUrls.includes(asset.url);
+      const newUrls = isInPlaylist
+        ? currentUrls.filter(u => u !== asset.url)
+        : [...currentUrls, asset.url];
+      const newUrl = newUrls.join(",") || null;
       try {
         await custAxios.patch("/admin/settings/section-music", { section, url: newUrl });
         notifications.show({
-          title: newUrl ? `${asset.section} BGM Set` : `${asset.section} BGM Cleared`,
-          message: newUrl ? `"${asset.fileName}" will auto-play on the ${asset.section} section` : "BGM cleared for this section",
+          title: isInPlaylist ? `Removed from ${asset.section}` : `Added to ${asset.section}`,
+          message: isInPlaylist
+            ? `"${asset.fileName}" removed from playlist`
+            : `"${asset.fileName}" added to ${asset.section} playlist`,
           color: "green",
         });
         window.dispatchEvent(new Event("settings-changed"));
