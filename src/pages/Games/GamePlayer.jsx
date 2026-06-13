@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const GamePlayer = () => {
@@ -7,50 +7,11 @@ const GamePlayer = () => {
   const iframeRef = useRef(null);
   const url = searchParams.get("url");
 
-  const [srcdoc, setSrcdoc] = useState(null);   // same-origin srcdoc content
-  const [loading, setLoading] = useState(false);
-
-  // ── Fetch game HTML and serve via srcdoc so it's same-origin ──────────────
-  // srcdoc iframes share the parent's origin → keyboard injection works
-  useEffect(() => {
-    if (!url) return;
-    setSrcdoc(null);
-    setLoading(true);
-
-    fetch(url)
-      .then(r => {
-        if (!r.ok) throw new Error("fetch failed");
-        return r.text();
-      })
-      .then(html => {
-        // Derive base URL so relative asset paths still resolve to the game host
-        const baseUrl = url.substring(0, url.lastIndexOf("/") + 1);
-        const baseTag = `<base href="${baseUrl}">`;
-
-        let modified = html;
-        if (/<head[^>]*>/i.test(html)) {
-          modified = html.replace(/<head[^>]*>/i, m => `${m}${baseTag}`);
-        } else if (/<html[^>]*>/i.test(html)) {
-          modified = html.replace(/<html[^>]*>/i, m => `${m}<head>${baseTag}</head>`);
-        } else {
-          modified = `<head>${baseTag}</head>${html}`;
-        }
-
-        setSrcdoc(modified);
-      })
-      .catch(() => {
-        // CORS blocked — fall back to direct src (keyboard injection won't work
-        // but at least the game loads)
-        setSrcdoc(null);
-      })
-      .finally(() => setLoading(false));
-  }, [url]);
-
-  // ── Keyboard event injection ───────────────────────────────────────────────
   const dispatchGameKeyEvent = (type, key, code, keyCode) => {
     const iframe = iframeRef.current;
     if (!iframe) return;
 
+    // Build event with forced keyCode (read-only in constructor on modern browsers)
     const makeEvent = () => {
       const evt = new KeyboardEvent(type, {
         key, code, bubbles: true, cancelable: true, keyCode, which: keyCode,
@@ -60,38 +21,34 @@ const GamePlayer = () => {
       return evt;
     };
 
-    // These work when srcdoc is used (same-origin)
+    // Same-origin: dispatch to document and body
     try { iframe.contentWindow.document.dispatchEvent(makeEvent()); } catch {}
     try { iframe.contentWindow.document.body?.dispatchEvent(makeEvent()); } catch {}
+    // Same-origin: dispatch to window
     try { iframe.contentWindow.dispatchEvent(makeEvent()); } catch {}
-    // postMessage fallback for games that support it
+    // Cross-origin fallback: postMessage (works if the game listens for it)
     try { iframe.contentWindow?.postMessage({ type, key, code, keyCode }, "*"); } catch {}
-  };
-
-  const focusIframe = () => {
-    try { iframeRef.current?.focus(); } catch {}
-    try { iframeRef.current?.contentWindow?.focus(); } catch {}
   };
 
   const handleControlDown = (e, key, code, keyCode) => {
     e.preventDefault();
-    focusIframe();
     dispatchGameKeyEvent("keydown", key, code, keyCode);
   };
 
   const handleControlUp = (e, key, code, keyCode) => {
     e.preventDefault();
     dispatchGameKeyEvent("keyup", key, code, keyCode);
-    focusIframe();
   };
 
   useEffect(() => {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-    const onLoad = () => focusIframe();
-    iframe.addEventListener("load", onLoad);
-    return () => iframe.removeEventListener("load", onLoad);
-  }, [srcdoc, url]);
+    if (iframeRef.current?.contentWindow) {
+      try {
+        iframeRef.current.contentWindow.focus();
+      } catch {
+        // ignore cross-origin focus issues
+      }
+    }
+  }, [url]);
 
   return (
     <div
@@ -125,38 +82,29 @@ const GamePlayer = () => {
         ← Back
       </button>
 
-      {loading && (
-        <div style={{
-          position: "absolute", inset: 0, display: "flex",
-          alignItems: "center", justifyContent: "center",
-          color: "#CBC895", fontSize: "1rem", zIndex: 99998,
-        }}>
-          Loading game…
-        </div>
-      )}
-
       {url ? (
         <>
           <iframe
             ref={iframeRef}
-            /* srcdoc = same-origin → keyboard injection works.
-               Falls back to src if CORS blocked the fetch. */
-            {...(srcdoc ? { srcdoc } : { src: url })}
+            src={url}
             title="Game Player"
             style={{ width: "100%", height: "100%", border: "none", display: "block" }}
             allow="autoplay"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock"
           />
 
-          {/* D-pad */}
+          {/* D-pad: ↑ on top, ← ↓ → on bottom row — triangle layout */}
           <div style={{ position: "absolute", bottom: "1.5rem", left: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
+            {/* Up */}
             <button
               onPointerDown={e => handleControlDown(e, "ArrowUp", "ArrowUp", 38)}
               onPointerUp={e => handleControlUp(e, "ArrowUp", "ArrowUp", 38)}
               onPointerLeave={e => handleControlUp(e, "ArrowUp", "ArrowUp", 38)}
               onContextMenu={e => e.preventDefault()}
               style={controlButtonStyle}
-            >↑</button>
+            >
+              ↑
+            </button>
+            {/* ← ↓ → row */}
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <button
                 onPointerDown={e => handleControlDown(e, "ArrowLeft", "ArrowLeft", 37)}
@@ -164,37 +112,55 @@ const GamePlayer = () => {
                 onPointerLeave={e => handleControlUp(e, "ArrowLeft", "ArrowLeft", 37)}
                 onContextMenu={e => e.preventDefault()}
                 style={controlButtonStyle}
-              >←</button>
+              >
+                ←
+              </button>
               <button
                 onPointerDown={e => handleControlDown(e, "ArrowDown", "ArrowDown", 40)}
                 onPointerUp={e => handleControlUp(e, "ArrowDown", "ArrowDown", 40)}
                 onPointerLeave={e => handleControlUp(e, "ArrowDown", "ArrowDown", 40)}
                 onContextMenu={e => e.preventDefault()}
                 style={controlButtonStyle}
-              >↓</button>
+              >
+                ↓
+              </button>
               <button
                 onPointerDown={e => handleControlDown(e, "ArrowRight", "ArrowRight", 39)}
                 onPointerUp={e => handleControlUp(e, "ArrowRight", "ArrowRight", 39)}
                 onPointerLeave={e => handleControlUp(e, "ArrowRight", "ArrowRight", 39)}
                 onContextMenu={e => e.preventDefault()}
                 style={controlButtonStyle}
-              >→</button>
+              >
+                →
+              </button>
             </div>
           </div>
 
-          {/* Action button */}
-          <div style={{ position: "absolute", bottom: "1.5rem", right: "1.5rem", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
+          {/* Action button — bottom right */}
+          <div style={{ position: "absolute", bottom: "1.5rem", right: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
             <button
               onPointerDown={e => handleControlDown(e, " ", "Space", 32)}
               onPointerUp={e => handleControlUp(e, " ", "Space", 32)}
               onPointerLeave={e => handleControlUp(e, " ", "Space", 32)}
               onContextMenu={e => e.preventDefault()}
               style={actionButtonStyle}
-            >A</button>
+            >
+              A
+            </button>
           </div>
         </>
       ) : (
-        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "1rem" }}>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: "1rem",
+          }}
+        >
           No game URL provided.
         </div>
       )}
