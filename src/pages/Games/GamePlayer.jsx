@@ -1,17 +1,35 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+const R2_HOST = "pub-05996c159fb94c24a47d19984427a923.r2.dev";
+
+// Convert R2 URL → same-origin proxy path so iframe is same-origin
+// and keyboard events can be injected by the D-pad
+const toProxyUrl = (url) => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (u.hostname === R2_HOST) return "/r2" + u.pathname;
+  } catch {}
+  return url;
+};
+
 const GamePlayer = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const iframeRef = useRef(null);
   const url = searchParams.get("url");
+  const proxiedUrl = toProxyUrl(url);
+
+  const focusIframe = () => {
+    try { iframeRef.current?.focus(); } catch {}
+    try { iframeRef.current?.contentWindow?.focus(); } catch {}
+  };
 
   const dispatchGameKeyEvent = (type, key, code, keyCode) => {
     const iframe = iframeRef.current;
     if (!iframe) return;
 
-    // Build event with forced keyCode (read-only in constructor on modern browsers)
     const makeEvent = () => {
       const evt = new KeyboardEvent(type, {
         key, code, bubbles: true, cancelable: true, keyCode, which: keyCode,
@@ -21,34 +39,32 @@ const GamePlayer = () => {
       return evt;
     };
 
-    // Same-origin: dispatch to document and body
+    // Dispatched to the game's document/window (works because proxy makes it same-origin)
     try { iframe.contentWindow.document.dispatchEvent(makeEvent()); } catch {}
     try { iframe.contentWindow.document.body?.dispatchEvent(makeEvent()); } catch {}
-    // Same-origin: dispatch to window
     try { iframe.contentWindow.dispatchEvent(makeEvent()); } catch {}
-    // Cross-origin fallback: postMessage (works if the game listens for it)
-    try { iframe.contentWindow?.postMessage({ type, key, code, keyCode }, "*"); } catch {}
   };
 
   const handleControlDown = (e, key, code, keyCode) => {
     e.preventDefault();
+    focusIframe();
     dispatchGameKeyEvent("keydown", key, code, keyCode);
   };
 
   const handleControlUp = (e, key, code, keyCode) => {
     e.preventDefault();
     dispatchGameKeyEvent("keyup", key, code, keyCode);
+    focusIframe();
   };
 
+  // Focus iframe after it loads so keyboard events reach the game immediately
   useEffect(() => {
-    if (iframeRef.current?.contentWindow) {
-      try {
-        iframeRef.current.contentWindow.focus();
-      } catch {
-        // ignore cross-origin focus issues
-      }
-    }
-  }, [url]);
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    const onLoad = () => focusIframe();
+    iframe.addEventListener("load", onLoad);
+    return () => iframe.removeEventListener("load", onLoad);
+  }, [proxiedUrl]);
 
   return (
     <div
@@ -82,11 +98,11 @@ const GamePlayer = () => {
         ← Back
       </button>
 
-      {url ? (
+      {proxiedUrl ? (
         <>
           <iframe
             ref={iframeRef}
-            src={url}
+            src={proxiedUrl}
             title="Game Player"
             style={{ width: "100%", height: "100%", border: "none", display: "block" }}
             allow="autoplay"
@@ -150,17 +166,7 @@ const GamePlayer = () => {
           </div>
         </>
       ) : (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            fontSize: "1rem",
-          }}
-        >
+        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "1rem" }}>
           No game URL provided.
         </div>
       )}
