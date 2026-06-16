@@ -82,16 +82,14 @@ const Comicread = () => {
       <Box
         className="custom-scrollbar"
         style={{
-          height: "100vh",
-          width: "100vw",
+          height: "100dvh",
+          width: "100dvw",
           backgroundColor: "#000",
           overflowX: "auto",
-          overflowY: "auto",
+          overflowY: "hidden",
           scrollSnapType: "x mandatory",
           display: "flex",
-          flexDirection: "column",
-          paddingBottom: "55px",
-          paddingTop: "10px",
+          flexDirection: "row",
           position: "fixed",
           top: 0,
           left: 0,
@@ -114,18 +112,19 @@ const Comicread = () => {
           onClick={handleBack}
           style={{
             position: "fixed",
-            top: "8%",
-            left: "10%",
-            zIndex: 100,
+            top: "env(safe-area-inset-top, 12px)",
+            left: "12px",
+            zIndex: 100000,
             cursor: "pointer",
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(0,0,0,0.65)",
             borderRadius: "50%",
-            width: "50px",
-            height: "50px",
+            width: "44px",
+            height: "44px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             transition: "all 0.3s ease",
+            backdropFilter: "blur(6px)",
           }}
           className="!scale-[0.7] md:!scale-[0.9] lg:!scale-[1.2]"
         >
@@ -138,9 +137,9 @@ const Comicread = () => {
           <Box
             key={index}
             style={{
-              height: "100vh",
-              width: "100vw",
-              minWidth: "100vw",
+              height: "100dvh",
+              width: "100dvw",
+              minWidth: "100dvw",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -153,10 +152,8 @@ const Comicread = () => {
               style={{
                 height: "100%",
                 width: "100%",
-                paddingBottom: "20px",
-                paddingTop: "20px",
                 maxWidth: "none",
-                objectFit: "fill",
+                objectFit: "contain",
               }}
             />
           </Box>
@@ -165,9 +162,9 @@ const Comicread = () => {
         {/* End of chapter panel for mobile */}
         <Box
           style={{
-            height: "100vh",
-            width: "100vw",
-            minWidth: "100vw",
+            height: "100dvh",
+            width: "100dvw",
+            minWidth: "100dvw",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

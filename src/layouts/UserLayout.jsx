@@ -377,7 +377,8 @@ const UserLayout = () => {
       }}
     >
       <BgVideo />
-      <Box style={{ position: "relative", zIndex: 1, flex: 1, height: "100%", overflowY: "auto" }}>
+      <Box style={{ position: "relative", flex: 1, height: "100%", overflowY: "auto", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+        <style>{`div::-webkit-scrollbar{display:none!important}`}</style>
         <Outlet />
       </Box>
 

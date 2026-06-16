@@ -48,7 +48,7 @@ const Games = () => {
     <>
       <UserHeader title={t("games_page.title")} />
 
-      <Box style={{ position: "relative", minHeight: "100vh", padding: "2rem", marginTop: "100px ", zIndex: 3 }}>
+      <Box style={{ position: "relative", minHeight: "100vh", padding: "1rem", paddingTop: "clamp(1rem, 8vh, 2rem)", marginTop: "clamp(60px, 10vh, 100px)", zIndex: 3 }}>
 
         {/* ── floating clouds ── */}
         {[
@@ -66,10 +66,10 @@ const Games = () => {
         ))}
 
         {/* ── grid ── */}
-        <Box style={{ maxWidth: "1200px", width: "100%", margin: "80px auto", position: "relative", zIndex: 2, paddingInline: "20px" }}>
+        <Box style={{ maxWidth: "1200px", width: "100%", margin: "clamp(20px, 5vh, 80px) auto", position: "relative", zIndex: 2, paddingInline: "20px" }}>
 
           {isLoading ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: "1.5rem" }}>
               {[1, 2, 3].map((i) => (
                 <div key={i} style={{ borderRadius: "16px", overflow: "hidden", background: "rgba(8,18,55,.85)" }}>
                   <Skeleton height={190} radius={0} />
