@@ -73,6 +73,9 @@ const UserLayout = () => {
   const location = useLocation();
   const { settings, loading: settingsLoading, fetchSettings } = useSettings();
   const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showIosHint, setShowIosHint] = useState(false);
+  const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   // Refs used inside event handlers/audio callbacks — avoid stale closures
   const bgAudioRef         = useRef(null);
@@ -323,6 +326,31 @@ const UserLayout = () => {
     };
   }, []); // no deps — uses refs only
 
+  // ── Fullscreen ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    document.addEventListener("webkitfullscreenchange", onChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      document.removeEventListener("webkitfullscreenchange", onChange);
+    };
+  }, []);
+
+  const handleFullscreenToggle = useCallback(() => {
+    if (isIos) {
+      setShowIosHint(true);
+      setTimeout(() => setShowIosHint(false), 4000);
+      return;
+    }
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen?.() ??
+       document.documentElement.webkitRequestFullscreen?.())?.catch(() => {});
+    } else {
+      (document.exitFullscreen?.() ?? document.webkitExitFullscreen?.())?.catch(() => {});
+    }
+  }, [isIos]);
+
   const handleMuteToggle = () => {
     const audio = bgAudioRef.current;
     if (!audio) return;
@@ -352,6 +380,69 @@ const UserLayout = () => {
       <Box style={{ position: "relative", zIndex: 1, flex: 1, height: "100%", overflowY: "auto" }}>
         <Outlet />
       </Box>
+
+      {/* iOS hint tooltip */}
+      {showIosHint && (
+        <div style={{
+          position: "fixed",
+          bottom: "7.5rem",
+          right: "1.5rem",
+          zIndex: 10001,
+          background: "rgba(0,0,0,0.85)",
+          color: "#F6F4D3",
+          fontSize: "11px",
+          padding: "0.5rem 0.75rem",
+          borderRadius: "8px",
+          border: "1px solid rgba(246,244,211,0.25)",
+          backdropFilter: "blur(8px)",
+          maxWidth: "180px",
+          textAlign: "center",
+          lineHeight: 1.5,
+          pointerEvents: "none",
+        }}>
+          Tap <strong>Share →</strong> then<br /><strong>"Add to Home Screen"</strong><br />for fullscreen
+        </div>
+      )}
+
+      {/* Floating fullscreen toggle button */}
+      <button
+        onClick={handleFullscreenToggle}
+        title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        style={{
+          position: "fixed",
+          bottom: "5rem",
+          right: "1.5rem",
+          zIndex: 9999,
+          width: "42px",
+          height: "42px",
+          borderRadius: "50%",
+          background: "rgba(0,0,0,0.6)",
+          border: "1.5px solid rgba(246,244,211,0.35)",
+          color: "#F6F4D3",
+          fontSize: "15px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backdropFilter: "blur(6px)",
+          transition: "background 0.2s",
+          lineHeight: 1,
+        }}
+      >
+        {isFullscreen ? (
+          // compress / exit fullscreen
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+            <path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+          </svg>
+        ) : (
+          // expand / enter fullscreen
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 8V5a2 2 0 0 1 2-2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/>
+            <path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/>
+          </svg>
+        )}
+      </button>
 
       {/* Floating mute/unmute button */}
       <button

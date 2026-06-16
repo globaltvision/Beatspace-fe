@@ -109,7 +109,7 @@ const GamePlayer = () => {
           />
 
           {/* D-pad: ↑ on top, ← ↓ → on bottom row — triangle layout */}
-          <div style={{ position: "absolute", bottom: "1.5rem", left: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
+          <div style={{ position: "absolute", bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px) + 3rem)", left: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
             {/* Up */}
             <button
               onPointerDown={e => handleControlDown(e, "ArrowUp", "ArrowUp", 38)}
@@ -153,7 +153,7 @@ const GamePlayer = () => {
           </div>
 
           {/* Action button — bottom right */}
-          <div style={{ position: "absolute", bottom: "1.5rem", right: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
+          <div style={{ position: "absolute", bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px) + 3rem)", right: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100000, pointerEvents: "auto", userSelect: "none" }}>
             <button
               onPointerDown={e => handleControlDown(e, " ", "Space", 32)}
               onPointerUp={e => handleControlUp(e, " ", "Space", 32)}
