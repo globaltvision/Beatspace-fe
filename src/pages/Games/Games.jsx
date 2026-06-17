@@ -181,7 +181,8 @@ const Games = () => {
           ) : (
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(clamp(120px, 24vw, 180px), 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, clamp(120px, 24vw, 180px))",
+              justifyContent: "center",
               gap: "clamp(14px, 3vw, 24px)",
             }}>
               {games.map((game) => {
