@@ -149,7 +149,7 @@ const Comicview = () => {
             overflow: "hidden",
             zIndex: 5,
           }}
-          className="mt-16 max-sm:!w-[160px] max-sm:!h-[225px] sm:!w-[225px] sm:!h-[320px] md:!w-[300px] md:!h-[430px] lg:!w-[340px] lg:!h-[485px]"
+          className="mt-16 w-[160px] h-[225px] sm:w-[225px] sm:h-[320px] md:w-[300px] md:h-[430px] lg:w-[340px] lg:h-[485px] max-h-[65vh] max-w-[calc(65vh*0.71)]"
         >
           <Image
             key={idx}
