@@ -28,7 +28,7 @@ createRoot(document.getElementById("root")).render(
       </div>
       <div className="app-content">  
       <MantineProvider theme={theme}>
-        <Notifications position="bottom-right" />
+        <Notifications position="bottom-right" className="notif-portal" />
         <QueryProvider>
           <SettingsProvider>
             <App />

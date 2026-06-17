@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import {
   ActionIcon,
   Alert,
-  Badge,
   Button,
   FileInput,
   Group,
@@ -12,7 +11,6 @@ import {
   Select,
   Stack,
   Switch,
-  Table,
   Text,
   TextInput,
   Textarea,
@@ -243,49 +241,93 @@ export default function Games() {
 
   const requestDelete = (game) => { setDeletingGame(game); setDeleteOpen(true); };
 
-  /* ── table rows ── */
-  const rows = games.map((game) => {
+  /* ── game cards ── */
+  const GameCard = ({ game }) => {
     const id = getGameId(game);
     const isActive = normalizeStatus(game.status);
+    const img = game.image || game.image_url || "";
     return (
-      <Table.Tr key={id || game.slug}>
-        <Table.Td><Text fw={700}>{game.name || "Untitled game"}</Text></Table.Td>
-        <Table.Td><Text c="var(--tan)" ff="monospace">{game.slug || "-"}</Text></Table.Td>
-        <Table.Td><Text lineClamp={2} c="#d9d8bd">{game.description || "No description"}</Text></Table.Td>
-        <Table.Td>
-          <Badge color={isActive ? "green" : "red"} variant="light">
-            {isActive ? "Active" : "Inactive"}
-          </Badge>
-        </Table.Td>
-        <Table.Td>
-          <Group gap="xs" wrap="nowrap">
-            <Switch
-              checked={isActive}
-              onChange={(e) => { const v = e.currentTarget.checked; toggleStatusMutation.mutate({ id, isActive: v }); }}
-              disabled={!id || toggleStatusMutation.isPending}
-              color="lime"
-              size="md"
-              aria-label={`Toggle ${game.name || "game"} status`}
-              styles={{
-                track: {
-                  background: isActive ? "#4ade80" : "#3a3a3a",
-                  border: isActive ? "1px solid #22c55e" : "1px solid #555",
-                  cursor: "pointer",
-                },
-                thumb: { background: isActive ? "#fff" : "#aaa", border: "none" },
-              }}
-            />
-            <ActionIcon className="a-btn a-yellow" variant="transparent" onClick={() => openEditModal(game)} aria-label="Edit game">
-              <IconEdit size={18} />
-            </ActionIcon>
-            <ActionIcon className="a-btn a-red" variant="transparent" onClick={() => requestDelete(game)} aria-label="Delete game">
-              <IconTrash size={18} />
-            </ActionIcon>
-          </Group>
-        </Table.Td>
-      </Table.Tr>
+      <div className="game-card" style={{ position: "relative", background: "#131319", border: "1px solid rgba(203,200,149,0.3)", display: "flex", flexDirection: "column" }}>
+        {/* corner accents */}
+        {[{ top: -3, left: -3 }, { top: -3, right: -3 }, { bottom: -3, left: -3 }, { bottom: -3, right: -3 }].map((pos, i) => (
+          <div className="card-corner" key={i} style={{ position: "absolute", width: 7, height: 7, background: "#CBC895", zIndex: 1, transition: "background .22s ease", ...pos }} />
+        ))}
+
+        {/* thumbnail */}
+        <div className="card-thumb-wrap">
+          {img ? (
+            <img className="card-thumb-img" src={img} alt={game.name} />
+          ) : (
+            <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CBC895" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <path d="M12 12h.01M8 10v4M6 12h4"/>
+                <circle cx="16" cy="12" r="1" fill="#CBC895"/>
+                <circle cx="18" cy="10" r="1" fill="#CBC895"/>
+              </svg>
+              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: "#4a4a3a" }}>NO PREVIEW</span>
+            </div>
+          )}
+          {/* status pill on image */}
+          <div style={{
+            position: "absolute", top: 10, right: 10,
+            background: isActive ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
+            border: `1px solid ${isActive ? "#22c55e" : "#ef4444"}`,
+            color: isActive ? "#4ade80" : "#f87171",
+            fontFamily: '"Press Start 2P"', fontSize: 7,
+            padding: "4px 8px", letterSpacing: "0.05em",
+          }}>
+            {isActive ? "ACTIVE" : "OFFLINE"}
+          </div>
+        </div>
+
+        {/* info */}
+        <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ fontFamily: '"Press Start 2P"', fontSize: 10, color: "#F6F4D3", lineHeight: 1.6 }}>
+            {game.name || "Untitled"}
+          </div>
+          <div style={{ fontFamily: "monospace", fontSize: 11, color: "#CBC895", background: "rgba(203,200,149,0.08)", padding: "3px 8px", alignSelf: "flex-start", letterSpacing: "0.04em" }}>
+            /{game.slug || "—"}
+          </div>
+          <div style={{ fontSize: 12, color: "#8a8870", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            {game.description || "No description provided."}
+          </div>
+        </div>
+
+        {/* actions bar */}
+        <div style={{ borderTop: "1px solid rgba(203,200,149,0.15)", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(0,0,0,0.2)" }}>
+          <Switch
+            checked={isActive}
+            onChange={(e) => { const v = e.currentTarget.checked; toggleStatusMutation.mutate({ id, isActive: v }); }}
+            disabled={!id || toggleStatusMutation.isPending}
+            color="lime"
+            size="sm"
+            label={<span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: isActive ? "#4ade80" : "#666" }}>{isActive ? "ON" : "OFF"}</span>}
+            styles={{
+              track: { background: isActive ? "#166534" : "#2a2a2a", border: isActive ? "1px solid #22c55e" : "1px solid #444" },
+              thumb: { background: isActive ? "#4ade80" : "#555" },
+            }}
+          />
+          <div style={{ display: "flex", gap: 6 }}>
+            <button
+              onClick={() => openEditModal(game)}
+              style={{ width: 34, height: 34, background: "rgba(255,239,46,0.08)", border: "1px solid #FFEF2E", color: "#FFEF2E", display: "flex", alignItems: "center", justifyContent: "center" }}
+              title="Edit"
+            >
+              <IconEdit size={15} />
+            </button>
+            <button
+              onClick={() => requestDelete(game)}
+              style={{ width: 34, height: 34, background: "rgba(235,24,27,0.1)", border: "1px solid #EB181B", color: "#EB181B", display: "flex", alignItems: "center", justifyContent: "center" }}
+              title="Delete"
+            >
+              <IconTrash size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
     );
-  });
+  };
 
   const isSaving = uploadMutation.isPending || updateMutation.isPending;
 
@@ -299,31 +341,35 @@ export default function Games() {
           --green:#55DF55;--red:#EB181B;--button:#DDD1B1;--text:#ffffff;--ink:#191A22;
         }
         *{box-sizing:border-box}
-        .app{min-height:100vh;background:var(--olive);color:var(--text)}
-        .container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+        .app{min-height:100vh;background:#0f1016;color:var(--text)}
+        .container{max-width:1300px;margin:0 auto;padding:0 1.5rem}
         .pixel{font-family:"Press Start 2P",monospace}
-        .btn{background:var(--button);color:var(--ink);font-weight:700;border-radius:8px;box-shadow:0 7px 2px 0 #000;padding:.8rem 1.1rem;border:none;cursor:pointer}
-        .btn:active{transform:translateY(2px);box-shadow:0 5px 2px 0 #000}
-        .topbar{background:var(--header-dark);border-bottom:1px solid var(--tan)}
+        .btn{background:var(--button);color:var(--ink);font-weight:700;border-radius:0;box-shadow:0 5px 0 #000;padding:.75rem 1.2rem;border:none;cursor:pointer;font-family:"Press Start 2P",monospace;font-size:10px;letter-spacing:.04em}
+        .btn:active{transform:translateY(2px);box-shadow:0 3px 0 #000}
+        .topbar{background:#131319;border-bottom:1px solid rgba(203,200,149,0.3)}
         .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem}
-        .title{font-size:23px;color:#fff}
-        .stats{color:var(--yellow2);font-size:13px}
-        .inventory{background:rgba(181,179,135,0.16);min-height:calc(100vh - 86px)}
-        .table-wrap{overflow-x:auto;padding:1.5rem 0 2rem}
-        .games-table{min-width:920px;border-collapse:separate;border-spacing:0}
-        .games-table thead{background:var(--table-dark)}
-        .games-table th{color:var(--tan);font-family:"Press Start 2P",monospace;font-size:14px;padding:1.15rem;text-align:left}
-        .games-table td{background:rgba(197,194,116,0.16);border-bottom:1px solid var(--tan);padding:1rem 1.15rem;color:#fff}
-        .a-btn{width:42px;height:37px;display:flex;align-items:center;justify-content:center;background:transparent;border:2px solid currentColor;cursor:pointer;border-radius:0}
-        .a-yellow{color:#FFEF2E}
-        .a-red{color:var(--red);background:rgba(235,24,27,0.13)}
-        .modal-title{color:var(--yellow);font-size:16px;font-weight:700}
+        .title{font-size:18px;color:#F6F4D3}
+        .stats{color:var(--yellow2);font-size:11px;font-family:"Press Start 2P",monospace;margin-top:6px}
+        .inventory{background:#0f1016;min-height:calc(100vh - 86px)}
+        .games-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+        .game-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+        .game-card:hover{transform:translateY(-7px);border-color:rgba(203,200,149,0.8) !important;box-shadow:0 16px 40px rgba(0,0,0,0.55),0 0 0 1px rgba(203,200,149,0.25)}
+        .game-card:hover .card-corner{background:#F6F4D3 !important}
+        .game-card:hover .card-thumb-img{transform:scale(1.07)}
+        .card-thumb-img{transition:transform .35s ease;width:100%;height:100%;object-fit:cover;display:block}
+        .card-thumb-wrap{overflow:hidden;background:#ffffff;position:relative;height:170px;flex-shrink:0}
+        .a-btn{width:38px;height:34px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid currentColor;cursor:pointer;border-radius:0}
+        .a-yellow{color:#FFEF2E;background:rgba(255,239,46,0.06)}
+        .a-red{color:var(--red);background:rgba(235,24,27,0.1)}
+        .modal-title{color:var(--yellow);font-size:14px;font-weight:700;font-family:"Press Start 2P",monospace}
         .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
         .form-wide{grid-column:1 / -1}
-        .mantine-Modal-content{background:var(--header-dark);border:2px solid var(--tan);color:#fff}
-        .mantine-Modal-header{background:var(--header-dark);color:#fff}
-        .empty-state{padding:3rem 1rem;text-align:center;background:rgba(197,194,116,0.16);border:1px solid var(--tan)}
-        @media(max-width:760px){.topbar-inner{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}}
+        .mantine-Modal-content{background:#131319;border:1px solid rgba(203,200,149,0.4);color:#fff}
+        .mantine-Modal-header{background:#131319;color:#fff;border-bottom:1px solid rgba(203,200,149,0.2)}
+        .empty-state{padding:4rem 1rem;text-align:center;border:1px solid rgba(203,200,149,0.2)}
+        @media(max-width:1100px){.games-grid{grid-template-columns:repeat(3,1fr)}}
+        @media(max-width:760px){.topbar-inner{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.games-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:480px){.games-grid{grid-template-columns:1fr}}
       `}</style>
 
       {/* ── topbar ── */}
@@ -344,9 +390,9 @@ export default function Games() {
         </div>
       </section>
 
-      {/* ── table ── */}
+      {/* ── grid ── */}
       <section className="inventory">
-        <div className="container table-wrap">
+        <div className="container" style={{ padding: "2rem 1.5rem" }}>
           {isLoading ? (
             <div className="empty-state"><Loader color="yellow" /></div>
           ) : isError ? (
@@ -356,22 +402,13 @@ export default function Games() {
             </div>
           ) : games.length === 0 ? (
             <div className="empty-state">
-              <Text fw={700}>No games found.</Text>
-              <Text c="var(--tan)" mt={6}>Create your first game to show it here.</Text>
+              <Text fw={700} style={{ fontFamily: '"Press Start 2P"', fontSize: 12, color: "#CBC895" }}>NO GAMES FOUND</Text>
+              <Text c="var(--tan)" mt={10} style={{ fontSize: 13 }}>Upload your first game to see it here.</Text>
             </div>
           ) : (
-            <Table className="games-table">
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Name</Table.Th>
-                  <Table.Th>Slug</Table.Th>
-                  <Table.Th>Description</Table.Th>
-                  <Table.Th>Status</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
+            <div className="games-grid">
+              {games.map((game) => <GameCard key={getGameId(game) || game.slug} game={game} />)}
+            </div>
           )}
         </div>
       </section>

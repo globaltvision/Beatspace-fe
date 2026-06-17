@@ -314,13 +314,15 @@ body {
     auto;
 }
 
-/* Specific cursor states */
-button,
-a,
-[role="button"] {
-  cursor:
-    url('data:image/svg+xml;utf8,<svg width="30" height="39" viewBox="0 0 50 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0H5V5H10V0Z" fill="%23242730"/><path d="M5 5H0V10H5V5Z" fill="%23242730"/><path d="M10 5H5V10H10V5Z" fill="%23F6F4D3"/><path d="M15 5H10V10H15V5Z" fill="%23242730"/><path d="M5 10H0V15H5V10Z" fill="%23242730"/><path d="M10 10H5V15H10V10Z" fill="%23F6F4D3"/><path d="M15 10H10V15H15V10Z" fill="%23F6F4D3"/><path d="M20 10H15V15H20V10Z" fill="%23242730"/><path d="M5 15H0V20H5V15Z" fill="%23242730"/><path d="M10 15H5V20H10V15Z" fill="%23F6F4D3"/><path d="M15 15H10V20H15V15Z" fill="%23F6F4D3"/><path d="M20 15H15V20H20V15Z" fill="%23F6F4D3"/><path d="M25 15H20V20H25V15Z" fill="%23242730"/><path d="M5 20H0V25H5V20Z" fill="%23242730"/><path d="M10 20H5V25H10V20Z" fill="%23F6F4D3"/><path d="M15 20H10V25H15V20Z" fill="%23F6F4D3"/><path d="M20 20H15V25H20V20Z" fill="%23F6F4D3"/><path d="M25 20H20V25H25V20Z" fill="%23F6F4D3"/><path d="M30 20H25V25H30V20Z" fill="%23242730"/><path d="M5 25H0V30H5V25Z" fill="%23242730"/><path d="M10 25H5V30H10V25Z" fill="%23F6F4D3"/><path d="M15 25H10V30H15V25Z" fill="%23F6F4D3"/><path d="M20 25H15V30H20V25Z" fill="%23F6F4D3"/><path d="M25 25H20V30H25V25Z" fill="%23F6F4D3"/><path d="M30 25H25V30H30V25Z" fill="%23F6F4D3"/><path d="M35 25H30V30H35V25Z" fill="%23242730"/><path d="M5 30H0V35H5V30Z" fill="%23242730"/><path d="M10 30H5V35H10V30Z" fill="%23F6F4D3"/><path d="M15 30H10V35H15V30Z" fill="%23F6F4D3"/><path d="M20 30H15V35H20V30Z" fill="%23F6F4D3"/><path d="M25 30H20V35H25V30Z" fill="%23F6F4D3"/><path d="M30 30H25V35H30V30Z" fill="%23F6F4D3"/><path d="M35 30H30V35H35V30Z" fill="%23F6F4D3"/><path d="M40 30H35V35H40V30Z" fill="%23242730"/><path d="M5 35H0V40H5V35Z" fill="%23242730"/><path d="M10 35H5V40H10V35Z" fill="%23F6F4D3"/><path d="M15 35H10V40H15V35Z" fill="%23F6F4D3"/><path d="M20 35H15V40H20V35Z" fill="%23F6F4D3"/><path d="M25 35H20V40H25V35Z" fill="%23F6F4D3"/><path d="M30 35H25V40H30V35Z" fill="%23F6F4D3"/><path d="M35 35H30V40H35V35Z" fill="%23F6F4D3"/><path d="M40 35H35V40H40V35Z" fill="%23F6F4D3"/><path d="M45 35H40V40H45V35Z" fill="%23242730"/><path d="M5 40H0V45H5V40Z" fill="%23242730"/><path d="M10 40H5V45H10V40Z" fill="%23F6F4D3"/><path d="M15 40H10V45H15V40Z" fill="%23F6F4D3"/><path d="M20 40H15V45H20V40Z" fill="%23F6F4D3"/><path d="M25 40H20V45H25V40Z" fill="%23F6F4D3"/><path d="M30 40H25V45H30V40Z" fill="%23F6F4D3"/><path d="M35 40H30V45H35V40Z" fill="%23F6F4D3"/><path d="M40 40H35V45H40V40Z" fill="%23F6F4D3"/><path d="M45 40H40V45H45V40Z" fill="%23F6F4D3"/><path d="M50 40H45V45H50V40Z" fill="%23242730"/><path d="M5 45H0V50H5V45Z" fill="%23242730"/><path d="M10 45H5V50H10V45Z" fill="%23F6F4D3"/><path d="M15 45H10V50H15V45Z" fill="%23F6F4D3"/><path d="M20 45H15V50H20V45Z" fill="%23F6F4D3"/><path d="M25 45H20V50H25V45Z" fill="%23242730"/><path d="M30 45H25V50H30V45Z" fill="%23242730"/><path d="M35 45H30V50H35V45Z" fill="%23242730"/><path d="M40 45H35V50H40V45Z" fill="%23242730"/><path d="M45 45H40V50H45V45Z" fill="%23242730"/><path d="M50 45H45V50H50V45Z" fill="%23242730"/><path d="M5 50H0V55H5V50Z" fill="%23242730"/><path d="M10 50H5V55H10V50Z" fill="%23F6F4D3"/><path d="M15 50H10V55H15V50Z" fill="%23F6F4D3"/><path d="M20 50H15V55H20V50Z" fill="%23242730"/><path d="M5 55H0V60H5V55Z" fill="%23242730"/><path d="M10 55H5V60H10V55Z" fill="%23F6F4D3"/><path d="M15 55H10V60H15V55Z" fill="%23242730"/><path d="M5 60H0V65H5V60Z" fill="%23242730"/><path d="M10 60H5V65H10V60Z" fill="%23242730"/></svg>'),
-    pointer;
+/* Specific cursor states — !important overrides Mantine class selectors; child selectors cover inner spans */
+button, button *,
+a, a *,
+[role="button"], [role="button"] *,
+[role="link"], [role="link"] *,
+select, select *,
+label[for], label[for] *,
+[tabindex]:not([tabindex="-1"]) {
+  cursor: url('data:image/svg+xml;utf8,<svg width="32" height="40" viewBox="0 0 50 65" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="0" width="5" height="5" fill="%23242730"/><rect x="5" y="5" width="5" height="10" fill="%23242730"/><rect x="10" y="5" width="5" height="10" fill="%23F6F4D3"/><rect x="15" y="5" width="5" height="10" fill="%23242730"/><rect x="5" y="15" width="5" height="5" fill="%23242730"/><rect x="10" y="15" width="5" height="5" fill="%23F6F4D3"/><rect x="15" y="15" width="10" height="5" fill="%23242730"/><rect x="5" y="20" width="5" height="5" fill="%23242730"/><rect x="10" y="20" width="10" height="5" fill="%23F6F4D3"/><rect x="20" y="20" width="10" height="5" fill="%23242730"/><rect x="5" y="25" width="5" height="5" fill="%23242730"/><rect x="10" y="25" width="15" height="5" fill="%23F6F4D3"/><rect x="25" y="25" width="10" height="5" fill="%23242730"/><rect x="0" y="30" width="10" height="5" fill="%23242730"/><rect x="10" y="30" width="20" height="5" fill="%23F6F4D3"/><rect x="30" y="30" width="10" height="5" fill="%23242730"/><rect x="0" y="35" width="5" height="10" fill="%23242730"/><rect x="5" y="35" width="35" height="10" fill="%23F6F4D3"/><rect x="40" y="35" width="5" height="10" fill="%23242730"/><rect x="5" y="45" width="5" height="5" fill="%23242730"/><rect x="10" y="45" width="25" height="5" fill="%23F6F4D3"/><rect x="35" y="45" width="5" height="5" fill="%23242730"/><rect x="5" y="50" width="10" height="5" fill="%23242730"/><rect x="15" y="50" width="15" height="5" fill="%23F6F4D3"/><rect x="30" y="50" width="5" height="5" fill="%23242730"/><rect x="10" y="55" width="25" height="5" fill="%23242730"/></svg>') 8 0, pointer !important;
 }
 
 input,
@@ -441,4 +443,168 @@ textarea,
   font-size: 11px !important;
   font-weight: bold !important;
   line-height: 1.2 !important;
+}
+
+/* ─── Mantine Notifications — Admin Dark Theme ─────────────────── */
+/* .notif-portal anchors all selectors so they beat App.css's !important rules */
+
+/* Force Alexandria on every element inside the portal — beats App.css's p,span,div,... rule */
+body .notif-portal *,
+body .notif-portal {
+  font-family: 'Alexandria', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Individual toast card */
+body .notif-portal .mantine-Notification-root,
+body .notif-portal [class*="Notification"][class*="root"] {
+  background: #131319 !important;
+  border: 1px solid rgba(203, 200, 149, 0.35) !important;
+  border-left: 3px solid var(--notification-color, #CBC895) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75) !important;
+  padding: 14px 18px 14px 18px !important;
+  min-width: 300px !important;
+  max-width: 380px !important;
+}
+
+/* Title */
+body .notif-portal .mantine-Notification-title,
+body .notif-portal [class*="Notification"][class*="title"] {
+  font-family: 'Alexandria', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #F6F4D3 !important;
+  line-height: 1.4 !important;
+  margin-bottom: 4px !important;
+}
+
+/* Description */
+body .notif-portal .mantine-Notification-description,
+body .notif-portal [class*="Notification"][class*="description"] {
+  font-family: 'Alexandria', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: #8a8870 !important;
+  line-height: 1.5 !important;
+}
+
+/* Close button */
+body .notif-portal .mantine-Notification-closeButton,
+body .notif-portal [class*="Notification"][class*="closeButton"],
+body .notif-portal [class*="Notification"][class*="close"] {
+  color: #CBC895 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+body .notif-portal .mantine-Notification-closeButton:hover,
+body .notif-portal [class*="Notification"][class*="closeButton"]:hover {
+  background: rgba(203, 200, 149, 0.1) !important;
+  color: #F6F4D3 !important;
+}
+
+/* Icon area */
+body .notif-portal .mantine-Notification-icon,
+body .notif-portal [class*="Notification"][class*="icon"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* Gap between stacked toasts */
+body .notif-portal {
+  gap: 8px !important;
+}
+
+/* ─── Sonner Toasts — Admin Dark Theme ─────────────────────────── */
+/* [data-sonner-toast] specificity (0,1,0) beats App.css's `div` (0,0,1) with !important */
+
+[data-sonner-toaster] {
+  font-family: 'Alexandria', sans-serif !important;
+}
+
+[data-sonner-toast],
+[data-sonner-toast] * {
+  font-family: 'Alexandria', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+[data-sonner-toast] {
+  background: #131319 !important;
+  border: 1px solid rgba(203, 200, 149, 0.35) !important;
+  border-left: 3px solid #CBC895 !important;
+  color: #F6F4D3 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75) !important;
+  font-size: 13px !important;
+  padding: 14px 18px !important;
+  min-width: 300px !important;
+  max-width: 380px !important;
+}
+
+/* type-specific left border accents */
+[data-sonner-toast][data-type="success"] {
+  border-left-color: #4CAF50 !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-left-color: #E57373 !important;
+}
+
+[data-sonner-toast][data-type="warning"] {
+  border-left-color: #CBC895 !important;
+}
+
+[data-sonner-toast][data-type="info"] {
+  border-left-color: #64B5F6 !important;
+}
+
+/* title inside toast */
+[data-sonner-toast] [data-title] {
+  color: #F6F4D3 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  font-family: 'Alexandria', sans-serif !important;
+}
+
+/* description inside toast */
+[data-sonner-toast] [data-description] {
+  color: #8a8870 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: 'Alexandria', sans-serif !important;
+}
+
+/* close button */
+[data-sonner-toast] [data-close-button] {
+  background: transparent !important;
+  border: 1px solid rgba(203, 200, 149, 0.35) !important;
+  color: #CBC895 !important;
+  border-radius: 0 !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: rgba(203, 200, 149, 0.1) !important;
+  color: #F6F4D3 !important;
+}
+
+/* icon color */
+[data-sonner-toast] [data-icon] svg {
+  color: inherit !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: #4CAF50 !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-icon] {
+  color: #E57373 !important;
+}
+
+[data-sonner-toast][data-type="warning"] [data-icon] {
+  color: #CBC895 !important;
+}
+
+[data-sonner-toast][data-type="info"] [data-icon] {
+  color: #64B5F6 !important;
 }

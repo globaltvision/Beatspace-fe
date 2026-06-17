@@ -1,0 +1,86 @@
+<svg width="32" height="40" viewBox="0 0 50 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Row 0: fingertip -->
+  <rect x="10" y="0" width="5" height="5" fill="#242730"/>
+  <!-- Row 1 -->
+  <rect x="5" y="5" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="5" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="5" width="5" height="5" fill="#242730"/>
+  <!-- Row 2 -->
+  <rect x="5" y="10" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="10" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="10" width="5" height="5" fill="#242730"/>
+  <!-- Row 3: middle finger starts -->
+  <rect x="5" y="15" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="15" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="15" width="5" height="5" fill="#242730"/>
+  <rect x="20" y="15" width="5" height="5" fill="#242730"/>
+  <!-- Row 4 -->
+  <rect x="5" y="20" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="20" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="20" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="20" width="5" height="5" fill="#242730"/>
+  <rect x="25" y="20" width="5" height="5" fill="#242730"/>
+  <!-- Row 5: ring finger starts -->
+  <rect x="5" y="25" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="25" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="25" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="25" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="25" width="5" height="5" fill="#242730"/>
+  <rect x="30" y="25" width="5" height="5" fill="#242730"/>
+  <!-- Row 6: pinky + thumb -->
+  <rect x="0" y="30" width="5" height="5" fill="#242730"/>
+  <rect x="5" y="30" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="30" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="30" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="30" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="30" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="30" y="30" width="5" height="5" fill="#242730"/>
+  <rect x="35" y="30" width="5" height="5" fill="#242730"/>
+  <!-- Row 7: full palm -->
+  <rect x="0" y="35" width="5" height="5" fill="#242730"/>
+  <rect x="5" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="10" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="30" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="35" y="35" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="40" y="35" width="5" height="5" fill="#242730"/>
+  <!-- Row 8 -->
+  <rect x="0" y="40" width="5" height="5" fill="#242730"/>
+  <rect x="5" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="10" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="30" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="35" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="40" y="40" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="45" y="40" width="5" height="5" fill="#242730"/>
+  <!-- Row 9 -->
+  <rect x="5" y="45" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="15" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="30" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="35" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="40" y="45" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="45" y="45" width="5" height="5" fill="#242730"/>
+  <!-- Row 10 -->
+  <rect x="5" y="50" width="5" height="5" fill="#242730"/>
+  <rect x="10" y="50" width="5" height="5" fill="#242730"/>
+  <rect x="15" y="50" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="20" y="50" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="25" y="50" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="30" y="50" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="35" y="50" width="5" height="5" fill="#F6F4D3"/>
+  <rect x="40" y="50" width="5" height="5" fill="#242730"/>
+  <!-- Row 11: bottom edge -->
+  <rect x="10" y="55" width="5" height="5" fill="#242730"/>
+  <rect x="15" y="55" width="5" height="5" fill="#242730"/>
+  <rect x="20" y="55" width="5" height="5" fill="#242730"/>
+  <rect x="25" y="55" width="5" height="5" fill="#242730"/>
+  <rect x="30" y="55" width="5" height="5" fill="#242730"/>
+  <rect x="35" y="55" width="5" height="5" fill="#242730"/>
+</svg>

@@ -1,5 +1,6 @@
 import {
   Button,
+  Notification,
   createTheme,
   NumberInput,
   PasswordInput,
@@ -49,6 +50,31 @@ export const theme = createTheme({
     Select: Select.extend(globalInputStyle),
     PasswordInput: PasswordInput.extend(globalInputStyle),
     Button: Button.extend(globalButtonStyles),
+    Notification: Notification.extend({
+      styles: {
+        root: {
+          background: "#131319",
+          border: "1px solid rgba(203,200,149,0.4)",
+          borderRadius: 0,
+          boxShadow: "0 12px 40px rgba(0,0,0,0.7)",
+        },
+        title: {
+          fontFamily: "'Alexandria', sans-serif",
+          fontSize: "13px",
+          fontWeight: 600,
+          color: "#F6F4D3",
+        },
+        description: {
+          fontFamily: "'Alexandria', sans-serif",
+          fontSize: "12px",
+          color: "#9C9A7A",
+        },
+        closeButton: {
+          color: "#CBC895",
+          borderRadius: 0,
+        },
+      },
+    }),
   },
   fontFamily: "Vision Font, monospace, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
   fontSizes: {

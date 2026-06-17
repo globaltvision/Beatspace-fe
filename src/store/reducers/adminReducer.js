@@ -2,6 +2,7 @@ import { ADMIN_CONSTANTS } from '../constants/adminConstants';
 
 const initialState = {
   dashboardData: null,
+  dashboardLastFetched: null,
   merchs: [],
   orders: [],
   donations: [],
@@ -43,6 +44,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         dashboardData: action.payload,
+        dashboardLastFetched: Date.now(),
         isLoading: false,
         error: null,
       };

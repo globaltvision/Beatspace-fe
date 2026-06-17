@@ -60,7 +60,7 @@ const Dashboard = () => {
     ];
   }, [dashboardData]);
 
-  if (isLoading) {
+  if (isLoading && !dashboardData) {
     return (
       <div className="flex justify-center items-center h-screen bg-[#040404]">
         <Loader type="dots" color="#B5B387" />

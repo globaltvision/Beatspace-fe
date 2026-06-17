@@ -1,7 +1,13 @@
 import custAxios from '../../configs/axios.config';
 import { ADMIN_CONSTANTS } from '../constants/adminConstants';
 
-export const dashboard = () => async (dispatch) => {
+const DASHBOARD_STALE_MS = 5 * 60 * 1000; // 5 minutes
+
+export const dashboard = (force = false) => async (dispatch, getState) => {
+  const { dashboardLastFetched } = getState().admin;
+  const isFresh = dashboardLastFetched && Date.now() - dashboardLastFetched < DASHBOARD_STALE_MS;
+  if (isFresh && !force) return;
+
   dispatch({
     type: ADMIN_CONSTANTS.DASHBOARD_REQUEST,
   });
