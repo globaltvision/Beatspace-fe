@@ -1,6 +1,6 @@
 import axios from "axios";
-// export const baseURL = "https://beatspace-be-production-2.up.railway.app/api";
-export const baseURL = "http://localhost:8000/api";
+export const baseURL = "https://beatspace-be-production-2.up.railway.app/api";
+// export const baseURL = "http://localhost:8000/api";
 
 // withCredentials is required globally — the backend uses better-auth (cookie/session based).
 // The Bearer token in Authorization header is declared in protectRoute but never read;
