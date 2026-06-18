@@ -18,12 +18,29 @@ const BuyShirt = () => {
     description: "",
   };
 
+  // Build images array — prod_image (cover) is always first
+  const images = (() => {
+    if (!item.images?.length) {
+      return item.prod_image ? [item.prod_image] : [item.image];
+    }
+    const cover = item.prod_image;
+    if (cover) {
+      const rest = item.images.filter(img => img !== cover);
+      return [cover, ...rest];
+    }
+    return item.images;
+  })();
+
+  const [currentImageIdx, setCurrentImageIdx] = useState(0);
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem("cartItems");
     return saved ? JSON.parse(saved) : [];
   });
   const [selectedSize, setSelectedSize] = useState(item.sizes?.[0] || "M");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const prevImage = () => setCurrentImageIdx(i => (i - 1 + images.length) % images.length);
+  const nextImage = () => setCurrentImageIdx(i => (i + 1) % images.length);
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -32,10 +49,10 @@ const BuyShirt = () => {
   const handleIncreaseCart = () => {
     setCartItems((prev) => [
       ...prev,
-      { 
-        ...item, 
-        selectedSize, 
-        cartItemId: Date.now() + Math.random().toString() 
+      {
+        ...item,
+        selectedSize,
+        cartItemId: Date.now() + Math.random().toString()
       }
     ]);
   };
@@ -67,7 +84,9 @@ const BuyShirt = () => {
         }
       />
 
+      {/* Main content — buy-shirt-page handles padding via CSS (overridden in landscape) */}
       <Box
+        className="buy-shirt-page"
         style={{
           height: "100%",
           display: "flex",
@@ -75,48 +94,131 @@ const BuyShirt = () => {
           justifyContent: "center",
           zIndex: 5,
           position: "relative",
-          padding: "2rem",
-          paddingTop: "15vh", // Push down below header
         }}
       >
         <Flex
           direction="column"
           align="center"
-          gap={40}
+          className="buy-shirt-outer-flex"
           style={{ width: "100%", maxWidth: "1100px" }}
         >
           <Flex
-            className="flex-col md:flex-row items-center gap-12 lg:gap-24 w-full justify-center"
+            className="flex-col md:flex-row items-center buy-shirt-content-row w-full justify-center"
           >
-            {/* Image Section */}
+            {/* Image Slider Section */}
             <Box className="flex justify-center w-full md:w-[45%]">
               <Box
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "1rem",
-                }}
+                className="buy-shirt-img-wrap"
+                style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}
               >
-                <Image
-                  src={item.prod_image || item.image}
-                  alt={item.name}
-                  className="w-[220px] md:w-[280px] lg:w-[350px] xl:w-[450px]"
+                {/* Padded wrapper — padding creates gap between image and arrows */}
+                <Box
+                  className="buy-shirt-arrow-wrap"
                   style={{
-                    filter: "brightness(1.1) drop-shadow(0 0 40px rgba(0,0,0,0.6))",
-                    objectFit: "contain",
+                    position: "relative",
+                    padding: "0 48px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                />
+                >
+                  {images.length > 1 && (
+                    <Box
+                      onClick={prevImage}
+                      className="buy-shirt-arrow vision-font"
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "rgba(0,0,0,0.75)",
+                        border: "1px solid rgba(246,244,211,0.5)",
+                        color: "#F6F4D3",
+                        cursor: "pointer",
+                        fontSize: "1.4rem",
+                        userSelect: "none",
+                        transition: "background 0.15s",
+                        zIndex: 2,
+                      }}
+                    >
+                      ‹
+                    </Box>
+                  )}
+
+                  <Image
+                    src={images[currentImageIdx]}
+                    alt={item.name}
+                    className="w-[200px] md:w-[240px] lg:w-[300px] xl:w-[360px] buy-shirt-img"
+                    style={{
+                      filter: "brightness(1.1) drop-shadow(0 0 40px rgba(0,0,0,0.6))",
+                      objectFit: "contain",
+                      transition: "opacity 0.2s ease",
+                      display: "block",
+                    }}
+                  />
+
+                  {images.length > 1 && (
+                    <Box
+                      onClick={nextImage}
+                      className="buy-shirt-arrow vision-font"
+                      style={{
+                        position: "absolute",
+                        right: 0,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "rgba(0,0,0,0.75)",
+                        border: "1px solid rgba(246,244,211,0.5)",
+                        color: "#F6F4D3",
+                        cursor: "pointer",
+                        fontSize: "1.4rem",
+                        userSelect: "none",
+                        transition: "background 0.15s",
+                        zIndex: 2,
+                      }}
+                    >
+                      ›
+                    </Box>
+                  )}
+                </Box>
+
+                {/* Dot indicators (visible only when multiple images) */}
+                {images.length > 1 && (
+                  <Flex gap={6} justify="center" className="buy-shirt-dots">
+                    {images.map((_, idx) => (
+                      <Box
+                        key={idx}
+                        onClick={() => setCurrentImageIdx(idx)}
+                        style={{
+                          width: idx === currentImageIdx ? "18px" : "7px",
+                          height: "7px",
+                          background: idx === currentImageIdx ? "#F6F4D3" : "rgba(246,244,211,0.3)",
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                        }}
+                      />
+                    ))}
+                  </Flex>
+                )}
               </Box>
             </Box>
 
             {/* Details Section */}
             <Box
-              className="flex flex-col items-center md:items-start text-center md:text-left gap-8"
+              className="flex flex-col items-center md:items-start text-center md:text-left buy-shirt-detail"
               style={{ flex: 1 }}
             >
               <Text
+                className="vision-font lg:!text-5xl buy-shirt-title"
                 style={{
                   color: "#F6F4D3",
                   letterSpacing: "5px",
@@ -125,41 +227,41 @@ const BuyShirt = () => {
                   textShadow: "0 0 20px rgba(246, 244, 211, 0.4)",
                   lineHeight: 1.1,
                 }}
-                className="vision-font lg:!text-5xl"
               >
                 {item.name.toUpperCase()}
               </Text>
 
               <Text
+                className="vision-font lg:!text-4xl buy-shirt-price"
                 style={{
-                  color: "#5EEAD4", // Cyan from Figma
+                  color: "#5EEAD4",
                   letterSpacing: "3px",
                   fontSize: "2.5rem",
                   fontWeight: "bold",
                 }}
-                className="vision-font lg:!text-4xl"
               >
                 €{item.price}
               </Text>
 
               {/* Sizes */}
-              <Box className="flex gap-5 items-center">
+              <Box className="flex gap-5 items-center buy-shirt-sizes-row">
                 <Text
+                  className="vision-font buy-shirt-size-label"
                   style={{
                     color: "#F6F4D3",
                     letterSpacing: "2px",
                     fontSize: "1.4rem",
                     fontWeight: 700,
                   }}
-                  className="vision-font"
                 >
                   {t('merch_user.cart.size').split(':')[0]}:
                 </Text>
-                <Flex gap="sm">
+                <Flex gap="sm" className="buy-shirt-sizes-flex">
                   {["S", "L", "M", "E"].map((size) => (
                     <Box
                       key={size}
                       onClick={() => setSelectedSize(size)}
+                      className="vision-font hover:scale-110 buy-shirt-size-chip"
                       style={{
                         backgroundColor:
                           selectedSize === size ? "#F6F4D3" : "#1e1e1f",
@@ -176,7 +278,6 @@ const BuyShirt = () => {
                         border: "1px solid #F6F4D3",
                         transition: "all 0.2s ease",
                       }}
-                      className="vision-font hover:scale-110"
                     >
                       {size}
                     </Box>
@@ -187,6 +288,7 @@ const BuyShirt = () => {
               {/* Add to Cart Button */}
               <Button
                 onClick={handleIncreaseCart}
+                className="vision-font hover:scale-105 transition-all duration-300 active:scale-95 buy-shirt-add-btn"
                 style={{
                   backgroundColor: "#000",
                   color: "#FFF",
@@ -199,43 +301,45 @@ const BuyShirt = () => {
                   fontWeight: 900,
                   boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
                 }}
-                className="vision-font hover:scale-105 transition-all duration-300 active:scale-95"
               >
                 {t('merch_user.buy_shirt.add_to_cart')}
               </Button>
 
-              {/* Thumbnails Placeholder (Matching Figma) */}
-              <Flex gap="lg" mt={20}>
-                {[1, 2, 3].map((i) => (
-                  <Box
-                    key={i}
-                    style={{
-                      width: "70px",
-                      height: "70px",
-                      border: "2px solid #333",
-                      borderRadius: "8px",
-                      background: "rgba(255,255,255,0.03)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      overflow: "hidden",
-                      transition: "border-color 0.2s ease",
-                    }}
-                    className="hover:!border-[#F6F4D3]"
-                  >
-                    <Image
-                      src={item.prod_image || item.image}
+              {/* Thumbnails — hidden in landscape, show only when multiple images */}
+              {images.length > 1 && (
+                <Flex gap="md" mt={16} className="buy-shirt-thumbs">
+                  {images.map((img, idx) => (
+                    <Box
+                      key={idx}
+                      onClick={() => setCurrentImageIdx(idx)}
                       style={{
-                        width: "80%",
-                        height: "80%",
-                        objectFit: "contain",
-                        opacity: 0.5,
+                        width: "68px",
+                        height: "68px",
+                        border: `2px solid ${idx === currentImageIdx ? "#F6F4D3" : "#333"}`,
+                        background: "rgba(255,255,255,0.03)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        overflow: "hidden",
+                        transition: "border-color 0.2s ease",
+                        flexShrink: 0,
                       }}
-                    />
-                  </Box>
-                ))}
-              </Flex>
+                    >
+                      <Image
+                        src={img}
+                        style={{
+                          width: "85%",
+                          height: "85%",
+                          objectFit: "contain",
+                          opacity: idx === currentImageIdx ? 1 : 0.45,
+                          transition: "opacity 0.2s ease",
+                        }}
+                      />
+                    </Box>
+                  ))}
+                </Flex>
+              )}
             </Box>
           </Flex>
         </Flex>
@@ -282,24 +386,24 @@ const BuyShirt = () => {
                     <Image
                       src={cartItem.prod_image || cartItem.image}
                       radius="md"
-                      style={{ 
-                        width: "100%", 
-                        height: "100%", 
-                        objectFit: "contain", 
-                        backgroundColor: "rgba(255,255,255,0.05)", 
-                        padding: "8px" 
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        backgroundColor: "rgba(255,255,255,0.05)",
+                        padding: "8px"
                       }}
                     />
                   </Box>
-                  
+
                   <Text color="#F6F4D3" weight={700} className="vision-font text-center mt-2" style={{ letterSpacing: '1px' }} size="md">
                     {cartItem.name.toUpperCase()}
                   </Text>
-                  
+
                   <Text color="dimmed" size="xs" className="vision-font text-center">
                     {t('merch_user.cart.size', { size: cartItem.selectedSize })}
                   </Text>
-                  
+
                   <Flex align="center" justify="space-between" className="w-full mt-2 bg-[#1a1b1e] p-2 rounded-none border border-[#333]">
                     <Text color="#5EEAD4" weight={900} className="vision-font" size="lg">
                       €{cartItem.price}
@@ -320,7 +424,7 @@ const BuyShirt = () => {
               </Box>
 
               <Divider my="sm" color="#333" />
-              
+
               <Flex justify="space-between" align="center" px="sm">
                 <Text color="#F6F4D3" weight={700} size="lg" className="vision-font" style={{ letterSpacing: '1px' }}>
                   {t('merch_user.cart.total')}

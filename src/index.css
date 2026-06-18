@@ -608,3 +608,106 @@ body .notif-portal {
 [data-sonner-toast][data-type="info"] [data-icon] {
   color: #64B5F6 !important;
 }
+
+/* ── BuyShirt page — base padding (landscape overrides below) ─── */
+.buy-shirt-page {
+  padding: 2rem;
+  padding-top: 15vh;
+}
+
+.buy-shirt-content-row {
+  gap: 3rem; /* gap-12 equivalent */
+}
+
+.buy-shirt-detail {
+  gap: 2rem; /* gap-8 equivalent */
+}
+
+/* ── BuyShirt — mobile landscape (e.g. iPhone 12 Pro 844×390) ── */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Shrink outer padding — 11vh still clears the fixed header */
+  .buy-shirt-page {
+    padding: 0 10px !important;
+    padding-top: 11vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Remove image wrapper padding */
+  .buy-shirt-img-wrap {
+    padding: 0.25rem !important;
+  }
+
+  /* Tighter arrow padding in landscape */
+  .buy-shirt-arrow-wrap {
+    padding: 0 32px !important;
+  }
+
+  /* Compact image */
+  .buy-shirt-img {
+    width: 130px !important;
+    max-width: 130px !important;
+  }
+
+  /* Tighter gap between image column and details column */
+  .buy-shirt-content-row {
+    gap: 14px !important;
+  }
+
+  /* Collapse gaps inside details column */
+  .buy-shirt-detail {
+    gap: 6px !important;
+  }
+
+  /* Title — readable but compact */
+  .buy-shirt-title {
+    font-size: 1.05rem !important;
+    letter-spacing: 2px !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Price */
+  .buy-shirt-price {
+    font-size: 1rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Size row gap */
+  .buy-shirt-sizes-row {
+    gap: 8px !important;
+  }
+
+  /* "Size:" label */
+  .buy-shirt-size-label {
+    font-size: 0.75rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Size chips — 28×28px instead of 42×42px */
+  .buy-shirt-size-chip {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.6rem !important;
+    border-radius: 4px !important;
+  }
+
+  /* ADD TO CART button — compact */
+  .buy-shirt-add-btn {
+    font-size: 0.85rem !important;
+    padding: 7px 22px !important;
+    letter-spacing: 1px !important;
+    border-radius: 8px !important;
+    min-height: unset !important;
+    height: auto !important;
+  }
+
+  /* Hide thumbnails — no vertical room in landscape */
+  .buy-shirt-thumbs {
+    display: none !important;
+  }
+}
+
+/* Arrow hover */
+.buy-shirt-arrow:hover {
+  background: rgba(246, 244, 211, 0.15) !important;
+  border-color: #F6F4D3 !important;
+}
