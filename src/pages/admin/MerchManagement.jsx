@@ -242,12 +242,12 @@ export default function MerchManagement() {
     <div className="app alexandria-font">
       <style>{`
         :root{
-          --olive:#525132;
-          --tan:#CBC895;
+          --olive:#1A1A23;
+          --tan:#B5B387;
           --yellow:#EBE23C;
-          --yellow2:#FFF069;
+          --yellow2:#F6F4D3;
           --yellow3:#FFF999;
-          --header-dark:#2F2D0E;
+          --header-dark:#2F2E24;
           --table-dark:#131319;
           --green:#12E008;
           --green2:#55DF55;
@@ -267,7 +267,8 @@ export default function MerchManagement() {
         .container{max-width:1200px;margin:0 auto;}
         .pixel{font-family:"Press Start 2P", monospace}
         .upload{
-          border:3px dashed var(--tan);
+          border:2px dashed rgba(181,179,135,0.35);
+          background:var(--header-dark);
         }
         .upload-inner{
           padding:4rem 1rem;
@@ -281,18 +282,18 @@ export default function MerchManagement() {
         }
         .icons{display:flex;gap:1rem}
         .icon-box{
-          width:55px;height:55px;border:2.17px solid var(--tan);
+          width:55px;height:55px;border:2.17px solid rgba(181,179,135,0.4);
           display:flex;align-items:center;justify-content:center;background:transparent
         }
         .btn{
           background:var(--button);color:var(--ink);
-          font-weight:700;border-radius:8px;
+          font-weight:700;border-radius:0;
           box-shadow:0 7px 2px 0 #000;
           padding:.9rem 1.75rem;border:none;cursor:pointer
         }
         .btn:active{transform:translateY(2px);box-shadow:0 5px 2px 0 #000}
-        .inventory{background:rgba(181,179,135,0.16); border-top:1px solid var(--tan)}
-        .inv-head{background:var(--header-dark);border-bottom:1px solid var(--tan)}
+        .inventory{background:var(--olive); border-top:1px solid rgba(181,179,135,0.3)}
+        .inv-head{background:var(--header-dark);border-bottom:1px solid rgba(181,179,135,0.3)}
         .inv-head-row{display:flex;flex-direction:column;gap:1rem; padding:1.25rem 0}
         .inv-title{font-size:23px}
         .stats{color:var(--yellow2)}
@@ -304,15 +305,15 @@ export default function MerchManagement() {
         }
         .head-cell{color:var(--tan);font-size:20px}
         .row{
-          border-bottom:1px solid var(--tan);
-          background:rgba(197,194,116,0.16);
+          border-bottom:1px solid rgba(181,179,135,0.2);
+          background:rgba(181,179,135,0.04);
         }
         .row-grid{
           display:grid;align-items:center;
           grid-template-columns:80px 1fr 200px 200px 200px 180px;
           gap:2rem;padding:1.25rem 0;
         }
-        .size{background:rgba(188,185,137,0.24);min-width:42px;padding:.5rem .75rem;
+        .size{background:rgba(181,179,135,0.15);min-width:42px;padding:.5rem .75rem;
           text-align:center;color:var(--yellow3)}
         .price{color:var(--cyan)}
         .stock.in{color:var(--green)}
@@ -340,8 +341,8 @@ export default function MerchManagement() {
           z-index: 1000; padding: 1rem;
         }
         .modal-content {
-          background: var(--header-dark); border: 2px solid var(--tan);
-          border-radius: 8px; width: 100%; max-width: 600px;
+          background: var(--header-dark); border: 2px solid rgba(181,179,135,0.35);
+          border-radius: 0; width: 100%; max-width: 600px;
           max-height: 90vh; overflow-y: auto; padding: 2rem;
           position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
         }
@@ -363,7 +364,7 @@ export default function MerchManagement() {
             padding:1rem 0;
             min-width:840px;
           }
-          .row{border:1px solid var(--tan); margin:.75rem 0; padding:.75rem; border-radius:10px}
+          .row{border:1px solid rgba(181,179,135,0.2); margin:.75rem 0; padding:.75rem; border-radius:0}
           .card-top{display:none}
         }
       `}</style>
@@ -396,14 +397,14 @@ export default function MerchManagement() {
                     style={{ 
                       width: "120px", 
                       height: "120px", 
-                      border: isMain ? "3px solid var(--yellow)" : "2px solid var(--tan)", 
+                      border: isMain ? "3px solid var(--yellow)" : "2px solid rgba(181,179,135,0.4)",
                       position: "relative",
                       background: "rgba(0,0,0,0.3)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       overflow: "hidden",
-                      borderRadius: "6px"
+                      borderRadius: "0"
                     }}
                   >
                     <img src={previewUrl} alt={`preview-${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -466,18 +467,18 @@ export default function MerchManagement() {
                 style={{ 
                   width: "120px", 
                   height: "120px", 
-                  border: "2px dashed var(--tan)", 
-                  display: "flex", 
+                  border: "2px dashed rgba(181,179,135,0.35)",
+                  display: "flex",
                   flexDirection: "column",
-                  alignItems: "center", 
-                  justifyContent: "center", 
-                  cursor: "pointer", 
-                  borderRadius: "6px",
-                  background: "rgba(197,194,116,0.1)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  borderRadius: "0",
+                  background: "rgba(181,179,135,0.06)",
                   transition: "background 0.2s"
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(197,194,116,0.2)"}
-                onMouseLeave={(e) => e.currentTarget.style.background = "rgba(197,194,116,0.1)"}
+                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(181,179,135,0.12)"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "rgba(181,179,135,0.06)"}
               >
                 <span style={{ fontSize: "28px", color: "var(--tan)", lineHeight: 1 }}>+</span>
                 <span style={{ fontSize: "9px", fontFamily: '"Press Start 2P"', color: "var(--tan)", marginTop: "4px" }}>ADD IMAGE</span>
@@ -500,7 +501,7 @@ export default function MerchManagement() {
                   value={newMerch.name}
                   onChange={(e) => setNewMerch((m) => ({ ...m, name: e.target.value }))}
                   placeholder={t('merch.upload.name_placeholder')}
-                  style={{ background: "#0f1016", color: "#fff", border: "2px solid var(--tan)", borderRadius: 6, padding: "0.7rem 0.85rem", width: "100%" }}
+                  style={{ background: "#0f1016", color: "#fff", border: "1px solid rgba(181,179,135,0.35)", borderRadius: 0, padding: "0.7rem 0.85rem", width: "100%" }}
                 />                                                                                                                                                              
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)" }}>
@@ -511,7 +512,7 @@ export default function MerchManagement() {
                   step="0.01"
                   value={newMerch.price}
                   onChange={(e) => setNewMerch((m) => ({ ...m, price: Number(e.target.value) }))}
-                  style={{ background: "#0f1016", color: "#fff", border: "2px solid var(--tan)", borderRadius: 6, padding: "0.7rem 0.85rem", width: "100%" }}
+                  style={{ background: "#0f1016", color: "#fff", border: "1px solid rgba(181,179,135,0.35)", borderRadius: 0, padding: "0.7rem 0.85rem", width: "100%" }}
                 />                                                                                 
               </label>
               <label style={{ display: "grid", gap: "0.4rem", color: "var(--tan)", gridColumn: "1 / -1" }}>
@@ -560,7 +561,7 @@ export default function MerchManagement() {
                   <select
                     value={newMerch.stock || "in stock"}
                     onChange={(e) => setNewMerch((m) => ({ ...m, stock: e.target.value }))}
-                    style={{ width: "100%", height: 44, background: "#0f1016", color: "#fff", border: "2px solid var(--tan)", padding: "0 36px 0 14px", fontSize: 13, fontWeight: 600, cursor: "pointer", appearance: "none", outline: "none" }}
+                    style={{ width: "100%", height: 44, background: "#0f1016", color: "#fff", border: "1px solid rgba(181,179,135,0.35)", padding: "0 36px 0 14px", fontSize: 13, fontWeight: 600, cursor: "pointer", appearance: "none", outline: "none" }}
                   >
                     <option value="in stock" style={{ background: "#0f1016" }}>In Stock</option>
                     <option value="out of stock" style={{ background: "#0f1016" }}>Out of Stock</option>

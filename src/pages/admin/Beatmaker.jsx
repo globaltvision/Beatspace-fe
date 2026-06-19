@@ -47,7 +47,7 @@ const GenreMultiSelect = ({
   genres,
   value,
   onChange,
-  labelClassName = "text-[10px] font-bold uppercase text-[#191A22]",
+  labelClassName = "text-[10px] font-bold uppercase text-[#B5B387]",
   label,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -221,7 +221,7 @@ const BeatRow = ({
             {genres.map((genre, i) => (
               <span
                 key={i}
-                className={`text-[10px] lg:text-xs px-2 py-0.5 rounded border ${isPlaying ? "border-black text-black" : "border-[#D4D4B0] text-[#D4D4B0]"}`}
+                className={`text-[10px] lg:text-xs px-2 py-0.5 border ${isPlaying ? "border-black text-black" : "border-[#D4D4B0] text-[#D4D4B0]"}`}
                 style={{ fontFamily: "monospace" }}
               >
                 {genre}
@@ -874,12 +874,16 @@ const Beat = () => {
       <style>{animationStyles}</style>
 
       <section
-        className={`w-full bg-[#CBC895] border-[3px] border-dotted transition-all duration-300 rounded-xl p-8 flex flex-col items-center gap-8 ${dragActive ? "border-[#FFD700] bg-[#D4D1A0] scale-[1.01]" : "border-[#D4D4B0]"}`}
+        className={`w-full border-dashed transition-all duration-300 p-8 flex flex-col items-center gap-8 relative ${dragActive ? "border border-[#FFEF2E]/60 bg-[#2F2E24]" : "bg-[#2F2E24] border border-[#B5B387]/30"}`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
       >
+        <div className="absolute top-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute top-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
         <input
           ref={fileInputRef}
           type="file"
@@ -896,7 +900,7 @@ const Beat = () => {
             <DiskIcon />
           </div>
           <p
-            className="mt-4 text-[#191A22] font-bold text-center tracking-tighter"
+            className="mt-4 text-[#B5B387] font-bold text-center tracking-tighter"
             style={{ fontFamily: "monospace" }}
           >
             {newBeatForm.beat
@@ -907,7 +911,7 @@ const Beat = () => {
 
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label className="text-[10px] font-bold uppercase text-[#191A22]">
+            <label className="text-[10px] font-bold uppercase text-[#B5B387]">
               {t('beatmaker.upload.name_label')}
             </label>
             <input
@@ -916,7 +920,7 @@ const Beat = () => {
               value={newBeatForm.name}
               onChange={handleInputChange}
               placeholder={t('beatmaker.upload.name_placeholder')}
-              className="w-full h-12 bg-[#4A4A3C] border border-[#D4D4B0] px-4 text-white focus:outline-none focus:border-[#FFD700]"
+              className="w-full h-12 bg-[#1A1A23] border border-[#B5B387]/30 px-4 text-white focus:outline-none focus:border-[#FFD700] placeholder:text-[#B5B387]/50"
               style={{ fontFamily: "monospace" }}
             />
           </div>
@@ -927,14 +931,14 @@ const Beat = () => {
             label={t('beatmaker.upload.genre_label')}
           />
           <div className="md:col-span-2 space-y-1">
-            <label className="text-[10px] font-bold uppercase text-[#191A22]">
+            <label className="text-[10px] font-bold uppercase text-[#B5B387]">
               {t('beatmaker.upload.category_label')}
             </label>
             <select
               name="category"
               value={newBeatForm.category}
               onChange={handleInputChange}
-              className="w-full h-12 bg-[#333] border border-[#D4D4B0] px-4 text-white focus:outline-none focus:border-[#FFD700] appearance-none cursor-pointer"
+              className="w-full h-12 bg-[#1A1A23] border border-[#B5B387]/30 px-4 text-white focus:outline-none focus:border-[#FFD700] appearance-none cursor-pointer"
               style={{ fontFamily: "monospace" }}
             >
               {availableCategories.map((c) => (
@@ -968,23 +972,23 @@ const Beat = () => {
             placeholder={t('beatmaker.repository.filters.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-16 bg-[#4A4A3C] border border-[#D4D4B0] px-6 text-[#FFD700] font-bold focus:outline-none focus:border-[#E4DA33] placeholder:text-[#9C963A]"
+            className="w-full h-16 bg-[#1A1A23] border border-[#B5B387]/30 px-6 text-[#F6F4D3] font-bold focus:outline-none focus:border-[#E4DA33] placeholder:text-[#B5B387]/50"
             style={{ fontFamily: "monospace" }}
           />
         </div>
         <div className="relative w-full lg:w-64" ref={genreFilterRef}>
           <button
             onClick={() => setShowGenreDropdown(!showGenreDropdown)}
-            className="w-full h-16 bg-[#D4D4B0] text-[#191A22] font-black uppercase flex items-center justify-between px-6 border-b-4 border-black active:translate-y-1 active:border-b-0 transition-all"
+            className="w-full h-16 bg-[#1A1A23] text-[#F6F4D3] font-black uppercase flex items-center justify-between px-6 border border-[#B5B387]/30 transition-all"
             style={{ fontFamily: "monospace" }}
           >
             {selectedGenre}{" "}
             <svg width="12" height="8">
-              <path d="M1 1L6 6L11 1" stroke="black" strokeWidth="2" />
+              <path d="M1 1L6 6L11 1" stroke="#F6F4D3" strokeWidth="2" />
             </svg>
           </button>
           {showGenreDropdown && (
-            <div className="absolute top-18 left-0 w-full bg-[#D4D4B0] border-2 border-black z-50 shadow-2xl">
+            <div className="absolute top-18 left-0 w-full bg-[#1A1A23] border border-[#B5B387]/30 z-50 shadow-2xl">
               {[
                 t('beatmaker.repository.filters.all_genres'),
                 ...availableGenres.map((genre) => genre.name),
@@ -995,7 +999,7 @@ const Beat = () => {
                     setSelectedGenre(g);
                     setShowGenreDropdown(false);
                   }}
-                  className="p-4 text-black font-bold border-b border-black hover:bg-[#E4E4C0] cursor-pointer"
+                  className="p-4 text-[#F6F4D3] font-bold border-b border-[#B5B387]/30 hover:bg-[#2F2E24] cursor-pointer"
                   style={{ fontFamily: "monospace" }}
                 >
                   {g}
@@ -1006,7 +1010,11 @@ const Beat = () => {
         </div>
       </div>
 
-      <div className="w-full overflow-hidden border-2 border-[#D4D4B0] rounded-xl shadow-2xl">
+      <div className="w-full overflow-hidden border border-[#B5B387]/30 shadow-2xl relative">
+        <div className="absolute top-0 left-0 w-2 h-2 bg-[#F6F4D3] z-10" />
+        <div className="absolute top-0 right-0 w-2 h-2 bg-[#F6F4D3] z-10" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#F6F4D3] z-10" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#F6F4D3] z-10" />
         <div className="bg-[#4A4A3C]">
           {isBeatsLoading ? (
             <div className="h-64 flex items-center justify-center">
@@ -1120,8 +1128,12 @@ const Beat = () => {
         {stats.map((s, i) => (
           <div
             key={i}
-            className="bg-[#3C3C30] border-2 border-[#D4D4B0] p-6 rounded-xl flex flex-col items-center justify-center transform hover:-translate-y-2 transition-transform duration-300"
+            className="bg-[#2F2E24] border border-[#B5B387]/30 p-6 flex flex-col items-center justify-center relative"
           >
+            <div className="absolute top-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+            <div className="absolute top-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
+            <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
             <div
               className="text-[#FFD700] text-2xl lg:text-3xl font-black mb-1"
               style={{ fontFamily: "monospace" }}
@@ -1129,7 +1141,7 @@ const Beat = () => {
               {s.value}
             </div>
             <div
-              className="text-[#D4D4B0] text-[10px] lg:text-xs font-bold uppercase tracking-widest"
+              className="text-[#B5B387] text-[10px] lg:text-xs font-bold uppercase tracking-widest"
               style={{ fontFamily: "monospace" }}
             >
               {s.label}
@@ -1284,13 +1296,17 @@ const Beat = () => {
       </Modal>
 
       {/* Category / Genre Management (#21) */}
-      <div className="bg-[#3C3C30] border-2 border-[#D4D4B0] rounded-xl overflow-hidden">
+      <div className="bg-[#2F2E24] border border-[#B5B387]/30 overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute top-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#F6F4D3]" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#F6F4D3]" />
         <div className="bg-black px-6 py-4 flex items-center justify-between flex-wrap gap-3">
           <span className="text-[#FFD700] font-black uppercase tracking-widest text-sm pixel-font">
             Genre / Category Management
           </span>
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex bg-[#191A22] border border-[#D4D4B0] rounded overflow-hidden">
+            <div className="flex bg-[#1A1A23] border border-[#B5B387]/30 overflow-hidden">
               <button
                 onClick={() => { setCatActiveType("genre"); setIsAddingCat(false); setEditingCat(null); setNewCat({ name: "" }); }}
                 className={`px-4 py-1.5 text-xs font-bold uppercase transition-colors ${catActiveType === "genre" ? "bg-[#FFD700] text-black" : "text-[#D4D4B0]"}`}
@@ -1343,7 +1359,7 @@ const Beat = () => {
             </div>
           ) : (
             (catActiveType === "genre" ? availableGenres : availableCategories).map((item) => (
-              <div key={item._id} className="flex items-center justify-between px-6 py-3 border-b border-[#4A4A3C] hover:bg-[#4A4A3C] transition-colors">
+              <div key={item._id} className="flex items-center justify-between px-6 py-3 border-b border-[#B5B387]/20 hover:bg-[#1A1A23] transition-colors">
                 <div>
                   <span className="text-white font-bold text-sm" style={{ fontFamily: "monospace" }}>{item.name}</span>
                   <span className="ml-3 text-[10px] text-[#D4D4B0] uppercase opacity-60">{item.type}</span>

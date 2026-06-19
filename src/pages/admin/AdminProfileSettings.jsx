@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmModal from "../../components/ConfirmModal";
 import CategoryAPI from "../../services/category.service";
 import SettingsAPI from "../../services/settings.service";
 import { useSettings } from "../../contexts/SettingsContext";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getBeats } from "../../store/actions/beatActions";
 const VolumeSlider = ({ value = 70, onChange }) => {
   const { t } = useTranslation();
   const handleSliderChange = (event) => {
@@ -546,6 +548,302 @@ const AudioVisualizerIcon = (
     <rect x="90" y="12" width="4" height="22" fill="#FFEF2E" />
   </svg>
 );
+
+// ── Live Audio Visualizer Preview ────────────────────────────────
+const AudioVisualizerPreview = ({ volume = 70, quality = 'high' }) => {
+  const NUM_BARS = 24;
+  const dispatch = useDispatch();
+  const beats = useSelector(state => state.beat?.beats || []);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [bars, setBars] = useState(new Array(NUM_BARS).fill(3));
+  const [selectedBeatId, setSelectedBeatId] = useState('');
+
+  const audioCtxRef = useRef(null);
+  const analyserRef = useRef(null);
+  const gainRef = useRef(null);
+  const filterRef = useRef(null);
+  const audioElRef = useRef(null);
+  const mediaSourceRef = useRef(null);
+  const rafRef = useRef(null);
+
+  // Load beats on mount if not already fetched
+  useEffect(() => {
+    if (!beats.length) dispatch(getBeats());
+  }, []);
+
+  // Live-sync volume — GainNode when Web Audio graph is active, audio.volume as fallback
+  useEffect(() => {
+    if (gainRef.current && audioCtxRef.current) {
+      gainRef.current.gain.setTargetAtTime(volume / 100, audioCtxRef.current.currentTime, 0.05);
+    }
+    if (audioElRef.current) {
+      audioElRef.current.volume = volume / 100;
+    }
+  }, [volume]);
+
+  // Live-sync quality to lowpass filter cutoff
+  useEffect(() => {
+    if (filterRef.current && audioCtxRef.current) {
+      const cutoff = quality === 'high' ? 20000 : quality === 'medium' ? 12000 : 5000;
+      filterRef.current.frequency.setTargetAtTime(cutoff, audioCtxRef.current.currentTime, 0.1);
+    }
+  }, [quality]);
+
+  const stopAudio = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (audioElRef.current) {
+      audioElRef.current.pause();
+      audioElRef.current.src = '';
+    }
+    try { mediaSourceRef.current?.disconnect(); } catch (e) {}
+    if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
+    audioCtxRef.current = null;
+    analyserRef.current = null;
+    gainRef.current = null;
+    filterRef.current = null;
+    mediaSourceRef.current = null;
+    audioElRef.current = null;
+    setBars(new Array(NUM_BARS).fill(3));
+    setIsPlaying(false);
+  }, []);
+
+  const startAudio = useCallback(async () => {
+    const beat = beats.find(b => (b._id || b.id) === selectedBeatId);
+    if (!beat?.mp3_url) return;
+
+    // Build AudioContext and graph first
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtxRef.current = ctx;
+
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    analyserRef.current = analyser;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = quality === 'high' ? 20000 : quality === 'medium' ? 12000 : 5000;
+    filterRef.current = filter;
+
+    const master = ctx.createGain();
+    master.gain.value = volume / 100;
+    gainRef.current = master;
+
+    analyser.connect(filter);
+    filter.connect(master);
+    master.connect(ctx.destination);
+
+    // IMPORTANT: crossOrigin MUST be set BEFORE src so the browser uses CORS mode
+    // from the first request. new Audio(url) sets src in the constructor (too late),
+    // so we create the element first, set crossOrigin, then assign src.
+    // Cloudinary returns Access-Control-Allow-Origin: * so this works for our URLs.
+    const audio = new Audio();
+    audio.crossOrigin = 'anonymous';
+    audio.src = beat.mp3_url;
+    audio.volume = volume / 100;
+    audioElRef.current = audio;
+
+    // Connect to Web Audio graph for real frequency data
+    let visualizerActive = false;
+    try {
+      const mediaSource = ctx.createMediaElementSource(audio);
+      mediaSourceRef.current = mediaSource;
+      mediaSource.connect(analyser);
+      visualizerActive = true;
+    } catch (corsErr) {
+      console.warn('Visualizer: could not connect media source, using fallback.', corsErr.message);
+    }
+
+    // Play — wrap separately so audio still plays even if graph setup had issues
+    try {
+      await audio.play();
+    } catch (playErr) {
+      console.error('Audio play failed:', playErr);
+      toast.error('Could not play this beat. Check network or browser permissions.');
+      stopAudio();
+      return;
+    }
+
+    setIsPlaying(true);
+    audio.addEventListener('ended', stopAudio, { once: true });
+
+    // Wave fallback: runs when visualizerActive=false, OR auto-activates if the
+    // analyser outputs all zeroes (browser zeroing CORS-tainted data)
+    let t = 0;
+    const drawFallback = () => {
+      t += 0.08;
+      setBars(Array.from({ length: NUM_BARS }, (_, i) =>
+        Math.max(4, Math.round(30 + Math.sin(t + i * 0.45) * 22 + Math.random() * 15))
+      ));
+      rafRef.current = requestAnimationFrame(drawFallback);
+    };
+
+    if (visualizerActive) {
+      // Real frequency-driven bars, with zero-detection fallback
+      let zeroFrames = 0;
+      const draw = () => {
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        const total = data.reduce((s, v) => s + v, 0);
+
+        // If analyser outputs zeroes for >40 frames the data is CORS-tainted; switch to fallback
+        if (total === 0) {
+          zeroFrames++;
+          if (zeroFrames > 40) {
+            cancelAnimationFrame(rafRef.current);
+            drawFallback();
+            return;
+          }
+        } else {
+          zeroFrames = 0;
+        }
+
+        const newBars = Array.from({ length: NUM_BARS }, (_, i) => {
+          const s = Math.floor((i / NUM_BARS) * data.length);
+          const e = Math.max(s + 1, Math.floor(((i + 1) / NUM_BARS) * data.length));
+          let sum = 0;
+          for (let j = s; j < e; j++) sum += data[j];
+          return Math.max(3, Math.round((sum / (e - s)) / 255 * 100));
+        });
+        setBars(newBars);
+        rafRef.current = requestAnimationFrame(draw);
+      };
+      draw();
+    } else {
+      drawFallback();
+    }
+  }, [volume, quality, selectedBeatId, beats, stopAudio]);
+
+  useEffect(() => () => stopAudio(), [stopAudio]);
+
+  const canPlay = !!selectedBeatId;
+
+  return (
+    <div style={{ background: '#141420', border: '1px solid rgba(203,200,149,0.6)', padding: '18px 22px', marginTop: '8px' }}>
+
+      {/* Beat selector */}
+      <div style={{ marginBottom: '14px' }}>
+        <div className="viz-fs-7" style={{ color: '#a8a880', marginBottom: '8px', letterSpacing: '1px' }}>
+          SELECT BEAT TO PREVIEW
+        </div>
+        <div style={{ position: 'relative' }}>
+          <select
+            value={selectedBeatId}
+            onChange={e => { if (isPlaying) stopAudio(); setSelectedBeatId(e.target.value); }}
+            className="viz-fs-8"
+            style={{
+              width: '100%',
+              background: '#1c1c2a',
+              border: '1px solid rgba(203,200,149,0.5)',
+              color: selectedBeatId ? '#F6F4D3' : '#777',
+              padding: '10px 32px 10px 12px',
+              cursor: 'pointer',
+              outline: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+            }}
+          >
+            <option value="" style={{ background: '#1c1c2a', color: '#777' }}>— CHOOSE A BEAT —</option>
+            {beats.map(beat => (
+              <option key={beat._id || beat.id} value={beat._id || beat.id} style={{ background: '#1c1c2a', color: '#F6F4D3' }}>
+                {beat.name}
+              </option>
+            ))}
+          </select>
+          <svg style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="6" viewBox="0 0 10 6" fill="none">
+            <path d="M0 0L5 6L10 0H0Z" fill="#CBC895"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* Status bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '14px' }}>
+        <span className="viz-fs-8" style={{ color: '#a8a880' }}>
+          VOL <span className="viz-fs-8" style={{ color: '#FFEF2E' }}>{volume}%</span>
+        </span>
+        <span className="viz-fs-8" style={{ color: '#a8a880' }}>
+          QUAL <span className="viz-fs-8" style={{ color: '#FFEF2E' }}>{quality.toUpperCase()}</span>
+        </span>
+        <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <span style={{
+            width: '9px', height: '9px', borderRadius: '50%', display: 'inline-block',
+            background: isPlaying ? '#4CAF50' : '#444',
+            boxShadow: isPlaying ? '0 0 10px #4CAF50' : 'none',
+            transition: 'all 0.3s',
+          }} />
+          <span className="viz-fs-7" style={{ color: isPlaying ? '#4CAF50' : '#666' }}>
+            {isPlaying ? 'LIVE' : 'IDLE'}
+          </span>
+        </span>
+      </div>
+
+      {/* Frequency bars */}
+      <div style={{
+        display: 'flex', alignItems: 'flex-end', height: '88px', gap: '3px',
+        background: '#0a0a16', padding: '6px 8px',
+        border: '1px solid rgba(203,200,149,0.2)',
+        marginBottom: '16px', position: 'relative', overflow: 'hidden',
+      }}>
+        {[25, 50, 75].map(pct => (
+          <div key={pct} style={{
+            position: 'absolute', left: 8, right: 8,
+            bottom: `calc(${pct}% + 6px)`,
+            borderTop: '1px solid rgba(203,200,149,0.1)',
+            pointerEvents: 'none',
+          }} />
+        ))}
+        {bars.map((bar, i) => {
+          const ratio = bar / 100;
+          const r = Math.round(203 + ratio * 52);
+          const g = Math.round(200 + ratio * 18);
+          const b = Math.round(149 - ratio * 109);
+          return (
+            <div key={i} style={{
+              flex: 1, height: `${bar}%`, minHeight: '3px',
+              background: `rgb(${r},${g},${b})`,
+              boxShadow: ratio > 0.6 ? `0 0 4px rgba(${r},${g},${b},0.5)` : 'none',
+              transition: 'height 0.07s ease',
+            }} />
+          );
+        })}
+      </div>
+
+      {/* Play/Stop button */}
+      <button
+        onClick={isPlaying ? stopAudio : startAudio}
+        disabled={!canPlay && !isPlaying}
+        className="viz-fs-9"
+        style={{
+          background: isPlaying ? 'rgba(255,239,46,0.1)' : '#1c1c2a',
+          border: `1px solid ${isPlaying ? 'rgba(255,239,46,0.75)' : canPlay ? 'rgba(203,200,149,0.65)' : 'rgba(203,200,149,0.2)'}`,
+          color: canPlay || isPlaying ? '#F6F4D3' : '#555',
+          padding: '10px 22px',
+          cursor: canPlay || isPlaying ? 'pointer' : 'not-allowed',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '10px',
+          letterSpacing: '1px',
+          transition: 'all 0.2s',
+          outline: 'none',
+        }}
+      >
+        {isPlaying ? (
+          <svg width="14" height="14" viewBox="0 0 46 46" fill="none">
+            <rect x="2" y="2" width="42" height="42" stroke="#FFEF2E" strokeWidth="2"/>
+            <rect x="14" y="12" width="6" height="22" fill="#FFEF2E"/>
+            <rect x="26" y="12" width="6" height="22" fill="#FFEF2E"/>
+          </svg>
+        ) : (
+          <svg width="14" height="14" viewBox="0 0 46 46" fill="none">
+            <rect x="2" y="2" width="42" height="42" stroke={canPlay ? '#CBC895' : '#444'} strokeWidth="2"/>
+            <path d="M16 12L34 23L16 34V12Z" fill={canPlay ? '#CBC895' : '#444'}/>
+          </svg>
+        )}
+        {isPlaying ? 'STOP PREVIEW' : 'PLAY PREVIEW'}
+      </button>
+    </div>
+  );
+};
 
 // Main Settings Component
 const Settings = () => {
@@ -1148,7 +1446,7 @@ const Settings = () => {
               title={t('settings.audio.visualizer')}
               titleClassName="text-[rgba(255,239,46,1)] text-base sm:text-lg lg:text-xl alexandria-font leading-none block mb-3"
             >
-              <div className="mt-1">{AudioVisualizerIcon}</div>
+              <AudioVisualizerPreview volume={defaultVolume} quality={audioQuality} />
             </SettingsRow>
 
             <button

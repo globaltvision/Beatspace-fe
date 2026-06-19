@@ -91,6 +91,12 @@ textarea,
     font-family: "Press Start 2P", cursive !important;
   }
 
+  /* Visualizer preview — class selectors (0,1,0) beat App.css element selectors (0,0,1) */
+  .viz-fs-7  { font-family: "Press Start 2P", cursive !important; font-size: 9px !important; }
+  .viz-fs-8  { font-family: "Press Start 2P", cursive !important; font-size: 10px !important; }
+  .viz-fs-9  { font-family: "Press Start 2P", cursive !important; font-size: 11px !important; }
+  .viz-fs-10 { font-family: "Press Start 2P", cursive !important; font-size: 12px !important; }
+
   th {
     font-family: "Press Start 2P", cursive !important;
     font-size: 10px !important;
