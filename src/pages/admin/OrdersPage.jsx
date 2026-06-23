@@ -164,6 +164,8 @@ const OrdersPage = () => {
     donations = [],
     isLoadingOrders = false,
     isLoadingDonations = false,
+    ordersLoaded = false,
+    donationsLoaded = false,
   } = adminState || {};
 
   const [activeTab, setActiveTab] = useState("merch");
@@ -176,9 +178,9 @@ const OrdersPage = () => {
   const [donationPage, setDonationPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getOrders());
-    dispatch(getDonations());
-  }, [dispatch]);
+    if (!ordersLoaded) dispatch(getOrders());
+    if (!donationsLoaded) dispatch(getDonations());
+  }, [ordersLoaded, donationsLoaded, dispatch]);
 
   const safeOrders = Array.isArray(orders) ? orders : [];
   const safeDonations = Array.isArray(donations) ? donations : [];

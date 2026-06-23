@@ -25,11 +25,11 @@ export default function MerchManagement() {
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null });
 
   const dispatch = useDispatch();
-  const { merchs: merchItems, isLoadingMerchs, isCreatingMerch, isUpdatingMerch } = useSelector((state) => state.admin);
+  const { merchs: merchItems, isLoadingMerchs, isCreatingMerch, isUpdatingMerch, merchsLoaded } = useSelector((state) => state.admin);
 
   useEffect(() => {
-    dispatch(getMerchs());
-  }, [dispatch]);
+    if (!merchsLoaded) dispatch(getMerchs());
+  }, [merchsLoaded, dispatch]);
 
   const inStockCount = merchItems.filter((i) => i.stock === "in stock" || i.stock === "In Stock").length;
 

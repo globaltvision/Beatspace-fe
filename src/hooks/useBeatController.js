@@ -4,7 +4,7 @@ import { getBeats, createBeat, deleteBeat, updateBeat } from '../store/actions/b
 
 export const useBeatController = () => {
   const dispatch = useDispatch();
-  const { beats, isLoading, isCreating, error } = useSelector((state) => state.beat);
+  const { beats, isLoading, isCreating, error, beatsLoaded } = useSelector((state) => state.beat);
 
   const fetchBeats = useCallback((category) => {
     return dispatch(getBeats(category));
@@ -27,6 +27,7 @@ export const useBeatController = () => {
     isLoading,
     isCreating,
     error,
+    beatsLoaded,
     fetchBeats,
     addBeat,
     removeBeat,

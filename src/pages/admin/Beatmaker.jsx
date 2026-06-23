@@ -310,6 +310,7 @@ const Beat = () => {
     beats: reduxBeats,
     isLoading: isBeatsLoading,
     isCreating,
+    beatsLoaded,
     fetchBeats,
     addBeat,
     removeBeat,
@@ -554,9 +555,9 @@ const Beat = () => {
   }, [reduxBeats]);
 
   useEffect(() => {
-    fetchBeats();
-    dispatch(dashboard());
-  }, [fetchBeats, dispatch]);
+    if (!beatsLoaded) fetchBeats();
+    if (!dashboardData) dispatch(dashboard());
+  }, [beatsLoaded, dashboardData, fetchBeats, dispatch]);
 
   useEffect(() => {
     setCurrentPage(1);

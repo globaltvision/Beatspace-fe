@@ -1,4 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect, memo } from "react";
+
+// Module-level cache — survives remounts within the same browser session,
+// resets on hard page reload. Set to null to force a fresh fetch.
+let _assetsCache = null;
 import { UploadIcon1, MusicIcons1 } from "../../customIcons";
 import { useTranslation } from "react-i18next";
 import custAxios, { formAxios } from "../../configs/axios.config";
@@ -628,7 +632,9 @@ const Assets = () => {
     setLoadingAssets(true);
     try {
       const res = await custAxios.get("/admin/assets");
-      setAssets(res.data.data || []);
+      const data = res.data.data || [];
+      _assetsCache = data;
+      setAssets(data);
     } catch {
       setAssets([]);
     } finally {
@@ -636,7 +642,14 @@ const Assets = () => {
     }
   }, []);
 
-  useEffect(() => { fetchAssets(); }, [fetchAssets]);
+  useEffect(() => {
+    if (_assetsCache !== null) {
+      setAssets(_assetsCache);
+      setLoadingAssets(false);
+      return;
+    }
+    fetchAssets();
+  }, [fetchAssets]);
 
   // ── filtered list ─────────────────────────────────────────────────────────
   const filteredAssets = React.useMemo(() => {
@@ -741,7 +754,11 @@ const Assets = () => {
     setDeleteLoading(true);
     try {
       await custAxios.delete(`/admin/assets/${id}`);
-      setAssets((prev) => prev.filter((a) => (a._id || a.id) !== id));
+      setAssets((prev) => {
+        const updated = prev.filter((a) => (a._id || a.id) !== id);
+        _assetsCache = updated;
+        return updated;
+      });
       notifications.show({ title: "Deleted", message: "Asset removed", color: "green" });
       setDeleteOpen(false);
     } catch (err) {

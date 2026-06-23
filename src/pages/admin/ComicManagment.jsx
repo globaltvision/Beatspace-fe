@@ -1237,15 +1237,15 @@ const ComicDetailsModal = ({ isOpen, onClose, editingComic, onSave }) => {
 const Comic = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { comics, isLoadingComics } = useSelector((state) => state.admin);
+  const { comics, isLoadingComics, comicsLoaded } = useSelector((state) => state.admin);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingComic, setEditingComic] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, comic: null });
 
   useEffect(() => {
-    dispatch(getAdminComics());
-  }, [dispatch]);
+    if (!comicsLoaded) dispatch(getAdminComics());
+  }, [comicsLoaded, dispatch]);
 
   const handleCreateNew = () => {
     setEditingComic(null);

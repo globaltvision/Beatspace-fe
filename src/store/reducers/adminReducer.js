@@ -6,6 +6,10 @@ const initialState = {
   merchs: [],
   orders: [],
   donations: [],
+  merchsLoaded: false,
+  ordersLoaded: false,
+  donationsLoaded: false,
+  comicsLoaded: false,
   isLoading: false,
   isLoadingMerchs: false,
   isLoadingOrders: false,
@@ -91,6 +95,7 @@ const adminReducer = (state = initialState, action) => {
         merchs: action.payload,
         isLoadingMerchs: false,
         merchsError: null,
+        merchsLoaded: true,
       };
 
     case ADMIN_CONSTANTS.GET_MERCHS_FAILURE:
@@ -157,6 +162,7 @@ const adminReducer = (state = initialState, action) => {
         comics: action.payload,
         isLoadingComics: false,
         comicsError: null,
+        comicsLoaded: true,
       };
 
     case ADMIN_CONSTANTS.GET_COMICS_FAILURE:
@@ -245,6 +251,7 @@ const adminReducer = (state = initialState, action) => {
         orders: action.payload,
         isLoadingOrders: false,
         ordersError: null,
+        ordersLoaded: true,
       };
 
     case ADMIN_CONSTANTS.GET_ORDERS_FAILURE:
@@ -267,6 +274,7 @@ const adminReducer = (state = initialState, action) => {
         donations: action.payload,
         isLoadingDonations: false,
         donationsError: null,
+        donationsLoaded: true,
       };
 
     case ADMIN_CONSTANTS.GET_DONATIONS_FAILURE:

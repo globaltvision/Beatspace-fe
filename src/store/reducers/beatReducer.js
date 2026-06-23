@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   isCreating: false,
   error: null,
+  beatsLoaded: false,
 };
 
 const beatReducer = (state = initialState, action) => {
@@ -21,6 +22,7 @@ const beatReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         beats: action.payload,
+        beatsLoaded: true,
       };
     case BEAT_CONSTANTS.GET_BEATS_FAILURE:
       return {
