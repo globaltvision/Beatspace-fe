@@ -528,7 +528,7 @@ const Comicread = () => {
             letterSpacing: "0.5px",
           }}
         >
-          {t('comics_user.go_to_page') || "Go to page"} {currentPage + 1}/{pages.length}
+          {t('comics_user.go_to_page', 'Go to page')} {currentPage + 1}/{pages.length}
         </button>
       </Box>
 

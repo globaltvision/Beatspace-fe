@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ConfirmModal from "../../components/ConfirmModal";
 import CategoryAPI from "../../services/category.service";
 import SettingsAPI from "../../services/settings.service";
+import custAxios from "../../configs/axios.config";
 import { useSettings } from "../../contexts/SettingsContext";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -1039,15 +1040,68 @@ const Settings = () => {
   const handleExportBackup = async () => {
     setIsExporting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Pull the actual value out of an API response, tolerating both
+      // { data: { data: ... } } and { data: ... } shapes.
+      const pick = (r) => (r?.data?.data !== undefined ? r.data.data : r?.data ?? null);
+      // Run each fetch in isolation so one failing endpoint never aborts the
+      // whole backup — failed sections are recorded as { __error } instead.
+      const safe = async (promise) => {
+        try {
+          return pick(await promise);
+        } catch (e) {
+          return { __error: e?.response?.data?.message || e?.message || "Failed to fetch" };
+        }
+      };
+
+      const [
+        settingsData,
+        beats,
+        merch,
+        comics,
+        games,
+        orders,
+        donations,
+        assets,
+        dashboard,
+      ] = await Promise.all([
+        safe(SettingsAPI.get()),
+        safe(custAxios.get("/admin/getBeats")),
+        safe(custAxios.get("/public/merchs")),
+        safe(custAxios.get("/admin/getComics")),
+        safe(custAxios.get("/admin/getGames")),
+        safe(custAxios.get("/admin/orders")),
+        safe(custAxios.get("/admin/donations")),
+        safe(custAxios.get("/admin/assets")),
+        safe(custAxios.get("/admin/dashboard")),
+      ]);
+
+      const count = (v) => (Array.isArray(v) ? v.length : 0);
 
       const data = {
-        siteTitle,
-        language,
-        darkMode,
-        retroNeonMode,
-        categories,
         exportDate: new Date().toISOString(),
+        exportedBy: "Beatspace Admin",
+        version: 2,
+        summary: {
+          beats: count(beats),
+          merch: count(merch),
+          comics: count(comics),
+          games: count(games),
+          orders: count(orders),
+          donations: count(donations),
+          assets: count(assets),
+          categories: count(categories),
+        },
+        preferences: { siteTitle, language, darkMode, retroNeonMode },
+        settings: settingsData,
+        categories,
+        beats,
+        merch,
+        comics,
+        games,
+        orders,
+        donations,
+        assets,
+        dashboard,
       };
 
       const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -1061,8 +1115,10 @@ const Settings = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      toast.success(t('settings.security.export_success', 'Backup exported successfully'));
     } catch (error) {
       console.error("Export failed:", error);
+      toast.error(t('settings.security.export_failed', 'Export failed'));
     } finally {
       setIsExporting(false);
     }

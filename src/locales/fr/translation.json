@@ -164,6 +164,8 @@
       "export_desc": "Télécharger tous les paramètres et configurations au format JSON",
       "export_button": "Exporter la sauvegarde",
       "exporting": "Exportation...",
+      "export_success": "Sauvegarde exportée avec succès",
+      "export_failed": "Échec de l'exportation. Veuillez réessayer.",
       "reset": "RÉINITIALISER AUX PARAMÈTRES PAR DÉFAUT",
       "reset_desc": "Restaurer tous les paramètres aux valeurs d'usine",
       "reset_button": "Réinitialiser les paramètres",
@@ -499,7 +501,8 @@
     "click_view_chapters": "Cliquez sur une BD pour voir les chapitres",
     "pages": "Pages",
     "no_comic_selected": "AUCUNE BD SÉLECTIONNÉE",
-    "click_start_reading": "Cliquez sur un chapitre pour commencer la lecture"
+    "click_start_reading": "Cliquez sur un chapitre pour commencer la lecture",
+    "go_to_page": "Aller à la page"
   },
   "user_settings": {
     "loading": "Chargement du profil...",

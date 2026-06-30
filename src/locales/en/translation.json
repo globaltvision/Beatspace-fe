@@ -164,6 +164,8 @@
       "export_desc": "Download all settings and configurations as JSON",
       "export_button": "Export Backup",
       "exporting": "Exporting...",
+      "export_success": "Backup exported successfully",
+      "export_failed": "Export failed. Please try again.",
       "reset": "RESET TO DEFAULT SETTINGS",
       "reset_desc": "Restore all settings to factory defaults",
       "reset_button": "Reset Setting",
@@ -499,7 +501,8 @@
     "click_view_chapters": "Click on a comic to view chapters",
     "pages": "Pages",
     "no_comic_selected": "NO COMIC SELECTED",
-    "click_start_reading": "Click on a chapter to start reading"
+    "click_start_reading": "Click on a chapter to start reading",
+    "go_to_page": "Go to page"
   },
   "user_settings": {
     "loading": "Loading profile...",
