@@ -8,6 +8,7 @@ import { useSettings } from "../../contexts/SettingsContext";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { getBeats } from "../../store/actions/beatActions";
+import { me, changeEmail, changePassword } from "../../store/actions/authActions";
 const VolumeSlider = ({ value = 70, onChange }) => {
   const { t } = useTranslation();
   const handleSliderChange = (event) => {
@@ -850,6 +851,21 @@ const AudioVisualizerPreview = ({ volume = 70, quality = 'high' }) => {
 const Settings = () => {
   const { t } = useTranslation();
   const { fetchSettings: refreshGlobalSettings } = useSettings();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth?.user);
+
+  // Account & Login State
+  const [newEmail, setNewEmail] = useState("");
+  const [isChangingEmail, setIsChangingEmail] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  useEffect(() => {
+    dispatch(me());
+  }, [dispatch]);
+
   // General Settings State
   const [siteTitle, setSiteTitle] = useState("Beatspace");
   const [language, setLanguage] = useState("English");
@@ -1138,6 +1154,62 @@ const Settings = () => {
       console.error("Reset failed:", error);
     } finally {
       setIsResetting(false);
+    }
+  };
+
+  // Account & Login Handlers
+  const handleUpdateEmail = async () => {
+    const trimmed = newEmail.trim();
+    if (!trimmed) {
+      toast.error(t('settings.account.email_required', 'Please enter a new email address'));
+      return;
+    }
+    if (currentUser?.email && trimmed.toLowerCase() === currentUser.email.toLowerCase()) {
+      toast.error(t('settings.account.email_same', 'New email must be different from your current email'));
+      return;
+    }
+
+    setIsChangingEmail(true);
+    try {
+      const res = await changeEmail(trimmed);
+      if (res.success) {
+        toast.success(t('settings.account.email_change_pending', `Verification link sent to ${trimmed}. Confirm it to finish changing your email.`, { email: trimmed }));
+        setNewEmail("");
+      } else {
+        toast.error(res.message || t('settings.account.email_change_failed', 'Failed to update email'));
+      }
+    } finally {
+      setIsChangingEmail(false);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast.error(t('settings.account.password_required', 'Please fill in all password fields'));
+      return;
+    }
+    if (newPassword.length < 8) {
+      toast.error(t('settings.account.password_too_short', 'Password must be at least 8 characters'));
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast.error(t('settings.account.password_mismatch', 'New passwords do not match'));
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      const res = await changePassword(currentPassword, newPassword);
+      if (res.success) {
+        toast.success(t('settings.account.password_updated', 'Password updated successfully'));
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      } else {
+        toast.error(res.message || t('settings.account.password_update_failed', 'Failed to update password'));
+      }
+    } finally {
+      setIsChangingPassword(false);
     }
   };
 
@@ -1519,7 +1591,166 @@ const Settings = () => {
         </section>
       </div>
 
+      {/* Account & Login Section */}
+      <div className="relative pt-8 sm:pt-12 lg:pt-[50px] py-8 px-6 mb-3 border-1 border-[#CBC895] bg-[#2F2E24] ">
+        <section className="w-full mx-auto px-4 sm:px-6 lg:px-[27px]">
+          <header className="mb-8 sm:mb-10 lg:mb-[50px]">
+            <h1 className="text-[#DFD74F] sm:text-md lg:text-lg pixel-font uppercase block mb-1 sm:mb-2 cursor-pointer">
+              {t('settings.account.title')}
+            </h1>
+          </header>
 
+          <div className="space-y-12">
+            {/* Change Email */}
+            <div className="space-y-6">
+              <div className="flex gap-6 sm:gap-8 lg:gap-[30px] sm:flex-row flex-col sm:items-center items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="w-10 h-11 sm:w-12 sm:h-13 lg:w-[53px] lg:h-[58px]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#FFEF2E"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="2" y="4" width="20" height="16" rx="1" />
+                    <path d="M3 6l9 7 9-7" />
+                  </svg>
+                </div>
+                <div className="flex-1 w-full">
+                  <h3 className="text-white text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 uppercase mb-2">
+                    {t('settings.account.email_label')}
+                  </h3>
+                  <p className="text-[#FFF999] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7">
+                    {currentUser?.email || t('settings.account.email_desc')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-full max-w-xl">
+                <label
+                  htmlFor="new-email"
+                  className="block text-white pixel-font !text-sm uppercase mb-4"
+                >
+                  {t('settings.account.new_email_label')}
+                </label>
+                <div className="alexandria-font flex flex-col sm:flex-row gap-3">
+                  <input
+                    id="new-email"
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    placeholder={t('settings.account.new_email_placeholder')}
+                    autoComplete="email"
+                    className="w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                  />
+                  <button
+                    onClick={handleUpdateEmail}
+                    disabled={isChangingEmail}
+                    className="flex-shrink-0 h-12 sm:h-14 lg:h-[60px] px-6 sm:px-8 shadow-[0_7px_2px_0_#000] bg-[#CBC895] hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
+                  >
+                    <span className="text-[#191A22] alexandria-font text-base sm:text-lg font-semibold whitespace-nowrap">
+                      {isChangingEmail ? t('settings.account.updating_email') : t('settings.account.update_email_button')}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Change Password */}
+            <div className="space-y-6">
+              <div className="flex gap-6 sm:gap-8 lg:gap-[30px] sm:flex-row flex-col sm:items-center items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="w-10 h-11 sm:w-12 sm:h-13 lg:w-[53px] lg:h-[58px]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#FFEF2E"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="4" y="11" width="16" height="10" rx="1" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
+                <div className="flex-1 w-full">
+                  <h3 className="text-white text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7 uppercase mb-2">
+                    {t('settings.account.password_label')}
+                  </h3>
+                  <p className="text-[#FFF999] text-base sm:text-lg lg:text-xl alexandria-font leading-6 sm:leading-7">
+                    {t('settings.account.password_desc')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-full max-w-xl space-y-6">
+                <div>
+                  <label
+                    htmlFor="current-password"
+                    className="block text-white pixel-font !text-sm uppercase mb-4"
+                  >
+                    {t('settings.account.current_password_label')}
+                  </label>
+                  <input
+                    id="current-password"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    autoComplete="current-password"
+                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="new-password"
+                    className="block text-white pixel-font !text-sm uppercase mb-4"
+                  >
+                    {t('settings.account.new_password_label')}
+                  </label>
+                  <input
+                    id="new-password"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="confirm-new-password"
+                    className="block text-white pixel-font !text-sm uppercase mb-4"
+                  >
+                    {t('settings.account.confirm_password_label')}
+                  </label>
+                  <input
+                    id="confirm-new-password"
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                  />
+                </div>
+
+                <button
+                  onClick={handleUpdatePassword}
+                  disabled={isChangingPassword}
+                  className="w-full sm:w-auto sm:min-w-[200px] lg:w-[246px] h-12 sm:h-14 lg:h-[53px] shadow-[0_7px_2px_0_#000] bg-[#CBC895] hover:bg-[#b8b582] transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#CBC895] focus:ring-offset-2 focus:ring-offset-[#1a1b22]"
+                >
+                  <span className="text-[#191A22] alexandria-font text-base sm:text-lg font-semibold">
+                    {isChangingPassword ? t('settings.account.updating_password') : t('settings.account.update_password_button')}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* Security & Backup Section */}
       <div className="relative pt-8 sm:pt-12 lg:pt-[50px] py-8 px-6 mb-3 border-1 border-[#CBC895] bg-[#2F2E24] ">
@@ -1575,7 +1806,7 @@ const Settings = () => {
                     fill="#191A22"
                   />
                 </svg>
-                <span className="text-[#191A22] text-base sm:text-lg font-semibold leading-6 sm:leading-7">
+                <span className="text-[#191A22] alexandria-font text-base sm:text-lg font-semibold leading-6 sm:leading-7">
                   {isExporting ? t('settings.security.exporting') : t('settings.security.export_button')}
                 </span>
               </button>
@@ -1627,7 +1858,7 @@ const Settings = () => {
                     fill="#191A22"
                   />
                 </svg>
-                <span className="text-[#191A22] text-base sm:text-lg font-semibold leading-6 sm:leading-7">
+                <span className="text-[#191A22] alexandria-font text-base sm:text-lg font-semibold leading-6 sm:leading-7">
                   {isResetting ? t('settings.security.resetting') : t('settings.security.reset_button')}
                 </span>
               </button>

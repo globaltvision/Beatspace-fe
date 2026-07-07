@@ -171,7 +171,34 @@
       "reset_button": "Réinitialiser les paramètres",
       "resetting": "Réinitialisation...",
       "reset_modal_title": "RÉINITIALISER LES PARAMÈTRES",
-      "reset_modal_message": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres aux valeurs par défaut ? Cette action est irréversible."
+      "reset_modal_message": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres aux valeurs par défaut ? Cette action est irréversible.",
+      "export_success": "Sauvegarde exportée avec succès",
+      "export_failed": "Échec de l'exportation. Veuillez réessayer."
+    },
+    "account": {
+      "title": "COMPTE ET CONNEXION",
+      "email_label": "Email de connexion",
+      "email_desc": "Il s'agit de l'adresse email utilisée pour se connecter au panneau d'administration.",
+      "new_email_label": "Nouvelle adresse email",
+      "new_email_placeholder": "Entrez la nouvelle adresse email",
+      "update_email_button": "Mettre à jour l'email",
+      "updating_email": "Mise à jour...",
+      "email_change_pending": "Lien de vérification envoyé à {{email}}. Confirmez-le pour terminer le changement d'email.",
+      "email_change_failed": "Échec de la mise à jour de l'email",
+      "email_required": "Veuillez entrer une nouvelle adresse email",
+      "email_same": "Le nouvel email doit être différent de l'email actuel",
+      "password_label": "Mot de passe",
+      "password_desc": "Modifiez le mot de passe utilisé pour se connecter au panneau d'administration.",
+      "current_password_label": "Mot de passe actuel",
+      "new_password_label": "Nouveau mot de passe",
+      "confirm_password_label": "Confirmer le nouveau mot de passe",
+      "update_password_button": "Mettre à jour le mot de passe",
+      "updating_password": "Mise à jour...",
+      "password_updated": "Mot de passe mis à jour avec succès",
+      "password_update_failed": "Échec de la mise à jour du mot de passe",
+      "password_mismatch": "Les nouveaux mots de passe ne correspondent pas",
+      "password_too_short": "Le mot de passe doit contenir au moins 8 caractères",
+      "password_required": "Veuillez remplir tous les champs de mot de passe"
     }
   },
   "beatmaker": {
@@ -208,7 +235,8 @@
         "donations": "DONS",
         "actions": "ACTIONS",
         "no_tracks": "AUCUNE PISTE TROUVÉE DANS CE GENRE",
-        "showing": "AFFICHAGE DE {{start}}-{{end}} SUR {{total}} PISTES"
+        "showing": "AFFICHAGE DE {{start}}-{{end}} SUR {{total}} PISTES",
+        "artist_name_label": "Nom de l'artiste"
       }
     },
     "edit_modal": {
@@ -237,29 +265,31 @@
     }
   },
   "merch": {
+    "title": "GESTION DU MERCH",
+    "subtitle": "VÊTEMENTS & ACCESSOIRES",
     "upload": {
-      "title": "TÉLÉCHARGER UN ARTICLE MERCH",
-      "drag_drop": "GLISSEZ-DÉPOSEZ PNG/JPEG ICI OU CLIQUEZ POUR TÉLÉCHARGER",
-      "select_files": "Sélectionner des fichiers",
-      "files_selected": "{{count}} fichier(s) sélectionné(s)",
-      "name_label": "Nom",
-      "name_placeholder": "Nom du produit",
-      "price_label": "Prix (€)",
-      "description_label": "Description",
-      "description_placeholder": "Entrez la description du produit",
-      "sizes_label": "Tailles",
-      "button": "TÉLÉCHARGER L'ARTICLE MERCH",
-      "uploading": "TÉLÉCHARGEMENT..."
+      "title": "TÉLÉCHARGER UN NOUVEL ACTIF",
+      "name_label": "NOM DU PRODUIT",
+      "name_placeholder": "ex: T-shirt Vintage Space",
+      "price_label": "PRIX (€)",
+      "description_label": "DESCRIPTION",
+      "description_placeholder": "Racontez l'histoire de cet article...",
+      "sizes_label": "TAILLES",
+      "button": "LANCER L'ACTIF",
+      "uploading": "LANCEMENT...",
+      "merch_images_label": "Images du Merch",
+      "files_selected": "{{count}} fichiers sélectionnés",
+      "drag_drop": "GLISSER-DÉPOSER OU CLIQUER POUR TÉLÉCHARGER"
     },
     "inventory": {
-      "title": "INVENTAIRE MERCH",
+      "title": "INVENTAIRE ACTIF",
       "stats": {
-        "total_items": "Total d'articles : {{count}}",
-        "in_stock": "En stock : {{count}}"
+        "total_items": "{{count}} ARTICLES",
+        "in_stock": "{{count}} EN STOCK"
       },
       "table": {
         "preview": "APERÇU",
-        "name": "NOM DU PRODUIT",
+        "product_name": "NOM DU PRODUIT",
         "price": "PRIX",
         "sizes": "TAILLES",
         "stock": "STOCK",
@@ -267,22 +297,22 @@
       }
     },
     "modals": {
-      "view_title": "DÉTAILS MERCH",
-      "edit_title": "MODIFIER L'ARTICLE MERCH",
-      "delete_title": "SUPPRIMER L'ARTICLE MERCH",
-      "delete_message": "Êtes-vous sûr de vouloir supprimer définitivement cet article ?",
+      "view_title": "DÉTAILS DU PRODUIT",
+      "edit_title": "MODIFIER L'ACTIF",
+      "updating": "MISE À JOUR...",
       "save_changes": "ENREGISTRER LES MODIFICATIONS",
-      "updating": "MISE À JOUR..."
+      "delete_title": "SUPPRIMER L'ACTIF",
+      "delete_message": "Êtes-vous sûr de vouloir supprimer définitivement cet article ?"
     },
     "messages": {
-      "upload_success": "Article merch téléchargé avec succès",
-      "upload_failed": "Échec du téléchargement de l'article merch",
+      "missing_fields": "Veuillez remplir tous les champs requis",
+      "missing_image": "Veuillez sélectionner au moins une image",
+      "upload_success": "Merch créé avec succès",
+      "upload_failed": "Échec de la création du merch",
+      "delete_success": "Merch supprimé avec succès",
+      "delete_failed": "Échec de la suppression du merch",
       "update_success": "Article merch mis à jour avec succès",
-      "update_failed": "Échec de la mise à jour de l'article merch",
-      "delete_success": "Article supprimé avec succès",
-      "delete_failed": "Échec de la suppression de l'article",
-      "missing_fields": "Veuillez remplir tous les champs obligatoires (Nom, Prix, Tailles)",
-      "missing_image": "Veuillez sélectionner au moins une image"
+      "update_failed": "Échec de la mise à jour de l'article merch"
     }
   },
   "not_found": {
@@ -361,195 +391,61 @@
     }
   },
   "orders": {
-    "title": "VENTES & DONS",
-    "subtitle": "Gérez vos commandes merch et consultez les contributions de soutien aux artistes.",
+    "title": "COMMANDES & DONS",
+    "subtitle": "Gérez vos commandes de produits dérivés et consultez les contributions des artistes.",
     "tabs": {
       "merch": "COMMANDES MERCH",
       "donations": "DONS"
     },
-    "table": {
-      "date": "DATE",
+    "merch_table": {
+      "order_id": "ID COMMANDE",
       "customer": "CLIENT",
       "items": "ARTICLES",
-      "total": "TOTAL",
+      "date": "DATE",
+      "amount": "MONTANT",
       "payment": "PAIEMENT",
       "fulfillment": "LIVRAISON",
-      "view": "VOIR",
-      "no_orders": "Aucune commande merch trouvée.",
-      "artist_supporter": "SOUTIEN ARTISTE",
-      "amount": "MONTANT",
-      "status": "STATUT",
-      "no_donations": "Aucun don trouvé."
-    },
-    "details": {
-      "title": "Détails de la Commande",
-      "customer_info": "Infos Client",
-      "shipping_address": "Adresse de Livraison",
-      "order_items": "Articles Commandés",
-      "total": "Total",
-      "payment_status": "Statut de Paiement",
-      "fulfillment_status": "Statut de Livraison",
-      "placed": "Passée le : {{date}}",
-      "close": "Fermer"
-    },
-    "messages": {
-      "update_success": "Statut de la commande mis à jour !",
-      "update_failed": "Échec de la mise à jour du statut"
-    }
-  },
-  "games": {
-    "add_new": "+ Ajouter un Nouveau Jeu"
-  },
-  "assets": {
-    "title": "Télécharger des Actifs",
-    "add_merch": "Ajouter un Nouvel Article Merch",
-    "drop_here": "Déposez les fichiers ici pour les télécharger",
-    "supports": "Prend en charge les fichiers PNG, JPEG, MP3, WAV jusqu'à 50 Mo chacun",
-    "select_files": "Sélectionner des Fichiers",
-    "search_placeholder": "Rechercher des actifs...",
-    "types": {
-      "all": "Tous les Types",
-      "audio": "Audio",
-      "image": "Images",
-      "other": "Autre"
-    },
-    "categories": {
-      "all": "Toutes les Catégories",
-      "games": "Jeux",
-      "merch": "Merch",
-      "beats": "Beats",
-      "uncategorized": "Non catégorisé"
-    },
-    "table": {
-      "preview": "APERÇU",
-      "file_name": "Nom du Fichier",
-      "category": "Catégorie",
-      "size": "Taille",
-      "uploaded_by": "Téléchargé Par",
-      "date_added": "Date d'Ajout",
       "actions": "ACTIONS"
     },
-    "actions": {
-      "download": "Télécharger",
-      "edit": "Modifier",
-      "remove": "Supprimer"
+    "donations_table": {
+      "transaction_id": "ID TRANSACTION",
+      "donor": "DONATEUR",
+      "date": "DATE",
+      "amount": "MONTANT",
+      "status": "STATUT"
     },
-    "no_assets": "Aucun actif trouvé",
-    "upload_started": "Téléchargez des fichiers pour commencer",
-    "current_user": "Utilisateur Actuel"
-  },
-  "comics": {
-    "title_page": "GESTION DES BANDES DESSINÉES",
-    "add_comic": "AJOUTER BD",
-    "edit_comic": "MODIFIER BD",
-    "create_comic": "CRÉER NOUVELLE BD",
-    "cover": "COUVERTURE",
-    "drag_reorder": "Faire glisser pour réorganiser",
-    "current_thumbnail": "Miniature Actuelle",
-    "set_thumbnail": "Définir comme Miniature",
-    "delete_page": "Supprimer la Page",
-    "page_info": "PAGE {{current}} / {{total}}",
-    "navigation_hint": "Flèches pour naviguer • ESC pour fermer",
-    "chapters": "Chapitres",
-    "status": "Statut",
-    "edit": "Modifier",
-    "delete": "Supprimer",
-    "tabs": {
-      "details": "DÉTAILS",
-      "media": "MÉDIAS & PAGES"
+    "details": {
+      "title": "Détails de la commande",
+      "customer_info": "Informations client",
+      "shipping_address": "Adresse de livraison",
+      "items": "Articles",
+      "order_items": "Articles de la commande",
+      "summary": "Résumé",
+      "total": "Total",
+      "payment_status": "Statut du paiement",
+      "fulfillment_status": "Statut de livraison",
+      "placed": "Passée le {{date}}",
+      "close": "Fermer",
+      "status": "Statut"
     },
-    "form": {
-      "title": "Titre de la BD",
-      "title_placeholder": "Entrez le Titre",
-      "artist": "Nom de l'Artiste",
-      "artist_placeholder": "Entrez l'Auteur",
-      "chapter_title": "Titre du Chapitre 1",
-      "chapter_placeholder": "ex: Le Commencement",
-      "description": "Description de la BD",
-      "description_placeholder": "Entrez la Description",
-      "status": "Statut",
-      "active": "Actif",
-      "inactive": "Inactif",
-      "cover_label": "Miniature / Image de Couverture (Optionnel si défini via les pages)",
-      "change_cover": "Changer la Couverture",
-      "upload_cover": "Télécharger la Couverture",
-      "upload_pages": "Télécharger des Pages",
-      "drop_images": "Déposez les images ici"
-    },
-    "actions": {
-      "save": "ENREGISTRER",
-      "create": "CRÉER LA BD",
-      "cancel": "ANNULER"
+    "status": {
+      "paid": "Payé",
+      "unpaid": "Impayé",
+      "pending": "En attente",
+      "shipped": "Expédié",
+      "delivered": "Livré",
+      "cancelled": "Annulé"
     },
     "messages": {
-      "no_comics": "Aucune BD trouvée dans la base de données.",
-      "upload_required": "Veuillez télécharger au moins une page",
-      "save_failed": "Échec de l'enregistrement de la BD",
-      "delete_confirm": "Êtes-vous sûr de vouloir supprimer \"{{title}}\" ?",
-      "delete_warning": "Cette action est irréversible."
+      "update_success": "Statut mis à jour avec succès",
+      "update_failed": "Échec de la mise à jour du statut",
+      "loading_orders": "Chargement des commandes...",
+      "no_orders": "Aucune commande trouvée",
+      "no_donations": "Aucun don trouvé"
+    },
+    "customer": {
+      "guest": "Invité"
     }
-  },
-  "comics_user": {
-    "title": "BANDES DESSINÉES",
-    "loading": "CHARGEMENT...",
-    "no_artists": "AUCUN ARTISTE TROUVÉ",
-    "no_chapters": "AUCUN CHAPITRE TROUVÉ",
-    "back": "RETOUR",
-    "read": "LIRE",
-    "not_found": "BD OU CHAPITRE NON TROUVÉ",
-    "end_chapter": "FIN DU CHAPITRE",
-    "support_artist": "SOUTENIR L'ARTISTE",
-    "chapter": "Chapitre",
-    "no_comics_artist": "AUCUNE BD TROUVÉE POUR CET ARTISTE",
-    "click_view_chapters": "Cliquez sur une BD pour voir les chapitres",
-    "pages": "Pages",
-    "no_comic_selected": "AUCUNE BD SÉLECTIONNÉE",
-    "click_start_reading": "Cliquez sur un chapitre pour commencer la lecture"
-  },
-  "user_settings": {
-    "loading": "Chargement du profil...",
-    "profile_title": "Profil Utilisateur",
-    "save_changes": "Enregistrer les modifications",
-    "choose_file": "Choisir un fichier",
-    "remove": "Supprimer",
-    "error": "Erreur",
-    "full_name": "Nom complet",
-    "password_security": "Mot de passe et sécurité",
-    "password_hint": "Votre mot de passe doit comporter au moins 6 caractères et inclure une combinaison de chiffres, de lettres et de caractères spéciaux (!$@%).",
-    "current_password": "Mot de passe actuel",
-    "new_password": "Nouveau mot de passe",
-    "confirm_new_password": "Confirmer le nouveau mot de passe",
-    "notifications": "Notifications",
-    "transaction_alerts": "Alertes de transaction",
-    "transaction_hint": "Soyez notifié lorsque des objectifs de réussite sont atteints",
-    "subscription_updates": "Mises à jour de l'abonnement",
-    "subscription_hint": "Restez informé des renouvellements et annulations à venir.",
-    "spending_insights": "Aperçu des dépenses",
-    "spending_hint": "Recevez des alertes basées sur les objectifs de délai"
-  },
-  "menu": {
-    "title": "MENU",
-    "comics": "BD",
-    "beats": "BEATS",
-    "shop": "BOUTIQUE",
-    "games": "JEUX"
-  },
-  "beats_page": {
-    "title": "BE★TS",
-    "saphire": "SAPHIRE",
-    "phonix": "PHONiX",
-    "horus": "HORUS",
-    "spale_ralooon": "SPALE RALOOON",
-    "no_tracks": "AUCUNE PISTE TROUVÉE"
-  },
-  "shop_page": {
-    "title": "BOUTIQUE",
-    "shirts": "T-SHIRTS"
-  },
-  "games_page": {
-    "title": "JEUX",
-    "eternal_run": "ETERNAL RUN",
-    "start_game": "LANCER LE JEU"
   },
   "games": {
     "add_new": "DÉPLOYER UN NOUVEAU BUILD"
@@ -668,56 +564,68 @@
       "delete_confirm": "Êtes-vous sûr de vouloir supprimer {{title}} ?"
     }
   },
-  "merch": {
-    "title": "GESTION DU MERCH",
-    "subtitle": "VÊTEMENTS & ACCESSOIRES",
-    "upload": {
-      "title": "TÉLÉCHARGER UN NOUVEL ACTIF",
-      "name_label": "NOM DU PRODUIT",
-      "name_placeholder": "ex: T-shirt Vintage Space",
-      "price_label": "PRIX (€)",
-      "description_label": "DESCRIPTION",
-      "description_placeholder": "Racontez l'histoire de cet article...",
-      "sizes_label": "TAILLES",
-      "button": "LANCER L'ACTIF",
-      "uploading": "LANCEMENT...",
-      "merch_images_label": "Images du Merch",
-      "files_selected": "{{count}} fichiers sélectionnés",
-      "drag_drop": "GLISSER-DÉPOSER OU CLIQUER POUR TÉLÉCHARGER"
-    },
-    "inventory": {
-      "title": "INVENTAIRE ACTIF",
-      "stats": {
-        "total_items": "{{count}} ARTICLES",
-        "in_stock": "{{count}} EN STOCK"
-      },
-      "table": {
-        "preview": "APERÇU",
-        "product_name": "NOM DU PRODUIT",
-        "price": "PRIX",
-        "sizes": "TAILLES",
-        "stock": "STOCK",
-        "actions": "ACTIONS"
-      }
-    },
-    "modals": {
-      "view_title": "DÉTAILS DU PRODUIT",
-      "edit_title": "MODIFIER L'ACTIF",
-      "updating": "MISE À JOUR...",
-      "save_changes": "ENREGISTRER LES MODIFICATIONS",
-      "delete_title": "SUPPRIMER L'ACTIF",
-      "delete_message": "Êtes-vous sûr de vouloir supprimer définitivement cet article ?"
-    },
-    "messages": {
-      "missing_fields": "Veuillez remplir tous les champs requis",
-      "missing_image": "Veuillez sélectionner au moins une image",
-      "upload_success": "Merch créé avec succès",
-      "upload_failed": "Échec de la création du merch",
-      "delete_success": "Merch supprimé avec succès",
-      "delete_failed": "Échec de la suppression du merch",
-      "update_success": "Article merch mis à jour avec succès",
-      "update_failed": "Échec de la mise à jour de l'article merch"
-    }
+  "comics_user": {
+    "title": "BANDES DESSINÉES",
+    "loading": "CHARGEMENT...",
+    "no_artists": "AUCUN ARTISTE TROUVÉ",
+    "no_chapters": "AUCUN CHAPITRE TROUVÉ",
+    "back": "RETOUR",
+    "read": "LIRE",
+    "not_found": "BD OU CHAPITRE NON TROUVÉ",
+    "end_chapter": "FIN DU CHAPITRE",
+    "support_artist": "SOUTENIR L'ARTISTE",
+    "chapter": "Chapitre",
+    "no_comics_artist": "AUCUNE BD TROUVÉE POUR CET ARTISTE",
+    "click_view_chapters": "Cliquez sur une BD pour voir les chapitres",
+    "pages": "Pages",
+    "no_comic_selected": "AUCUNE BD SÉLECTIONNÉE",
+    "click_start_reading": "Cliquez sur un chapitre pour commencer la lecture",
+    "go_to_page": "Aller à la page"
+  },
+  "user_settings": {
+    "loading": "Chargement du profil...",
+    "profile_title": "Profil Utilisateur",
+    "save_changes": "Enregistrer les modifications",
+    "choose_file": "Choisir un fichier",
+    "remove": "Supprimer",
+    "error": "Erreur",
+    "full_name": "Nom complet",
+    "password_security": "Mot de passe et sécurité",
+    "password_hint": "Votre mot de passe doit comporter au moins 6 caractères et inclure une combinaison de chiffres, de lettres et de caractères spéciaux (!$@%).",
+    "current_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "confirm_new_password": "Confirmer le nouveau mot de passe",
+    "notifications": "Notifications",
+    "transaction_alerts": "Alertes de transaction",
+    "transaction_hint": "Soyez notifié lorsque des objectifs de réussite sont atteints",
+    "subscription_updates": "Mises à jour de l'abonnement",
+    "subscription_hint": "Restez informé des renouvellements et annulations à venir.",
+    "spending_insights": "Aperçu des dépenses",
+    "spending_hint": "Recevez des alertes basées sur les objectifs de délai"
+  },
+  "menu": {
+    "title": "MENU",
+    "comics": "BD",
+    "beats": "BEATS",
+    "shop": "BOUTIQUE",
+    "games": "JEUX"
+  },
+  "beats_page": {
+    "title": "BE★TS",
+    "saphire": "SAPHIRE",
+    "phonix": "PHONiX",
+    "horus": "HORUS",
+    "spale_ralooon": "SPALE RALOOON",
+    "no_tracks": "AUCUNE PISTE TROUVÉE"
+  },
+  "shop_page": {
+    "title": "BOUTIQUE",
+    "shirts": "T-SHIRTS"
+  },
+  "games_page": {
+    "title": "JEUX",
+    "eternal_run": "ETERNAL RUN",
+    "start_game": "LANCER LE JEU"
   },
   "support_modal": {
     "title": "SOUTENIR L'ARTISTE",
@@ -731,62 +639,5 @@
     "donation_label": "MONTANT DU DON €",
     "checkout": "PAYER",
     "download_beat": "TÉLÉCHARGER LE BEAT"
-  },
-  "orders": {
-    "title": "COMMANDES & DONS",
-"subtitle":"Gérez vos commandes de produits dérivés et consultez les contributions des artistes.",
-    "tabs": {
-      "merch": "COMMANDES MERCH",
-      "donations": "DONS"
-    },
-    "merch_table": {
-      "order_id": "ID COMMANDE",
-      "customer": "CLIENT",
-      "items": "ARTICLES",
-      "date": "DATE",
-      "amount": "MONTANT",
-      "payment": "PAIEMENT",
-      "fulfillment": "LIVRAISON",
-      "actions": "ACTIONS"
-    },
-    "donations_table": {
-      "transaction_id": "ID TRANSACTION",
-      "donor": "DONATEUR",
-      "date": "DATE",
-      "amount": "MONTANT",
-      "status": "STATUT"
-    },
-    "details": {
-      "title": "Détails de la commande",
-      "customer_info": "Informations client",
-      "shipping_address": "Adresse de livraison",
-      "items": "Articles",
-      "order_items": "Articles de la commande",
-      "summary": "Résumé",
-      "total": "Total",
-      "payment_status": "Statut du paiement",
-      "fulfillment_status": "Statut de livraison",
-      "placed": "Passée le {{date}}",
-      "close": "Fermer",
-      "status": "Statut"
-    },
-    "status": {
-      "paid": "Payé",
-      "unpaid": "Impayé",
-      "pending": "En attente",
-      "shipped": "Expédié",
-      "delivered": "Livré",
-      "cancelled": "Annulé"
-    },
-    "messages": {
-      "update_success": "Statut mis à jour avec succès",
-      "update_failed": "Échec de la mise à jour du statut",
-      "loading_orders": "Chargement des commandes...",
-      "no_orders": "Aucune commande trouvée",
-      "no_donations": "Aucun don trouvé"
-    },
-    "customer": {
-      "guest": "Invité"
-    }
   }
 }

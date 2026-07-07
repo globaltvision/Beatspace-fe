@@ -171,7 +171,34 @@
       "reset_button": "Reset Setting",
       "resetting": "Resetting...",
       "reset_modal_title": "RESET SETTINGS",
-      "reset_modal_message": "Are you sure you want to reset all settings to default? This action cannot be undone."
+      "reset_modal_message": "Are you sure you want to reset all settings to default? This action cannot be undone.",
+      "export_success": "Backup exported successfully",
+      "export_failed": "Export failed. Please try again."
+    },
+    "account": {
+      "title": "ACCOUNT & LOGIN",
+      "email_label": "Login Email",
+      "email_desc": "This is the email address used to sign in to the admin panel.",
+      "new_email_label": "New Email Address",
+      "new_email_placeholder": "Enter new email address",
+      "update_email_button": "Update Email",
+      "updating_email": "Updating...",
+      "email_change_pending": "Verification link sent to {{email}}. Confirm it to finish changing your email.",
+      "email_change_failed": "Failed to update email",
+      "email_required": "Please enter a new email address",
+      "email_same": "New email must be different from your current email",
+      "password_label": "Password",
+      "password_desc": "Change the password used to sign in to the admin panel.",
+      "current_password_label": "Current Password",
+      "new_password_label": "New Password",
+      "confirm_password_label": "Confirm New Password",
+      "update_password_button": "Update Password",
+      "updating_password": "Updating...",
+      "password_updated": "Password updated successfully",
+      "password_update_failed": "Failed to update password",
+      "password_mismatch": "New passwords do not match",
+      "password_too_short": "Password must be at least 8 characters",
+      "password_required": "Please fill in all password fields"
     }
   },
   "beatmaker": {
@@ -208,7 +235,8 @@
         "donations": "DONATIONS",
         "actions": "ACTIONS",
         "no_tracks": "NO TRACKS FOUND IN THIS GENRE",
-        "showing": "SHOWING {{start}}-{{end}} OF {{total}} TRACKS"
+        "showing": "SHOWING {{start}}-{{end}} OF {{total}} TRACKS",
+        "artist_name_label": "Artist Name"
       }
     },
     "edit_modal": {
@@ -238,29 +266,31 @@
     }
   },
   "merch": {
+    "title": "MERCH MANAGEMENT",
+    "subtitle": "CLOTHING & ACCESSORIES",
     "upload": {
-      "title": "UPLOAD MERCH ITEM",
-      "drag_drop": "DRAG & DROP PNG/JPEG HERE OR CLICK TO UPLOAD",
-      "select_files": "Select Files",
-      "files_selected": "{{count}} file(s) selected",
-      "name_label": "Name",
-      "name_placeholder": "Product name",
-      "price_label": "Price (€)",
-      "description_label": "Description",
-      "description_placeholder": "Enter product description",
-      "sizes_label": "Sizes",
-      "button": "UPLOAD MERCH ITEM",
-      "uploading": "UPLOADING..."
+      "title": "UPLOAD NEW ASSET",
+      "name_label": "PRODUCT NAME",
+      "name_placeholder": "e.g. Vintage Space Tee",
+      "price_label": "PRICE (€)",
+      "description_label": "DESCRIPTION",
+      "description_placeholder": "Tell the story behind this item...",
+      "sizes_label": "SIZES",
+      "button": "LAUNCH ASSET",
+      "uploading": "LAUNCHING...",
+      "merch_images_label": "Merch Images",
+      "files_selected": "{{count}} files selected",
+      "drag_drop": "DRAG AND DROP OR CLICK TO UPLOAD"
     },
     "inventory": {
-      "title": "MERCH INVENTORY",
+      "title": "ACTIVE INVENTORY",
       "stats": {
-        "total_items": "Total Items: {{count}}",
-        "in_stock": "In Stock: {{count}}"
+        "total_items": "{{count}} ITEMS",
+        "in_stock": "{{count}} IN STOCK"
       },
       "table": {
         "preview": "PREVIEW",
-        "name": "PRODUCT NAME",
+        "product_name": "PRODUCT NAME",
         "price": "PRICE",
         "sizes": "SIZES",
         "stock": "STOCK",
@@ -268,22 +298,22 @@
       }
     },
     "modals": {
-      "view_title": "MERCH DETAILS",
-      "edit_title": "EDIT MERCH ITEM",
-      "delete_title": "DELETE MERCH ITEM",
-      "delete_message": "Are you sure you want to permanently delete this item?",
+      "view_title": "PRODUCT DETAILS",
+      "edit_title": "MODIFY ASSET",
+      "updating": "UPDATING...",
       "save_changes": "SAVE CHANGES",
-      "updating": "UPDATING..."
+      "delete_title": "DELETE ASSET",
+      "delete_message": "Are you sure you want to permanently delete this item?"
     },
     "messages": {
-      "upload_success": "Merch item uploaded successfully",
-      "upload_failed": "Failed to upload merch item",
+      "missing_fields": "Please fill in all required fields",
+      "missing_image": "Please select at least one image",
+      "upload_success": "Merch created successfully",
+      "upload_failed": "Failed to create merch",
+      "delete_success": "Merch deleted successfully",
+      "delete_failed": "Failed to delete merch",
       "update_success": "Merch item updated successfully",
-      "update_failed": "Failed to update merch item",
-      "delete_success": "Item deleted successfully",
-      "delete_failed": "Failed to delete item",
-      "missing_fields": "Please fill in all required fields (Name, Price, Sizes)",
-      "missing_image": "Please select at least one image"
+      "update_failed": "Failed to update merch item"
     }
   },
   "not_found": {
@@ -362,195 +392,61 @@
     }
   },
   "orders": {
-    "title": "SALES & DONATIONS",
+    "title": "ORDERS & DONATIONS",
     "subtitle": "Manage your merch orders and view support artist contributions.",
     "tabs": {
       "merch": "MERCH ORDERS",
       "donations": "DONATIONS"
     },
-    "table": {
-      "date": "DATE",
+    "merch_table": {
+      "order_id": "ORDER ID",
       "customer": "CUSTOMER",
       "items": "ITEMS",
-      "total": "TOTAL",
+      "date": "DATE",
+      "amount": "AMOUNT",
       "payment": "PAYMENT",
       "fulfillment": "FULFILLMENT",
-      "view": "VIEW",
-      "no_orders": "No merch orders found.",
-      "artist_supporter": "ARTIST SUPPORTER",
+      "actions": "ACTIONS"
+    },
+    "donations_table": {
+      "transaction_id": "TRANSACTION ID",
+      "donor": "DONOR",
+      "date": "DATE",
       "amount": "AMOUNT",
-      "status": "STATUS",
-      "no_donations": "No donations found."
+      "status": "STATUS"
     },
     "details": {
       "title": "Order Details",
-      "customer_info": "Customer Info",
+      "customer_info": "Customer Information",
       "shipping_address": "Shipping Address",
+      "items": "Items",
       "order_items": "Order Items",
+      "summary": "Summary",
       "total": "Total",
       "payment_status": "Payment Status",
       "fulfillment_status": "Fulfillment Status",
-      "placed": "Placed: {{date}}",
-      "close": "Close"
+      "placed": "Placed on {{date}}",
+      "close": "Close",
+      "status": "Status"
+    },
+    "status": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "pending": "Pending",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     },
     "messages": {
-      "update_success": "Order status updated!",
-      "update_failed": "Failed to update status"
+      "update_success": "Status updated successfully",
+      "update_failed": "Failed to update status",
+      "loading_orders": "Loading orders...",
+      "no_orders": "No orders found",
+      "no_donations": "No donations found"
+    },
+    "customer": {
+      "guest": "Guest"
     }
-  },
-  "games": {
-    "add_new": "+ Add New Game"
-  },
-  "assets": {
-    "title": "Upload Assets",
-    "add_merch": "Add New Merch Item",
-    "drop_here": "Drop files here to upload",
-    "supports": "Supports PNG, JPEG, MP3, WAV files up to 50MB each",
-    "select_files": "Select Files",
-    "search_placeholder": "Search assets...",
-    "types": {
-      "all": "All Types",
-      "audio": "Audio",
-      "image": "Images",
-      "other": "Other"
-    },
-    "categories": {
-      "all": "All Categories",
-      "games": "Games",
-      "merch": "Merch",
-      "beats": "Beats",
-      "uncategorized": "Uncategorized"
-    },
-    "table": {
-      "preview": "PREVIEW",
-      "file_name": "File Name",
-      "category": "Category",
-      "size": "Size",
-      "uploaded_by": "Uploaded By",
-      "date_added": "Date Added",
-      "actions": "ACTIONS"
-    },
-    "actions": {
-      "download": "Download",
-      "edit": "Edit",
-      "remove": "Remove"
-    },
-    "no_assets": "No assets found",
-    "upload_started": "Upload some files to get started",
-    "current_user": "Current User"
-  },
-  "comics": {
-    "title_page": "COMICS MANAGEMENT",
-    "add_comic": "ADD COMIC",
-    "edit_comic": "EDIT COMIC",
-    "create_comic": "CREATE NEW COMIC",
-    "cover": "COVER",
-    "drag_reorder": "Drag to reorder",
-    "current_thumbnail": "Current Thumbnail",
-    "set_thumbnail": "Set as Thumbnail",
-    "delete_page": "Delete Page",
-    "page_info": "PAGE {{current}} / {{total}}",
-    "navigation_hint": "Use Arrow Keys to navigate • ESC to close",
-    "chapters": "Chapters",
-    "status": "Status",
-    "edit": "Edit",
-    "delete": "Delete",
-    "tabs": {
-      "details": "DETAILS",
-      "media": "MEDIA & PAGES"
-    },
-    "form": {
-      "title": "Comic Title",
-      "title_placeholder": "Enter Title",
-      "artist": "Artist Name",
-      "artist_placeholder": "Enter Author",
-      "chapter_title": "Chapter 1 Title",
-      "chapter_placeholder": "e.g. The Beginning",
-      "description": "Comic Description",
-      "description_placeholder": "Enter Description",
-      "status": "Status",
-      "active": "Active",
-      "inactive": "Inactive",
-      "cover_label": "Thumbnail / Cover Image (Optional if setting from pages)",
-      "change_cover": "Change Cover",
-      "upload_cover": "Upload Cover",
-      "upload_pages": "Upload Pages",
-      "drop_images": "Drop images here"
-    },
-    "actions": {
-      "save": "SAVE CHANGES",
-      "create": "CREATE COMIC",
-      "cancel": "CANCEL"
-    },
-    "messages": {
-      "no_comics": "No comics found in the database.",
-      "upload_required": "Please upload at least one page",
-      "save_failed": "Failed to save comic",
-      "delete_confirm": "Are you sure you want to delete \"{{title}}\"?",
-      "delete_warning": "This action cannot be undone."
-    }
-  },
-  "comics_user": {
-    "title": "COMICS",
-    "loading": "LOADING...",
-    "no_artists": "NO ARTISTS FOUND",
-    "no_chapters": "NO CHAPTERS FOUND",
-    "back": "BACK",
-    "read": "READ",
-    "not_found": "COMIC OR CHAPTER NOT FOUND",
-    "end_chapter": "END OF CHAPTER",
-    "support_artist": "SUPPORT THE ARTIST",
-    "chapter": "Chapter",
-    "no_comics_artist": "NO COMICS FOUND FOR THIS ARTIST",
-    "click_view_chapters": "Click on a comic to view chapters",
-    "pages": "Pages",
-    "no_comic_selected": "NO COMIC SELECTED",
-    "click_start_reading": "Click on a chapter to start reading"
-  },
-  "user_settings": {
-    "loading": "Loading profile...",
-    "profile_title": "User Profile",
-    "save_changes": "Save Changes",
-    "choose_file": "Choose File",
-    "remove": "Remove",
-    "error": "Error",
-    "full_name": "Full Name",
-    "password_security": "Password & Security",
-    "password_hint": "Your password must be at least 6 characters and should include a combination of numbers, letters and special characters (!$@%).",
-    "current_password": "Current Password",
-    "new_password": "New Password",
-    "confirm_new_password": "Confirm New Password",
-    "notifications": "Notifications",
-    "transaction_alerts": "Transaction Alerts",
-    "transaction_hint": "Get notified when an achievement goals",
-    "subscription_updates": "Subscription Updates",
-    "subscription_hint": "Stay informed about upcoming renewals and cancellations.",
-    "spending_insights": "Spending Insights",
-    "spending_hint": "Receive alerts based on deadline goals"
-  },
-  "menu": {
-    "title": "MENU",
-    "comics": "COMICS",
-    "beats": "BEATS",
-    "shop": "SHOP",
-    "games": "GAMES"
-  },
-  "beats_page": {
-    "title": "BE★TS",
-    "saphire": "SAPHIRE",
-    "phonix": "PHONiX",
-    "horus": "HORUS",
-    "spale_ralooon": "SPALE RALOOON",
-    "no_tracks": "NO TRACKS FOUND"
-  },
-  "shop_page": {
-    "title": "SHOP",
-    "shirts": "SHIRTS"
-  },
-  "games_page": {
-    "title": "GAMES",
-    "eternal_run": "ETERNAL RUN",
-    "start_game": "START GAME"
   },
   "games": {
     "add_new": "DEPLOY NEW BUILD"
@@ -669,56 +565,68 @@
       "delete_confirm": "Are you sure you want to delete {{title}}?"
     }
   },
-  "merch": {
-    "title": "MERCH MANAGEMENT",
-    "subtitle": "CLOTHING & ACCESSORIES",
-    "upload": {
-      "title": "UPLOAD NEW ASSET",
-      "name_label": "PRODUCT NAME",
-      "name_placeholder": "e.g. Vintage Space Tee",
-      "price_label": "PRICE (€)",
-      "description_label": "DESCRIPTION",
-      "description_placeholder": "Tell the story behind this item...",
-      "sizes_label": "SIZES",
-      "button": "LAUNCH ASSET",
-      "uploading": "LAUNCHING...",
-      "merch_images_label": "Merch Images",
-      "files_selected": "{{count}} files selected",
-      "drag_drop": "DRAG AND DROP OR CLICK TO UPLOAD"
-    },
-    "inventory": {
-      "title": "ACTIVE INVENTORY",
-      "stats": {
-        "total_items": "{{count}} ITEMS",
-        "in_stock": "{{count}} IN STOCK"
-      },
-      "table": {
-        "preview": "PREVIEW",
-        "product_name": "PRODUCT NAME",
-        "price": "PRICE",
-        "sizes": "SIZES",
-        "stock": "STOCK",
-        "actions": "ACTIONS"
-      }
-    },
-    "modals": {
-      "view_title": "PRODUCT DETAILS",
-      "edit_title": "MODIFY ASSET",
-      "updating": "UPDATING...",
-      "save_changes": "SAVE CHANGES",
-      "delete_title": "DELETE ASSET",
-      "delete_message": "Are you sure you want to permanently delete this item?"
-    },
-    "messages": {
-      "missing_fields": "Please fill in all required fields",
-      "missing_image": "Please select at least one image",
-      "upload_success": "Merch created successfully",
-      "upload_failed": "Failed to create merch",
-      "delete_success": "Merch deleted successfully",
-      "delete_failed": "Failed to delete merch",
-      "update_success": "Merch item updated successfully",
-      "update_failed": "Failed to update merch item"
-    }
+  "comics_user": {
+    "title": "COMICS",
+    "loading": "LOADING...",
+    "no_artists": "NO ARTISTS FOUND",
+    "no_chapters": "NO CHAPTERS FOUND",
+    "back": "BACK",
+    "read": "READ",
+    "not_found": "COMIC OR CHAPTER NOT FOUND",
+    "end_chapter": "END OF CHAPTER",
+    "support_artist": "SUPPORT THE ARTIST",
+    "chapter": "Chapter",
+    "no_comics_artist": "NO COMICS FOUND FOR THIS ARTIST",
+    "click_view_chapters": "Click on a comic to view chapters",
+    "pages": "Pages",
+    "no_comic_selected": "NO COMIC SELECTED",
+    "click_start_reading": "Click on a chapter to start reading",
+    "go_to_page": "Go to page"
+  },
+  "user_settings": {
+    "loading": "Loading profile...",
+    "profile_title": "User Profile",
+    "save_changes": "Save Changes",
+    "choose_file": "Choose File",
+    "remove": "Remove",
+    "error": "Error",
+    "full_name": "Full Name",
+    "password_security": "Password & Security",
+    "password_hint": "Your password must be at least 6 characters and should include a combination of numbers, letters and special characters (!$@%).",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_new_password": "Confirm New Password",
+    "notifications": "Notifications",
+    "transaction_alerts": "Transaction Alerts",
+    "transaction_hint": "Get notified when an achievement goals",
+    "subscription_updates": "Subscription Updates",
+    "subscription_hint": "Stay informed about upcoming renewals and cancellations.",
+    "spending_insights": "Spending Insights",
+    "spending_hint": "Receive alerts based on deadline goals"
+  },
+  "menu": {
+    "title": "MENU",
+    "comics": "COMICS",
+    "beats": "BEATS",
+    "shop": "SHOP",
+    "games": "GAMES"
+  },
+  "beats_page": {
+    "title": "BE★TS",
+    "saphire": "SAPHIRE",
+    "phonix": "PHONiX",
+    "horus": "HORUS",
+    "spale_ralooon": "SPALE RALOOON",
+    "no_tracks": "NO TRACKS FOUND"
+  },
+  "shop_page": {
+    "title": "SHOP",
+    "shirts": "SHIRTS"
+  },
+  "games_page": {
+    "title": "GAMES",
+    "eternal_run": "ETERNAL RUN",
+    "start_game": "START GAME"
   },
   "support_modal": {
     "title": "SUPPORT ARTIST",
@@ -732,63 +640,5 @@
     "donation_label": "DONATION AMOUNT €",
     "checkout": "CHECKOUT",
     "download_beat": "DOWNLOAD THE BEAT"
-  },
-  "orders": {
-    "title": "ORDERS & DONATIONS",
- "subtitle": "Manage your merch orders and view support artist contributions.",
-
-    "tabs": {
-      "merch": "MERCH ORDERS",
-      "donations": "DONATIONS"
-    },
-    "merch_table": {
-      "order_id": "ORDER ID",
-      "customer": "CUSTOMER",
-      "items": "ITEMS",
-      "date": "DATE",
-      "amount": "AMOUNT",
-      "payment": "PAYMENT",
-      "fulfillment": "FULFILLMENT",
-      "actions": "ACTIONS"
-    },
-    "donations_table": {
-      "transaction_id": "TRANSACTION ID",
-      "donor": "DONOR",
-      "date": "DATE",
-      "amount": "AMOUNT",
-      "status": "STATUS"
-    },
-    "details": {
-      "title": "Order Details",
-      "customer_info": "Customer Information",
-      "shipping_address": "Shipping Address",
-      "items": "Items",
-      "order_items": "Order Items",
-      "summary": "Summary",
-      "total": "Total",
-      "payment_status": "Payment Status",
-      "fulfillment_status": "Fulfillment Status",
-      "placed": "Placed on {{date}}",
-      "close": "Close",
-      "status": "Status"
-    },
-    "status": {
-      "paid": "Paid",
-      "unpaid": "Unpaid",
-      "pending": "Pending",
-      "shipped": "Shipped",
-      "delivered": "Delivered",
-      "cancelled": "Cancelled"
-    },
-    "messages": {
-      "update_success": "Status updated successfully",
-      "update_failed": "Failed to update status",
-      "loading_orders": "Loading orders...",
-      "no_orders": "No orders found",
-      "no_donations": "No donations found"
-    },
-    "customer": {
-      "guest": "Guest"
-    }
   }
 }

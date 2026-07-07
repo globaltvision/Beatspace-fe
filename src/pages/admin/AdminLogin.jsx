@@ -44,10 +44,16 @@ const AdminLogin = () => {
         setError(t('admin.login.error_not_authorized'));
         
       } else {
-        setError(res?.error || t('admin.login.error_failed'));
+        const message = typeof res?.error === 'string'
+          ? res.error
+          : res?.error?.message || t('admin.login.error_failed');
+        setError(message);
       }
     } catch (error) {
-      setError(error.message || t('admin.login.error_generic'));
+      const message = typeof error?.message === 'string'
+        ? error.message
+        : t('admin.login.error_generic');
+      setError(message);
     } finally {
       setLoading(false);
     }

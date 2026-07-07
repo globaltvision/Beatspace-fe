@@ -135,6 +135,38 @@ export const clearUserAction = () => {
   };
 };
 
+// Change Password — better-auth verifies currentPassword server-side before applying newPassword
+export const changePassword = async (currentPassword, newPassword) => {
+  try {
+    const res = await custAxios.post('/auth/change-password', {
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: false,
+    });
+    return { success: true, data: res?.data };
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message || 'Failed to change password',
+    };
+  }
+};
+
+// Change Email — better-auth sends a confirmation link to newEmail; the address
+// only updates once that link is clicked, so this resolving successfully means
+// "verification sent", not "email changed yet".
+export const changeEmail = async (newEmail) => {
+  try {
+    const res = await custAxios.post('/auth/change-email', { newEmail });
+    return { success: true, data: res?.data };
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message || 'Failed to change email',
+    };
+  }
+};
+
 // Check Auth Action
 export const checkAuthAction = () => {
   return async (dispatch) => {
