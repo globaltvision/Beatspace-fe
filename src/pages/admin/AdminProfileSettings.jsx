@@ -847,6 +847,29 @@ const AudioVisualizerPreview = ({ volume = 70, quality = 'high' }) => {
   );
 };
 
+// Show/hide toggle button for password fields — absolutely positioned inside the input's relative wrapper
+const PasswordToggleButton = ({ visible, onToggle, labelShow, labelHide }) => (
+  <button
+    type="button"
+    onClick={onToggle}
+    aria-label={visible ? labelHide : labelShow}
+    title={visible ? labelHide : labelShow}
+    className="absolute right-0 top-0 h-12 sm:h-14 lg:h-[60px] w-11 sm:w-12 flex items-center justify-center text-[#CBC895] hover:text-[#FFEF2E] transition-colors focus:outline-none"
+  >
+    {visible ? (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    ) : (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 4.22-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+        <line x1="1" y1="1" x2="23" y2="23" />
+      </svg>
+    )}
+  </button>
+);
+
 // Main Settings Component
 const Settings = () => {
   const { t } = useTranslation();
@@ -861,6 +884,9 @@ const Settings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     dispatch(me());
@@ -1695,14 +1721,22 @@ const Settings = () => {
                   >
                     {t('settings.account.current_password_label')}
                   </label>
-                  <input
-                    id="current-password"
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    autoComplete="current-password"
-                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      id="current-password"
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      autoComplete="current-password"
+                      className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 pr-11 sm:pr-12 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                    />
+                    <PasswordToggleButton
+                      visible={showCurrentPassword}
+                      onToggle={() => setShowCurrentPassword((v) => !v)}
+                      labelShow={t('settings.account.show_password', 'Show password')}
+                      labelHide={t('settings.account.hide_password', 'Hide password')}
+                    />
+                  </div>
                 </div>
                 <div>
                   <label
@@ -1711,14 +1745,22 @@ const Settings = () => {
                   >
                     {t('settings.account.new_password_label')}
                   </label>
-                  <input
-                    id="new-password"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    autoComplete="new-password"
-                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      id="new-password"
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      autoComplete="new-password"
+                      className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 pr-11 sm:pr-12 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                    />
+                    <PasswordToggleButton
+                      visible={showNewPassword}
+                      onToggle={() => setShowNewPassword((v) => !v)}
+                      labelShow={t('settings.account.show_password', 'Show password')}
+                      labelHide={t('settings.account.hide_password', 'Hide password')}
+                    />
+                  </div>
                 </div>
                 <div>
                   <label
@@ -1727,14 +1769,22 @@ const Settings = () => {
                   >
                     {t('settings.account.confirm_password_label')}
                   </label>
-                  <input
-                    id="confirm-new-password"
-                    type="password"
-                    value={confirmNewPassword}
-                    onChange={(e) => setConfirmNewPassword(e.target.value)}
-                    autoComplete="new-password"
-                    className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      id="confirm-new-password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      autoComplete="new-password"
+                      className="alexandria-font w-full h-12 sm:h-14 lg:h-[60px] bg-[#191A22] border border-[#CBC895] px-4 sm:px-5 pr-11 sm:pr-12 py-3 sm:py-3.5 text-[#9C963A] text-base sm:text-lg font-medium leading-6 sm:leading-7 focus:outline-none focus:ring-2 focus:ring-[#CBC895] transition-all"
+                    />
+                    <PasswordToggleButton
+                      visible={showConfirmPassword}
+                      onToggle={() => setShowConfirmPassword((v) => !v)}
+                      labelShow={t('settings.account.show_password', 'Show password')}
+                      labelHide={t('settings.account.hide_password', 'Hide password')}
+                    />
+                  </div>
                 </div>
 
                 <button
