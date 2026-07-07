@@ -11,7 +11,7 @@ const AdminLogin = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: 'admin@beatspace.com',
-    password: 'testing1234'
+    password: ''
   });
   const [error, setError] = useState('');
   const [isHovered, setIsHovered] = useState(false);
