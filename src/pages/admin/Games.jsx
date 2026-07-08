@@ -15,10 +15,19 @@ import {
   TextInput,
   Textarea,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IconAlertTriangle, IconEdit, IconPhoto, IconPlus, IconRefresh, IconTrash, IconUpload } from "@tabler/icons-react";
 import custAxios from "../../configs/axios.config";
+
+// Bridge legacy notifications.show(...) calls onto the app-wide sonner toaster,
+// so every toast in this file renders in the same style as the rest of the site.
+const notifications = {
+  show: ({ title, message, color } = {}) => {
+    const fn = color === "red" ? toast.error : color === "yellow" ? toast.warning : toast.success;
+    fn(title, message ? { description: message } : undefined);
+  },
+};
 
 /* ─── constants ─────────────────────────────────────────────── */
 

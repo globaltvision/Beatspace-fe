@@ -84,7 +84,7 @@ textarea,
   }
 
   .vision-font {
-    font-family: "Vision Font", sans-serif !important;
+    font-family: var(--global-font-family, "Vision Font", sans-serif) !important;
   }
 
   .pixel-font {

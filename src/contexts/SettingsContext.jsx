@@ -53,6 +53,8 @@ export const SettingsProvider = ({ children }) => {
       let fontVal = '"Vision Font", sans-serif';
       if (settings.font_family === 'Alexandria') {
         fontVal = '"Alexandria", sans-serif';
+      } else if (settings.font_family === 'Vision Regular') {
+        fontVal = '"Vision", sans-serif';
       } else if (settings.font_family === 'Press Start 2P') {
         fontVal = '"Press Start 2P", cursive';
       } else if (settings.font_family === 'System Font') {

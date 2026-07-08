@@ -153,11 +153,11 @@ button {
 
 .vision-font,
 .vision-font * {
-  font-family: "Vision Font", sans-serif !important;
+  font-family: var(--global-font-family) !important;
 }
 
 .vision-font-regular,
 .vision-font-regular * {
-  font-family: "Vision Font", monospace, sans-serif !important;
+  font-family: var(--global-font-family) !important;
   font-weight: normal !important;
 }
