@@ -473,7 +473,7 @@ export default function Games() {
                   variant="light"
                   styles={{ message: { color: "#CBC895", fontSize: 13 } }}
                 >
-                  Make sure <strong>index.html</strong> is at the root level of your zip file, not inside a subfolder.
+                  Your zip just needs to contain an <strong>index.html</strong> somewhere — it can be at the root or inside subfolders. We'll find it automatically.
                 </Alert>
               </>
             )}
