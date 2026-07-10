@@ -49,19 +49,57 @@ export const SettingsProvider = ({ children }) => {
   }, [settings.site_title]);
 
   useEffect(() => {
-    if (settings.font_family) {
-      let fontVal = '"Vision Font", sans-serif';
-      if (settings.font_family === 'Alexandria') {
-        fontVal = '"Alexandria", sans-serif';
-      } else if (settings.font_family === 'Vision Regular') {
-        fontVal = '"Vision", sans-serif';
-      } else if (settings.font_family === 'Press Start 2P') {
-        fontVal = '"Press Start 2P", cursive';
-      } else if (settings.font_family === 'System Font') {
-        fontVal = 'system-ui, sans-serif';
+    if (!settings.font_family) return;
+
+    const root = document.documentElement;
+    root.classList.add('fonts-loading');
+
+    const loadSelectedFont = async () => {
+      try {
+        let fontFamily = 'Vision Font';
+        let src = '/fonts/VisionFont-Regular.otf';
+
+        if (settings.font_family === 'Alexandria') {
+          fontFamily = 'Alexandria';
+          src = '/fonts/Alexandria-Regular.ttf';
+        } else if (settings.font_family === 'Vision Regular') {
+          fontFamily = 'Vision';
+          src = '/fonts/Vision-Regular.otf';
+        } else if (settings.font_family === 'Press Start 2P') {
+          // Press Start 2P is imported via @fontsource in CSS; no manual load required
+          fontFamily = 'Press Start 2P';
+          src = null;
+        } else if (settings.font_family === 'System Font') {
+          // System font - no loading necessary
+          fontFamily = 'system-ui';
+          src = null;
+        }
+
+        if (src) {
+          // Use FontFace API to preload the font so we avoid FOUT/FOIT flashes
+          const font = new FontFace(fontFamily, `url(${src})`);
+          await font.load();
+          document.fonts.add(font);
+        }
+
+        let fontVal = `${fontFamily}, sans-serif`;
+        if (settings.font_family === 'Press Start 2P') {
+          fontVal = '"Press Start 2P", cursive';
+        } else if (settings.font_family === 'System Font') {
+          fontVal = 'system-ui, sans-serif';
+        }
+
+        document.documentElement.style.setProperty('--global-font-family', fontVal);
+        root.classList.remove('fonts-loading');
+        root.classList.add('fonts-loaded');
+      } catch (err) {
+        console.error('Font load failed:', err);
+        root.classList.remove('fonts-loading');
+        root.classList.add('fonts-loaded');
       }
-      document.documentElement.style.setProperty('--global-font-family', fontVal);
-    }
+    };
+
+    loadSelectedFont();
   }, [settings.font_family]);
 
 

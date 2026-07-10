@@ -46,6 +46,18 @@ body {
   -webkit-user-select: none;
 }
 
+/* Hide main app content while the selected font is loading to avoid flash */
+.fonts-loading .app-content {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.fonts-loaded .app-content {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
 input,
 textarea,
 [contenteditable="true"] {
