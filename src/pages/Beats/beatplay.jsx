@@ -374,7 +374,12 @@ const BeatPlay = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         beatName={selectedBeat?.name || "eFELKIT"}
-        artistName="SAPPHIRE"
+        artistName={
+          selectedBeat?.category ||
+          selectedBeat?.["category "] ||
+          selectedBeat?.[" category"] ||
+          "Unknown Artist"
+        }
         audioUrl={selectedBeat?.audioUrl}
         id={selectedBeat?.id}
       />
