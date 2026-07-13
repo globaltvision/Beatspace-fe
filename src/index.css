@@ -25,6 +25,31 @@
   /* 16px for modals like support artist */
 }
 
+/* Specific overrides for Press Start 2P font to ensure size correctness */
+html.font-family-press-start-2p {
+  font-size: 62.5% !important; /* Scale down all rem / em layout values */
+
+  --font-size-xs: 8px;
+  --font-size-sm: 10px;
+  --font-size-md: 11px;
+  --font-size-lg: 12px;
+  --font-size-xl: 13px;
+  --font-size-xxl: 14px;
+  --font-size-default: var(--font-size-xxl);
+
+  /* Heading font sizes */
+  --font-size-h1: 24px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-h4: 16px;
+  --font-size-h5: 14px;
+  --font-size-h6: 12px;
+
+  /* Special font sizes */
+  --font-size-pixel: 9px;
+  --font-size-modal: var(--font-size-sm);
+}
+
 /* Vision Font Declaration */
 @font-face {
   font-family: "Vision Font";

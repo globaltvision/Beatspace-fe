@@ -90,10 +90,26 @@ export const SettingsProvider = ({ children }) => {
         }
 
         document.documentElement.style.setProperty('--global-font-family', fontVal);
+
+        // Remove any existing font-specific classes
+        const classesToRemove = Array.from(root.classList).filter(c => c.startsWith('font-family-'));
+        classesToRemove.forEach(c => root.classList.remove(c));
+
+        // Add current font-specific class
+        if (settings.font_family) {
+          const fontClass = `font-family-${settings.font_family.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+          root.classList.add(fontClass);
+        }
+
         root.classList.remove('fonts-loading');
         root.classList.add('fonts-loaded');
       } catch (err) {
         console.error('Font load failed:', err);
+        
+        // Remove any existing font-specific classes on failure as well
+        const classesToRemove = Array.from(root.classList).filter(c => c.startsWith('font-family-'));
+        classesToRemove.forEach(c => root.classList.remove(c));
+
         root.classList.remove('fonts-loading');
         root.classList.add('fonts-loaded');
       }
