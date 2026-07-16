@@ -257,11 +257,11 @@ const BeatPlay = () => {
                 >
                   <Text
                     style={{
-                      fontSize: "0.9rem",
+                      fontSize: "1.1rem",
                       color: "#F6F4D3",
                       letterSpacing: "2px",
                     }}
-                    className="!text-[0.6rem] absolute !vision-font -top-3 min-md:-top-6 min-lg:-top-4 left-0 w-full min-md:!text-[0.9rem] min-lg:!text-[1.3rem]"
+                    className="!text-[0.8rem] absolute !vision-font -top-3 min-md:-top-6 min-lg:-top-4 left-0 w-full min-md:!text-[1.1rem] min-lg:!text-[1.5rem]"
                   >
                     {beat.name}
                   </Text>
