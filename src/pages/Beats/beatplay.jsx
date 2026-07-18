@@ -191,6 +191,7 @@ const BeatPlay = () => {
           maxWidth: "100%",
           height: "60%",
           overflowY: "auto",
+          paddingTop:"10px"
         }}
       >
         <Box
