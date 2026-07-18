@@ -113,11 +113,11 @@ const BeatPlay = () => {
           setAudioCurrentTime((prev) => ({ ...prev, [beat.id]: 0 }));
           window.dispatchEvent(new CustomEvent("beat-play-stop"));
         });
- 
+
         audioRefs.current[beat.id] = audio;
       }
     });
- 
+
     return () => {
       Object.values(audioRefs.current).forEach((audio) => {
         if (audio) {
@@ -129,17 +129,17 @@ const BeatPlay = () => {
       window.dispatchEvent(new CustomEvent("beat-play-stop"));
     };
   }, [beatItems]);
- 
+
   const handlePlay = async (beat) => {
     const beatId = beat.id;
     if (!beat.audioUrl || beat.audioUrl.trim() === "") {
       toast.error(`No audio URL provided for ${beat.name}.`);
       return;
     }
- 
+
     const audio = audioRefs.current[beatId];
     if (!audio) return;
- 
+
     if (currentlyPlaying === beatId && !audio.paused) {
       audio.pause();
       setCurrentlyPlaying(null);
@@ -151,7 +151,7 @@ const BeatPlay = () => {
           audioRefs.current[id].currentTime = 0;
         }
       });
- 
+
       try {
         await audio.play();
         setCurrentlyPlaying(beatId);
@@ -180,11 +180,11 @@ const BeatPlay = () => {
       <UserHeader title={t('beats_page.title')} />
 
       <Box
-        className="custom-scrollbar !top-[30%] !h-[55%] min-lg:!top-[26%] min-lg:!h-[60%]"
+        className="custom-scrollbar"
         style={{
           position: "absolute",
-          left: "12%",
-          top: "25%",
+          left: "14%",
+          top: "26%",
           zIndex: 3,
           pointerEvents: "auto",
           width: "calc(90% - 12%)",
@@ -197,9 +197,8 @@ const BeatPlay = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "4rem",
           }}
-          className="!gap-6"
+          className="gap-8"
         >
           {isLoading ? (
             <Center style={{ height: "200px", width: "100%" }}>
@@ -217,29 +216,34 @@ const BeatPlay = () => {
                   borderRadius: "4px",
                   transition: "all 0.3s ease",
                   cursor: "pointer",
-                  width: "60%",
-                  height: "100px",
                 }}
-                className="!h-24 flex items-center justify-center min-lg:justify-start min-lg:!w-[75%] !w-[90%]"
+                className="relative flex items-center h-[140px] justify-center lg:justify-between lg:w-[80%] w-[90%]"
                 onMouseEnter={handleItemHover}
                 onMouseLeave={handleItemLeave}
               >
+                <Text
+                  style={{
+                    color: "#F6F4D3",
+                    letterSpacing: "2px",
+                  }}
+                  className="absolute left-20 -top-6 text-[1rem] !vision-font w-fit md:text-[1.6rem] lg:!text-[2.4rem]"
+                >
+                  {beat.name}
+                </Text>
                 <Box
                   style={{
-                    width: "70px",
-                    height: "70px",
+                    width: "50px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
-                    transition: "all 0.3s ease",
+                    marginBottom: "40px",
                   }}
-                  className="!h-8 !w-8 min-lg:!h-12 min-lg:!w-12 -translate-y-2 "
                   onClick={() => handlePlay(beat)}
                 >
                   {currentlyPlaying === beat.id &&
-                  audioRefs.current[beat.id] &&
-                  !audioRefs.current[beat.id].paused
+                    audioRefs.current[beat.id] &&
+                    !audioRefs.current[beat.id].paused
                     ? pauseIcon()
                     : playIcon()}
                 </Box>
@@ -250,26 +254,16 @@ const BeatPlay = () => {
                     flexDirection: "column",
                     justifyContent: "center",
                     gap: "0.5rem",
+
                     flex: 1,
-                    height: "70px",
                   }}
                   className="!w-[70%] relative min-lg:!w-fit "
                 >
-                  <Text
-                    style={{
-                      fontSize: "1.1rem",
-                      color: "#F6F4D3",
-                      letterSpacing: "2px",
-                    }}
-                    className="!text-[0.8rem] absolute !vision-font -top-3 min-md:-top-6 min-lg:-top-4 left-0 w-full min-md:!text-[1.1rem] min-lg:!text-[1.5rem]"
-                  >
-                    {beat.name}
-                  </Text>
 
                   <Box
                     style={{
-                      height: "43px",
                       width: "100%",
+                      height: "100%",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -297,8 +291,6 @@ const BeatPlay = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-start",
-                      marginTop: "-5px",
-                      height: "12px",
                       paddingLeft: "0px",
                       paddingRight: "0px",
                     }}
@@ -330,19 +322,15 @@ const BeatPlay = () => {
                     </span>
                   </Box>
                 </Box>
-
                 <Box
                   style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "4px",
+                    width: "50px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
-                    transition: "all 0.3s ease",
+                    marginBottom: "40px",
                   }}
-                  className="!h-8 !w-8 min-lg:!h-12 min-lg:!w-12 -translate-y-2 "
                   onClick={(e) => {
                     e.stopPropagation();
                     handleBeatNameClick(beat);
