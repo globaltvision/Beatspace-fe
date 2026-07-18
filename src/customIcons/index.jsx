@@ -249,9 +249,9 @@ export const playIcon = () => {
 export const pauseIcon = () => {
   return (
     <svg
-      width="54"
-      height="52"
-      viewBox="0 0 54 52"
+      width="84"
+      height="82"
+      viewBox="0 0 84 82"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

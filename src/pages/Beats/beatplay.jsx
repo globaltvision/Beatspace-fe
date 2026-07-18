@@ -238,7 +238,7 @@ const BeatPlay = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
-                    marginBottom: "40px",
+                    marginBottom: "50px",
                   }}
                   onClick={() => handlePlay(beat)}
                 >
@@ -330,7 +330,7 @@ const BeatPlay = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
-                    marginBottom: "40px",
+                    marginBottom: "50px",
                   }}
                   onClick={(e) => {
                     e.stopPropagation();
