@@ -165,7 +165,7 @@ const SelectChapter = () => {
             width: "100%",
             padding: "0 2rem",
           }}
-          className="max-sm:!h-[65%] max-sm:!overflow-y-auto min-md:!h-fit"
+          className="max-sm:!h-full max-sm:!overflow-y-auto max-sm:!pb-24 min-md:!h-fit"
         >
           {/* Comic Title Section */}
           <Box
@@ -280,7 +280,7 @@ const SelectChapter = () => {
               marginTop: "2rem",
               paddingRight: "10px",
             }}
-            className="vision-font lg:mt-0 mt-12 custom-scrollbar"
+            className="vision-font lg:mt-0 mt-12 custom-scrollbar max-sm:!overflow-visible max-sm:!max-h-none"
           >
             {comic.chapter_info && comic.chapter_info.length > 0 ? (
               comic.chapter_info.map((chapter, index) => (

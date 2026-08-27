@@ -235,10 +235,6 @@ const SupportArtistModal = ({
       {/* Responsive fixes for horizontal mobile */}
       <style>
         {`
-        .vision-font {
-          font-family: 'Vision Font', sans-serif;
-        }
-
         /* Mobile landscape (horizontal) */
         @media (max-height: 500px) {
           .vision-font {
