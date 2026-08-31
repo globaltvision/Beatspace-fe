@@ -146,26 +146,29 @@ const SelectChapter = () => {
       {/* Main Content */}
       <Box
         style={{
-          height: "80vh",
-          marginTop: "18vh",
+          height: "72vh",
+          marginTop: "26vh",
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "center",
           zIndex: 3,
           pointerEvents: "auto",
         }}
-        className="!w-full max-sm:!mt-[26vh] max-sm:!h-[70vh]"
+        className="!w-full"
       >
         <Box
+          ref={chapterListRef}
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: "1rem",
             width: "100%",
-            padding: "0 2rem",
+            height: "100%",
+            padding: "0 2rem 6rem",
+            overflowY: "auto",
           }}
-          className="max-sm:!h-full max-sm:!overflow-y-auto max-sm:!pb-24 min-md:!h-fit"
+          className="custom-scrollbar"
         >
           {/* Comic Title Section */}
           <Box
@@ -268,19 +271,16 @@ const SelectChapter = () => {
 
           {/* Chapter List */}
           <Box
-            ref={chapterListRef}
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "0.75rem",
               width: "100%",
               maxWidth: "800px",
-              maxHeight: "55vh",
-              overflowY: "auto",
               marginTop: "2rem",
               paddingRight: "10px",
             }}
-            className="vision-font lg:mt-0 mt-12 custom-scrollbar max-sm:!overflow-visible max-sm:!max-h-none"
+            className="vision-font lg:mt-0 mt-12"
           >
             {comic.chapter_info && comic.chapter_info.length > 0 ? (
               comic.chapter_info.map((chapter, index) => (

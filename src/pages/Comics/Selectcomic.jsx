@@ -40,8 +40,8 @@ const Selectcomic = () => {
       {/* Main Content Scrollable Area */}
       <Box
         style={{
-          height: "75vh",
-          marginTop: "20vh",
+          height: "70vh",
+          marginTop: "26vh",
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
@@ -52,7 +52,7 @@ const Selectcomic = () => {
           zIndex: 5,
           overflowY: "auto",
         }}
-        className="custom-scrollbar max-sm:!mt-[26vh] max-sm:!h-[65vh]"
+        className="custom-scrollbar"
       >
         {isLoadingComics ? (
           <Text className="vision-font" style={{ color: "#F6F4D3" }}>
