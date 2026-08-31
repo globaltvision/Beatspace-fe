@@ -251,8 +251,8 @@ const SelectChapter = () => {
                   marginBottom: "0.2rem",
                   textTransform: "uppercase",
                   fontWeight: "900",
+                  fontSize: "clamp(1rem, 4vh, 3rem)",
                 }}
-                className="max-sm:!text-[1.2rem] min-md:!text-[2rem] min-lg:!text-[3rem]"
               >
                 {comic.title}
               </Text>
@@ -261,13 +261,28 @@ const SelectChapter = () => {
                   color: COLORS.accentDark,
                   letterSpacing: "1px",
                   textTransform: "uppercase",
+                  fontSize: "clamp(0.55rem, 1.8vh, 1.5rem)",
                 }}
-                className="vision-font max-sm:!text-[0.6rem] min-md:!text-[0.7rem] min-lg:!text-[1.5rem]"
+                className="vision-font"
               >
                 by {comic.author_name}
               </Text>
             </Box>
           </Box>
+
+          {/* Instruction */}
+          <Text
+            className="vision-font font-bold"
+            style={{
+              color: COLORS.textSecondary,
+              letterSpacing: "1.5px",
+              textAlign: "center",
+              fontSize: "clamp(0.6rem, 2.4vh, 1.8rem)",
+              marginTop: "0.5rem",
+            }}
+          >
+            {t('comics_user.click_start_reading')}
+          </Text>
 
           {/* Chapter List */}
           <Box
@@ -302,30 +317,6 @@ const SelectChapter = () => {
             )}
           </Box>
         </Box>
-      </Box>
-
-      {/* Bottom Instruction */}
-      <Box
-        style={{
-          position: "absolute",
-          bottom: "1vh",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 3,
-          pointerEvents: "auto",
-        }}
-      >
-        <Text
-          className="vision-font font-bold"
-          style={{
-            color: COLORS.textSecondary,
-            letterSpacing: "1.5px",
-            textAlign: "center",
-            fontSize: "clamp(0.6rem, 2.4vh, 1.8rem)",
-          }}
-        >
-          {t('comics_user.click_start_reading')}
-        </Text>
       </Box>
     </>
   );
