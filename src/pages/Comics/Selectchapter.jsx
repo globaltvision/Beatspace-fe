@@ -154,7 +154,7 @@ const SelectChapter = () => {
           zIndex: 3,
           pointerEvents: "auto",
         }}
-        className="!w-full"
+        className="!w-full max-sm:!mt-[26vh] max-sm:!h-[70vh]"
       >
         <Box
           style={{

@@ -52,7 +52,7 @@ const Selectcomic = () => {
           zIndex: 5,
           overflowY: "auto",
         }}
-        className="custom-scrollbar"
+        className="custom-scrollbar max-sm:!mt-[26vh] max-sm:!h-[65vh]"
       >
         {isLoadingComics ? (
           <Text className="vision-font" style={{ color: "#F6F4D3" }}>
