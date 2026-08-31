@@ -17,7 +17,7 @@ const Home = () => {
   };
 
   return (
-    <Box style={styles.container}>
+    <Box style={styles.container} className="max-sm:!justify-start max-sm:!pt-16">
       {/* --- HERO & CLOUDS CONTAINER --- */}
       <Box 
         style={styles.heroContainer} 
@@ -110,6 +110,7 @@ const styles = {
     padding: "2rem",
     zIndex: 3,
     pointerEvents: "auto",
+    overflowY: "auto",
   },
   heroContainer: {
     position: "absolute",

@@ -43,7 +43,9 @@ const ListOfHorus = () => {
           padding: "2rem",
           zIndex: 3,
           pointerEvents: "auto",
+          overflowY: "auto",
         }}
+        className="max-sm:!justify-start max-sm:!pt-24"
       >
         <Box
           style={{
