@@ -168,7 +168,7 @@ const SelectChapter = () => {
             padding: "0 2rem 6rem",
             overflowY: "auto",
           }}
-          className="custom-scrollbar"
+          className="scrollbar-hide"
         >
           {/* Comic Title Section */}
           <Box
@@ -308,7 +308,7 @@ const SelectChapter = () => {
       <Box
         style={{
           position: "absolute",
-          bottom: "2rem",
+          bottom: "1vh",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 3,
@@ -316,11 +316,12 @@ const SelectChapter = () => {
         }}
       >
         <Text
-          className="vision-font max-sm:!text-[1.1rem] min-md:!text-[1.3rem] min-lg:!text-[1.8rem] font-bold"
+          className="vision-font font-bold"
           style={{
             color: COLORS.textSecondary,
             letterSpacing: "1.5px",
             textAlign: "center",
+            fontSize: "clamp(0.6rem, 2.4vh, 1.8rem)",
           }}
         >
           {t('comics_user.click_start_reading')}

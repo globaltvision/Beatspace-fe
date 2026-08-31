@@ -90,8 +90,12 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
             role="button"
             aria-label={t('common.back')}
             onClick={handleBack}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-            className="!scale-[0.7] md:!scale-[0.9] lg:!scale-[1.2]"
+            style={{
+              cursor: "pointer",
+              flexShrink: 0,
+              transform: "scale(0.6)",
+              transformOrigin: "left center",
+            }}
           >
             <BackButtonIcon />
           </Box>
@@ -102,14 +106,14 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
             {title && (
               <Text
                 style={{
-                  fontSize: "1.8rem",
+                  fontSize: "clamp(0.85rem, 3.4vh, 2.9rem)",
                   color: COLORS.primary,
                   letterSpacing: "4px",
                   textShadow: "0 0 15px rgba(246, 244, 211, 0.4)",
                   fontWeight: 900,
                   lineHeight: 1,
                 }}
-                className="vision-font max-sm:!text-[1.2rem] md:!text-[2rem] lg:!text-[2.9rem]"
+                className="vision-font"
               >
                 {title}
               </Text>
@@ -120,8 +124,9 @@ const UserHeader = ({ title, subtitle, showBack = true, prefix, suffix }) => {
                   color: COLORS.primary,
                   letterSpacing: "2px",
                   marginTop: "0.1rem",
+                  fontSize: "clamp(0.45rem, 1.5vh, 1.2rem)",
                 }}
-                className="vision-font max-sm:!text-[0.6rem] md:!text-[0.8rem] lg:!text-[1.2rem]"
+                className="vision-font"
               >
                 {subtitle}
               </Text>
